@@ -1,5 +1,5 @@
 import AnnDiagram from '../../../components/diagrams/AnnDiagram'
-import CleanNeuronSvg from './CleanNeuronSvg'
+import biologicalNeuronBridgeImage from '../../../assets/ChatGPT Image Apr 24, 2026, 01_40_31 PM.png'
 
 function BridgeToAnn({ onContinue }) {
   return (
@@ -26,21 +26,13 @@ function BridgeToAnn({ onContinue }) {
           </div>
 
           <div className="bridge-visual bridge-visual-bio module1-bridge-shell module1-bridge-shell-bio">
-            <CleanNeuronSvg
-              className="module1-bridge-bio-art"
-              level={1}
-              fillPercent={48}
-              showInputSignals={true}
-              showThreshold={true}
-              showLabels={false}
-              isFiring={false}
+            <img
+              className="module1-bridge-bio-image"
+              src={biologicalNeuronBridgeImage}
+              alt="Biological neuron with many incoming signals combining before outgoing signals continue."
             />
           </div>
 
-          <p className="module1-card-muted module1-bridge-panel-note">
-            The picture still looks biological, but this section is about function: many inputs converge on one cell
-            body before one outgoing signal continues.
-          </p>
         </div>
 
         <div className="bridge-panel bridge-panel-ann module1-panel module1-soft-panel">
@@ -48,7 +40,7 @@ function BridgeToAnn({ onContinue }) {
             <div>
               <h3 className="module1-panel-title">Artificial neuron</h3>
               <p className="module1-card-muted">
-                The same visual logic you meet in Module 2, brought back here as a simpler bridge.
+                A simpler model that keeps the same basic idea: inputs come in, combine, and produce one output.
               </p>
             </div>
             <span className="module1-bridge-current-label">Simplified model</span>
@@ -58,10 +50,6 @@ function BridgeToAnn({ onContinue }) {
             <AnnDiagram variant="bridge" />
           </div>
 
-          <p className="module1-card-muted module1-bridge-panel-note">
-            This is no longer a generic ANN icon. It uses the Module 2 pattern-to-neuron visual so the bridge feels
-            like a true handoff into the next lesson.
-          </p>
         </div>
       </section>
 

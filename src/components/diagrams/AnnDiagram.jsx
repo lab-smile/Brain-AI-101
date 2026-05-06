@@ -1,71 +1,81 @@
 function AnnDiagram({ isMobile = false, variant = 'default' }) {
-  const width = isMobile ? '100%' : 800
   const isBridge = variant === 'bridge'
+  const width = isBridge || isMobile ? '100%' : 800
+  const viewBox = isBridge ? '0 0 620 360' : '0 0 800 300'
+  const ariaLabel = isBridge ? 'One neuron simplified model diagram' : 'Artificial neuron diagram'
 
   return (
     <div className={`ann-diagram-shell ${isBridge ? 'ann-diagram-shell--bridge' : ''}`}>
-      <svg width={width} viewBox="0 0 800 300" role="img" aria-label="Artificial neuron diagram" className="ann-diagram-svg">
-        <rect x="0" y="0" width="800" height="300" rx="18" fill="#F8FAFC" />
+      <svg
+        width={width}
+        viewBox={viewBox}
+        role="img"
+        aria-label={ariaLabel}
+        className="ann-diagram-svg"
+        style={isBridge ? { maxHeight: '300px' } : undefined}
+      >
+        {!isBridge && <rect x="0" y="0" width="800" height="300" rx="18" fill="#F8FAFC" />}
 
         {isBridge ? (
           <>
-            <g className="ann-diagram__bridge-grid" aria-hidden="true">
-              <rect x="86" y="74" width="44" height="44" rx="8" />
-              <rect x="136" y="74" width="44" height="44" rx="8" />
-              <rect x="186" y="74" width="44" height="44" rx="8" />
+            <defs>
+              <marker
+                id="ann-bridge-arrow"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto"
+              >
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#c7d2fe" />
+              </marker>
+            </defs>
 
-              <rect x="86" y="126" width="44" height="44" rx="8" />
-              <rect x="136" y="126" width="44" height="44" rx="8" />
-              <rect x="186" y="126" width="44" height="44" rx="8" />
+            <g opacity="1">
+              <line x1="78" y1="110" x2="280" y2="200" stroke="#c7d2fe" strokeWidth="1.5" />
+              <line x1="78" y1="200" x2="280" y2="200" stroke="#c7d2fe" strokeWidth="1.5" />
+              <line x1="78" y1="290" x2="280" y2="200" stroke="#c7d2fe" strokeWidth="1.5" />
 
-              <rect x="86" y="178" width="44" height="44" rx="8" />
-              <rect x="136" y="178" width="44" height="44" rx="8" />
-              <rect x="186" y="178" width="44" height="44" rx="8" />
+              <g>
+                <circle cx="60" cy="110" r="18" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2" />
+                <text x="60" y="115" textAnchor="middle" fontSize="11" fill="#1d4ed8" fontWeight="600">
+                  x1
+                </text>
+              </g>
 
-              <text x="108" y="101">1</text>
-              <text x="158" y="101">0</text>
-              <text x="208" y="101">1</text>
-              <text x="108" y="153">1</text>
-              <text x="158" y="153">0</text>
-              <text x="208" y="153">1</text>
-              <text x="108" y="205">1</text>
-              <text x="158" y="205">0</text>
-              <text x="208" y="205">1</text>
-            </g>
+              <g>
+                <circle cx="60" cy="200" r="18" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2" />
+                <text x="60" y="205" textAnchor="middle" fontSize="11" fill="#1d4ed8" fontWeight="600">
+                  x2
+                </text>
+              </g>
 
-            <g className="ann-diagram__bridge-connections" aria-hidden="true">
-              <path d="M 230 96 Q 314 92, 374 122" />
-              <path d="M 230 148 Q 320 146, 372 140" />
-              <path d="M 230 200 Q 316 206, 374 158" />
-            </g>
+              <g>
+                <circle cx="60" cy="290" r="18" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2" />
+                <text x="60" y="295" textAnchor="middle" fontSize="11" fill="#1d4ed8" fontWeight="600">
+                  x3
+                </text>
+              </g>
 
-            <g className="ann-diagram__weight-tags" aria-hidden="true">
-              <text x="294" y="104">w</text>
-              <text x="304" y="154">w</text>
-              <text x="294" y="206">w</text>
-            </g>
-
-            <g className="ann-diagram__bridge-node">
-              <circle cx="440" cy="148" r="62" />
-              <circle cx="440" cy="148" r="44" />
-              <text x="440" y="154" textAnchor="middle">
-                Σ
+              <circle cx="310" cy="200" r="30" fill="#f3e8ff" stroke="#7c3aed" strokeWidth="2.5" />
+              <text x="310" y="205" textAnchor="middle" fontSize="13" fill="#6d28d9" fontWeight="700">
+                N
               </text>
-            </g>
 
-            <g className="ann-diagram__activation-cue" aria-hidden="true">
-              <path d="M 504 148 L 556 148" />
-              <circle cx="600" cy="148" r="24" />
-              <text x="600" y="155" textAnchor="middle">
-                1
+              <line
+                x1="340"
+                y1="200"
+                x2="395"
+                y2="200"
+                stroke="#c7d2fe"
+                strokeWidth="1.5"
+                markerEnd="url(#ann-bridge-arrow)"
+              />
+              <text x="410" y="205" fontSize="12" fill="#4b5563">
+                output
               </text>
-            </g>
 
-            <g className="ann-diagram__labels">
-              <text x="160" y="52" textAnchor="middle">input pattern</text>
-              <text x="440" y="58" textAnchor="middle">weighted sum</text>
-              <text x="600" y="58" textAnchor="middle">output</text>
-              <text x="440" y="238" textAnchor="middle">same logic as Module 2</text>
             </g>
           </>
         ) : (

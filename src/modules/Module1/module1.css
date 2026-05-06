@@ -2726,47 +2726,51 @@
 }
 
 .bridge-panel {
+  background: var(--module1-surface-strong);
+  border: 1px solid var(--module1-border-soft);
+  border-radius: var(--module1-radius-md);
+  box-shadow: 0 10px 24px rgba(30, 41, 59, 0.04);
   display: grid;
+  align-content: start;
   gap: 14px;
+  min-height: 0;
+  padding: 20px;
 }
 
 .bridge-panel-bio {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(241, 248, 255, 0.98) 100%);
   border-color: #bfd5ff;
-  min-height: 450px;
-  padding: 20px;
 }
 
 .bridge-panel-ann {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(247, 250, 255, 0.9) 100%);
-  border-color: rgba(207, 224, 247, 0.9);
-  min-height: 390px;
-  padding: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 250, 255, 0.96) 100%);
+  border-color: rgba(207, 224, 247, 0.95);
 }
 
 .bridge-visual {
   align-items: center;
-  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.97) 0%, rgba(240, 246, 254, 0.92) 100%);
-  border: 1px solid var(--module1-border-soft);
-  border-radius: var(--module1-radius-lg);
+  background: transparent;
+  border: none;
+  border-radius: 0;
   display: flex;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
 }
 
 .bridge-visual svg {
   display: block;
-  height: 100%;
+  height: auto;
+  max-width: 100%;
   width: 100%;
 }
 
 .bridge-visual-bio {
-  height: 360px;
+  min-height: 0;
 }
 
 .bridge-visual-ann {
-  height: 280px;
+  min-height: 0;
 }
 
 .module1-card-muted {
@@ -2798,9 +2802,29 @@
 
 .module1-bridge-panel-header {
   align-items: start;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
   display: flex;
   gap: 12px;
   justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.module1-bridge-panel-header .module1-panel-title,
+.module1-bridge-panel-header .module1-panel-title-large {
+  color: var(--module1-text);
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.2vw, 1.95rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  margin: 0 0 6px;
+}
+
+.module1-bridge-panel-header .module1-card-muted {
+  color: var(--module1-text-muted);
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 34ch;
 }
 
 .module1-bridge-current-label {
@@ -2818,20 +2842,32 @@
 }
 
 .module1-bridge-shell {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   min-height: 0;
   padding: 0;
 }
 
 .module1-bridge-shell-bio {
-  padding: 12px 18px;
+  padding: 0;
 }
 
 .module1-bridge-shell-ann {
-  padding: 18px;
+  padding: 0;
 }
 
 .module1-bridge-bio-art {
   max-height: 100%;
+}
+
+.module1-bridge-bio-image {
+  display: block;
+  height: auto;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
 }
 
 .module1-bridge-panel-note {
@@ -2899,10 +2935,10 @@
 }
 
 .ann-diagram-shell--bridge {
-  background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.98) 0%, rgba(240, 246, 254, 0.92) 100%);
-  border-color: #dbe7f3;
-  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .ann-diagram-svg {
@@ -3681,7 +3717,7 @@
   .module1-bridge-shell-bio,
   .module1-bridge-shell-ann {
     min-height: 0;
-    padding: 14px;
+    padding: 0;
   }
 
   .module1-bridge-mapping-header {
