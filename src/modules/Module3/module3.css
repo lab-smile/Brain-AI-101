@@ -1000,6 +1000,17 @@
   padding: 18px;
 }
 
+.m3-rl-q-card--inline {
+  background: #f8fafc;
+  border-radius: 16px;
+  box-shadow: none;
+  padding: 16px;
+}
+
+.m3-rl-q-card--bottom {
+  width: 100%;
+}
+
 .m3-rl-q-grid {
   display: grid;
   gap: 10px;
@@ -1202,7 +1213,7 @@
   border: none;
   border-radius: 18px;
   display: block;
-  height: 600px;
+  height: 720px;
   width: 100%;
 }
 

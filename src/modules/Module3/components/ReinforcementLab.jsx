@@ -62,7 +62,6 @@ function ReinforcementLab({ embedded = false }) {
   const actionValues = getActionValues(algorithmState, currentStateKey)
   const greedyAction = getGreedyAction(algorithmState, currentStateKey)
   const totalChoices = exploreCount + exploitCount
-  const exploreRate = totalChoices ? (exploreCount / totalChoices) * 100 : 0
 
   return (
     <div className={`m3-rl-block${embedded ? ' m3-rl-block--embedded' : ''}`}>
@@ -120,6 +119,19 @@ function ReinforcementLab({ embedded = false }) {
               {lastEpisodeOutcome && ` Last finished episode ${formatOutcome(lastEpisodeOutcome)}.`}
             </div>
           )}
+
+          <div className="m3-rl-q-card m3-rl-q-card--inline">
+            <p className="m3-rl-control-label">Action values for the current cell</p>
+            <div className="m3-rl-q-grid">
+              {Object.entries(actionValues).map(([action, value]) => (
+                <div key={action} className={`m3-rl-q-item${greedyAction === action ? ' is-best' : ''}`}>
+                  <span>{ACTION_LABELS[action]}</span>
+                  <strong>{value.toFixed(2)}</strong>
+                </div>
+              ))}
+            </div>
+            <p className="m3-type-desc">The highest value is the move the agent currently prefers.</p>
+          </div>
         </div>
 
         <ReinforcementControls
@@ -138,39 +150,25 @@ function ReinforcementLab({ embedded = false }) {
         />
       </div>
 
-      <div className="m3-rl-bottom-grid">
-        <div className="m3-rl-q-card">
-          <p className="m3-rl-control-label">Action values for the current cell</p>
-          <div className="m3-rl-q-grid">
-            {Object.entries(actionValues).map(([action, value]) => (
-              <div key={action} className={`m3-rl-q-item${greedyAction === action ? ' is-best' : ''}`}>
-                <span>{ACTION_LABELS[action]}</span>
-                <strong>{value.toFixed(2)}</strong>
-              </div>
-            ))}
-          </div>
-          <p className="m3-type-desc">Highest value = best next move.</p>
+      <div className="m3-rl-q-card m3-rl-q-card--bottom">
+        <p className="m3-rl-control-label">Quick help</p>
+        <div className="m3-rl-copy-list">
+          <p><strong>Start:</strong> let the agent keep running through episodes on its own.</p>
+          <p><strong>Step Episode:</strong> run one full episode, then pause so you can inspect the result.</p>
+          <p><strong>Reset Environment:</strong> restart the agent on the same map, but keep what it learned.</p>
+          <p><strong>Reset Learning:</strong> erase the learned action values and start fresh.</p>
+          <p><strong>Edit the board:</strong> click cells to change gems, pits, walls, or empty spaces, then let the agent learn again.</p>
         </div>
-
-        <div className="m3-rl-q-card">
-          <p className="m3-rl-control-label">What changed?</p>
-          <div className="m3-rl-copy-list">
-            <p><strong>Explore rate:</strong> {exploreRate.toFixed(0)}%</p>
-            <p><strong>Reset world:</strong> keep learning, restart path.</p>
-            <p><strong>Reset learning:</strong> clear action values.</p>
-            <p><strong>Edit map:</strong> change rewards, then relearn.</p>
-          </div>
-          <div className="m3-rl-reward-row">
-            {recentRewards.length === 0 ? (
-              <span className="m3-rl-empty-note">Complete a few episodes to see recent returns.</span>
-            ) : (
-              recentRewards.map((reward, index) => (
-                <span key={`${reward}-${index}`} className={`m3-rl-reward-chip${reward >= 0 ? ' is-good' : ' is-bad'}`}>
-                  {reward.toFixed(2)}
-                </span>
-              ))
-            )}
-          </div>
+        <div className="m3-rl-reward-row">
+          {recentRewards.length === 0 ? (
+            <span className="m3-rl-empty-note">Finish a few episodes to see recent reward results here.</span>
+          ) : (
+            recentRewards.map((reward, index) => (
+              <span key={`${reward}-${index}`} className={`m3-rl-reward-chip${reward >= 0 ? ' is-good' : ' is-bad'}`}>
+                {reward.toFixed(2)}
+              </span>
+            ))
+          )}
         </div>
       </div>
     </div>

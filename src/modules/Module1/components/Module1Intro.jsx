@@ -12,9 +12,9 @@ function Module1Intro({ onStart }) {
           <span className="module1-intro-headline-accent">Decide?</span>
         </h2>
         <p className="module1-intro-desc">
-          Right now, millions of neurons are firing in your brain to let you
-          read this sentence. Each one makes a single decision: fire or stay
-          quiet. Let's zoom in on just one.
+          In a noisy room, your brain does not treat every sound the same.
+          Most fade into the background, but a meaningful sound like your
+          name can stand out right away. Why does that signal win?
         </p>
       </div>
 

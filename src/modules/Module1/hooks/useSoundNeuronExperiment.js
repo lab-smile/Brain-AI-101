@@ -23,6 +23,7 @@ function buildSignalBubble(phrase, impact, id, index) {
   const lowerPhrase = cleanPhrase.toLowerCase()
   const isAlexCue = lowerPhrase.includes('alex') && (impact === 80 || impact === 100)
   const strength = impact >= 80 ? 'strong' : impact >= 35 ? 'medium' : 'light'
+  const duration = impact >= 80 ? 1780 : impact <= 15 ? 2360 : 2040
 
   return {
     id,
@@ -30,7 +31,7 @@ function buildSignalBubble(phrase, impact, id, index) {
     impact,
     isAlexCue,
     strength,
-    duration: impact >= 80 ? 640 : impact <= 15 ? 1080 : 860,
+    duration,
     scale: Math.max(0.84, Math.min(1.2, 0.82 + impact / 260)),
     laneOffset: LANE_OFFSETS[index % LANE_OFFSETS.length],
   }
@@ -152,7 +153,7 @@ function useSoundNeuronExperiment() {
     const cleanupTimeout = window.setTimeout(() => {
       timeoutIdsRef.current.delete(cleanupTimeout)
       setRecentSignals((current) => current.filter((entry) => entry.id !== signal.id))
-    }, signal.duration + 110)
+    }, signal.duration + 260)
 
     timeoutIdsRef.current.add(arrivalTimeout)
     timeoutIdsRef.current.add(cleanupTimeout)

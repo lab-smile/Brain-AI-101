@@ -1,6 +1,5 @@
 function FloatingSignal({
   phrase,
-  impact,
   strength = 'light',
   isAlexCue = false,
   duration = 900,
@@ -22,8 +21,12 @@ function FloatingSignal({
         '--signal-lane-offset': `${laneOffset}px`,
       }}
     >
-      <span className="module1-sound-neuron__floating-phrase">{phrase}</span>
-      <strong className="module1-sound-neuron__floating-impact">+{impact}</strong>
+      <span className="module1-sound-neuron__floating-word-track">
+        <span className="module1-sound-neuron__floating-word">{phrase}</span>
+      </span>
+      <span className="module1-sound-neuron__floating-trail module1-sound-neuron__floating-trail--one" />
+      <span className="module1-sound-neuron__floating-trail module1-sound-neuron__floating-trail--two" />
+      <span className="module1-sound-neuron__floating-trail module1-sound-neuron__floating-trail--three" />
     </div>
   )
 }

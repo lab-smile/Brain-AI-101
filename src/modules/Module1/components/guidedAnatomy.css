@@ -249,6 +249,13 @@
   gap: 8px;
 }
 
+.ga-zoom-control-top {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
 .ga-zoom-control-label {
   color: #1e293b;
   font-size: 12px;
@@ -257,24 +264,37 @@
   text-transform: uppercase;
 }
 
+.ga-zoom-reset,
+.ga-zoom-nudge {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 12px;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.ga-zoom-reset:hover,
+.ga-zoom-nudge:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.ga-zoom-reset:disabled,
+.ga-zoom-nudge:disabled {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
 .ga-zoom-control-row {
   align-items: center;
   display: grid;
   gap: 10px;
   grid-template-columns: auto 1fr auto;
-}
-
-.ga-zoom-control-min,
-.ga-zoom-control-value {
-  color: #475569;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.ga-zoom-control-value {
-  color: #1d4ed8;
-  min-width: 40px;
-  text-align: right;
 }
 
 .ga-zoom-range {
@@ -378,11 +398,13 @@
     grid-template-columns: 1fr;
   }
 
-  .ga-zoom-control-min {
-    display: none;
+  .ga-zoom-control-top {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  .ga-zoom-control-value {
-    text-align: left;
+  .ga-zoom-nudge,
+  .ga-zoom-reset {
+    justify-self: stretch;
   }
 }

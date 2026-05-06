@@ -7,6 +7,7 @@ import './guidedAnatomy.css'
 const ZOOM_MIN = 0
 const ZOOM_MAX = 170
 const ZOOM_DEFAULT = 100
+const ZOOM_STEP = 15
 
 const STEPS = [
   {
@@ -129,6 +130,18 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
     }, scale)
   }
 
+  const handleRefocus = () => {
+    if (!activeStep) return
+
+    const focusedScale = getZoomScale(activeStep, ZOOM_DEFAULT)
+    setZoomPercent(ZOOM_DEFAULT)
+    setPan(getFocusPan(activeStep, focusedScale))
+  }
+
+  const handleZoomAdjust = (delta) => {
+    setZoomPercent((current) => clamp(current + delta, ZOOM_MIN, ZOOM_MAX))
+  }
+
   const handleZoomImageLoad = (event) => {
     setImageNaturalSize({
       width: event.currentTarget.naturalWidth,
@@ -224,6 +237,9 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
 
     setPan((previousPan) => clampPan(previousPan, zoomScale))
   }, [zoomPercent, frameSize.width, frameSize.height, imageNaturalSize.width, imageNaturalSize.height])
+
+  const canZoomOut = zoomPercent > ZOOM_MIN
+  const canZoomIn = zoomPercent < ZOOM_MAX
 
   return (
     <div className="ga">
@@ -366,10 +382,22 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
             )}
           </div>
           {activeStep && (
-            <label className="ga-zoom-control" htmlFor="ga-zoom-range">
-              <span className="ga-zoom-control-label">Zoom level</span>
+            <div className="ga-zoom-control" role="group" aria-label="View controls">
+              <div className="ga-zoom-control-top">
+                <span className="ga-zoom-control-label">View controls</span>
+                <button type="button" className="ga-zoom-reset" onClick={handleRefocus}>
+                  Focus on this part
+                </button>
+              </div>
               <div className="ga-zoom-control-row">
-                <span className="ga-zoom-control-min">{ZOOM_MIN}%</span>
+                <button
+                  type="button"
+                  className="ga-zoom-nudge"
+                  onClick={() => handleZoomAdjust(-ZOOM_STEP)}
+                  disabled={!canZoomOut}
+                >
+                  Wider view
+                </button>
                 <input
                   id="ga-zoom-range"
                   className="ga-zoom-range"
@@ -379,14 +407,22 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
                   step="5"
                   value={zoomPercent}
                   onChange={(event) => setZoomPercent(Number(event.target.value))}
+                  aria-label="Zoom between a wider view and a closer view"
                 />
-                <span className="ga-zoom-control-value">{zoomPercent}%</span>
+                <button
+                  type="button"
+                  className="ga-zoom-nudge"
+                  onClick={() => handleZoomAdjust(ZOOM_STEP)}
+                  disabled={!canZoomIn}
+                >
+                  Closer view
+                </button>
               </div>
-            </label>
+            </div>
           )}
           <p className="ga-zoom-caption">
             {activeStep
-              ? `${activeStep.label} in close-up. Slide to zoom, and drag the image to pan when zoomed in.`
+              ? `${activeStep.label} in close-up. Use Wider view or Closer view, then drag to look around.`
               : 'The zoom panel updates as you explore each part.'}
           </p>
           <div className="ga-attribution" aria-label="Image attribution">

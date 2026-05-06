@@ -26,11 +26,8 @@ function SoundNeuronExperiment() {
       <div className="module1-sound-neuron__shell">
         <div className="module1-sound-neuron__intro">
           <p className="module1-eyebrow module1-eyebrow-tight">Section C. Sound Experiment</p>
-          <h2 className="module1-sound-neuron__title">Hearing your name in a noisy room</h2>
-          <label className="module1-sound-neuron__prompt" htmlFor="module1-sound-neuron-input">
-            What did the neuron hear?
-          </label>
-          <p className="module1-sound-neuron__guide">Send signals close together before they fade.</p>
+          <h2 className="module1-sound-neuron__title">How Does a Neuron Decide?</h2>
+          <p className="module1-card-muted module1-text-reset">Hearing your name in a noisy room</p>
         </div>
 
         <form className="module1-sound-neuron__composer" onSubmit={submitCurrentPhrase}>
@@ -40,11 +37,11 @@ function SoundNeuronExperiment() {
               type="text"
               value={currentPhrase}
               onChange={(event) => setCurrentPhrase(event.target.value)}
-              placeholder="Type what the neuron hears"
+              placeholder="Type what Alex hears"
               autoComplete="off"
             />
             <button type="submit" className="module1-primary-button module1-sound-neuron__send-button">
-              Send signal
+              Send sound
             </button>
           </div>
 
@@ -63,27 +60,27 @@ function SoundNeuronExperiment() {
         </form>
 
         <div className={`module1-sound-neuron__workspace ${isAnimating ? 'is-animating' : ''}`}>
-          <div className="module1-sound-neuron__signal-overlay" aria-hidden="true">
-            {recentSignals.map((signal) => (
-              <FloatingSignal
-                key={signal.id}
-                phrase={signal.phrase}
-                impact={signal.impact}
-                strength={signal.strength}
-                isAlexCue={signal.isAlexCue}
-                duration={signal.duration}
-                scale={signal.scale}
-                laneOffset={signal.laneOffset}
-              />
-            ))}
-          </div>
-
           <div className="module1-sound-neuron__scene-panel">
-            <div
-              className="module1-sound-neuron__scene-art"
-              aria-hidden="true"
-              dangerouslySetInnerHTML={{ __html: staticPayAttentionSvg }}
-            />
+            <div className="module1-sound-neuron__scene-art" aria-hidden="true">
+              <div
+                className="module1-sound-neuron__scene-art-body"
+                dangerouslySetInnerHTML={{ __html: staticPayAttentionSvg }}
+              />
+              <div className="module1-sound-neuron__signal-overlay">
+                {recentSignals.map((signal) => (
+                  <FloatingSignal
+                    key={signal.id}
+                    phrase={signal.phrase}
+                    impact={signal.impact}
+                    strength={signal.strength}
+                    isAlexCue={signal.isAlexCue}
+                    duration={signal.duration}
+                    scale={signal.scale}
+                    laneOffset={signal.laneOffset}
+                  />
+                ))}
+              </div>
+            </div>
             <div className="module1-sound-neuron__scene-hint">Signals move toward the soma.</div>
           </div>
 
