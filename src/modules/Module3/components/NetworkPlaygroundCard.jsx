@@ -6,8 +6,8 @@ function NetworkPlaygroundCard() {
   return (
     <div className="m3-section-card m3-playground-card">
       <div className="m3-playground-heading">
-        <p className="m3-rl-control-label">Part 2 · Supervised learning</p>
-        <h3>Correct answers push weights up or down</h3>
+        <p className="m3-rl-control-label">Supervised learning</p>
+        <h3>Labeled examples help the model adjust</h3>
         <p className="m3-type-desc">
           Use the TensorFlow Playground to see how labeled answers reshape a model&apos;s decision boundary.
         </p>
@@ -24,7 +24,7 @@ function NetworkPlaygroundCard() {
       <p className="m3-playground-fallback-note">
         If the embed doesn&apos;t load:{' '}
         <a href={TF_PLAYGROUND_REPO_URL} target="_blank" rel="noopener noreferrer">
-          Open the Playground source →
+          {'Open the Playground source ->'}
         </a>
       </p>
 

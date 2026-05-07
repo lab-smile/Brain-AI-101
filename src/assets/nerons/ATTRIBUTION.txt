@@ -5,8 +5,12 @@ Author: LadyofHats
 Date listed on Wikimedia Commons: 12 July 2007
 License: Public domain
 
-Note:
-These SVG files in this folder are refined region-based crops derived from
-the original flattened source SVG. They are visually tighter than the first
-pass, but they are still not clean semantic part extractions from named
-source groups.
+Derived local assets in this folder:
+- Dendrites.png
+- Soma.png
+- Axon.png
+- Terminals.png
+
+Usage in Module 1:
+- These PNG files are fixed close-up crops used in the Guided Anatomy zoom panel.
+- They replace the previous single scalable zoom image for the four anatomy hotspots.

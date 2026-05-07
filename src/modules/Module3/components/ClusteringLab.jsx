@@ -83,26 +83,6 @@ function ClusteringLab() {
           onStep={step}
         />
       </div>
-
-      <div className="m3-kmeans-bottom-grid">
-        <div className="m3-rl-q-card">
-          <p className="m3-rl-control-label">How to Read It</p>
-          <div className="m3-rl-copy-list">
-            <p><strong>Gray points:</strong> not assigned</p>
-            <p><strong>Colored points:</strong> assigned to a group</p>
-            <p><strong>Center point:</strong> moves toward the group average</p>
-          </div>
-        </div>
-
-        <div className="m3-rl-q-card">
-          <p className="m3-rl-control-label">Learning Signal</p>
-          <div className="m3-rl-copy-list">
-            <p><strong>No target answer</strong></p>
-            <p><strong>No reward</strong></p>
-            <p><strong>Distance guides the grouping</strong></p>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

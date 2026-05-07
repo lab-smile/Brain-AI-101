@@ -159,15 +159,6 @@
   position: relative;
 }
 
-.ga-zoom-frame--draggable {
-  cursor: grab;
-  touch-action: none;
-}
-
-.ga-zoom-frame--dragging {
-  cursor: grabbing;
-}
-
 .ga-zoom-stage,
 .ga-zoom-empty {
   height: 100%;
@@ -184,16 +175,17 @@
 
 .ga-zoom-image {
   display: block;
-  left: 50%;
   height: auto;
-  max-width: none;
-  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
   pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform-origin: center center;
+  position: relative;
   user-select: none;
   width: auto;
+}
+
+.ga-zoom-image--static {
+  object-fit: contain;
 }
 
 .ga-zoom-empty {
@@ -242,65 +234,6 @@
 
 .ga-attribution a:hover {
   text-decoration: underline;
-}
-
-.ga-zoom-control {
-  display: grid;
-  gap: 8px;
-}
-
-.ga-zoom-control-top {
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-}
-
-.ga-zoom-control-label {
-  color: #1e293b;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.ga-zoom-reset,
-.ga-zoom-nudge {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  border-radius: 999px;
-  color: #1d4ed8;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 7px 12px;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
-}
-
-.ga-zoom-reset:hover,
-.ga-zoom-nudge:hover {
-  background: #dbeafe;
-  border-color: #93c5fd;
-}
-
-.ga-zoom-reset:disabled,
-.ga-zoom-nudge:disabled {
-  background: #f8fafc;
-  border-color: #e2e8f0;
-  color: #94a3b8;
-  cursor: not-allowed;
-}
-
-.ga-zoom-control-row {
-  align-items: center;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: auto 1fr auto;
-}
-
-.ga-zoom-range {
-  accent-color: #2563eb;
-  cursor: pointer;
-  width: 100%;
 }
 
 .ga-prompt-text {
@@ -392,19 +325,5 @@
   .ga-zoom-stage,
   .ga-zoom-empty {
     min-height: 150px;
-  }
-
-  .ga-zoom-control-row {
-    grid-template-columns: 1fr;
-  }
-
-  .ga-zoom-control-top {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .ga-zoom-nudge,
-  .ga-zoom-reset {
-    justify-self: stretch;
   }
 }
