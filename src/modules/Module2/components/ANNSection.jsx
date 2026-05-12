@@ -32,7 +32,7 @@ export default function ANNSection() {
       <div className="m2-section-card">
         <div className="m2-opening-hero m2-opening-hero--card">
           <div className="m2-opening-hero-inner">
-            <p className="m2-opening-kicker">MODULE 2</p>
+            <p className="m2-opening-kicker">A. Neural Networks</p>
             <h2 className="m2-opening-headline">
               What Can a Network See
               <br />

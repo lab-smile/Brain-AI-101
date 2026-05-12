@@ -4,7 +4,8 @@ const CNN_EXPLAINER_REPO_URL = 'https://github.com/poloclub/cnn-explainer'
 function CnnExplainerSection() {
   return (
     <section className="m2-section">
-      <div className="m2-section-heading">
+      <div className="m2-section-card m2-explainer-card">
+        <div className="m2-section-heading m2-canvas-heading">
         <p className="m2-eyebrow">E. CNN Explainer</p>
         <h2>See How a CNN Reads an Image</h2>
         <p className="m2-section-subtitle">
@@ -12,7 +13,6 @@ function CnnExplainerSection() {
         </p>
       </div>
 
-      <div className="m2-section-card m2-explainer-card">
         <div className="m2-explainer-intro">
           <p><strong>Try this flow:</strong> start with the input image, follow one filter, then watch how later layers care less about raw pixels and more about bigger visual patterns.</p>
           <p>Notice how pooling trims detail while keeping the strongest signals alive. That tradeoff is what lets CNNs become more selective as they go deeper.</p>

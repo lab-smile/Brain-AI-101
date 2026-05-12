@@ -95,13 +95,13 @@
 }
 
 .m2-hw-card {
-  align-items: center;
+  align-items: start;
   background: #fbfaff;
   border: 1px solid #ddd6fe;
   border-radius: 18px;
   display: grid;
   gap: 24px;
-  grid-template-columns: minmax(0, 0.88fr) minmax(320px, 1.12fr);
+  grid-template-columns: minmax(240px, 0.62fr) minmax(520px, 1.38fr);
   overflow: hidden;
   padding: 22px;
 }
@@ -127,16 +127,23 @@
 }
 
 .m2-hw-figure {
-  background: #fbfaff;
+  align-self: stretch;
+  background: #ffffff;
   border: 1px solid #e9d5ff;
   border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 0;
   overflow: hidden;
+  padding: 10px;
 }
 
 .m2-hw-figure img {
   display: block;
   height: auto;
+  max-height: 520px;
+  object-fit: contain;
   width: 100%;
 }
 
@@ -145,7 +152,7 @@
   color: #5b21b6;
   font-size: 12px;
   line-height: 1.45;
-  margin: 0;
+  margin: 10px -10px -10px;
   padding: 10px 14px;
 }
 
@@ -865,5 +872,138 @@
 
   .m2-explainer-iframe {
     height: 460px;
+  }
+}
+
+.m2-canvas-heading {
+  max-width: 760px;
+}
+
+.m2-canvas-heading h2 {
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1;
+}
+
+.m2-canvas-heading .m2-section-subtitle {
+  max-width: 640px;
+}
+
+/* Module 2 hero-canvas treatment */
+.m2-section-card {
+  background: linear-gradient(160deg, #ffffff 0%, #fbfaff 42%, #f5f3ff 100%);
+  border: none;
+  box-shadow: none;
+  gap: 24px;
+  min-height: 420px;
+  overflow: hidden;
+  padding: 56px 44px 48px;
+  position: relative;
+}
+
+.m2-section-card::after {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.18) 0%, rgba(124, 58, 237, 0.08) 42%, rgba(124, 58, 237, 0) 70%);
+  border-radius: 50%;
+  content: '';
+  height: 260px;
+  pointer-events: none;
+  position: absolute;
+  right: -86px;
+  top: -92px;
+  width: 260px;
+  z-index: 0;
+}
+
+.m2-section-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.m2-canvas-heading {
+  margin: 0;
+  max-width: 680px;
+  text-align: left;
+}
+
+.m2-canvas-heading .m2-eyebrow,
+.m2-opening-kicker {
+  background: rgba(124, 58, 237, 0.09);
+  border-radius: var(--module2-radius-pill);
+  color: var(--module2-accent-strong);
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 20px;
+  padding: 6px 16px;
+  text-transform: uppercase;
+}
+
+.m2-canvas-heading h2,
+.m2-opening-headline {
+  color: var(--module2-text);
+  font-family: var(--font-display);
+  font-size: 4.6rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 0.98;
+  margin: 0 0 24px;
+}
+
+.m2-canvas-heading .m2-section-subtitle,
+.m2-opening-subtitle {
+  color: var(--module2-text-muted);
+  font-size: 17px;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 560px;
+}
+
+.m2-opening-hero {
+  min-height: 260px;
+  position: relative;
+}
+
+.m2-opening-hero-inner {
+  max-width: 680px;
+  position: relative;
+  z-index: 2;
+}
+
+.m2-opening-orb {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.2) 0%, rgba(124, 58, 237, 0.08) 48%, rgba(124, 58, 237, 0) 72%);
+  border-radius: 50%;
+  height: 300px;
+  pointer-events: none;
+  position: absolute;
+  right: -108px;
+  top: -92px;
+  width: 300px;
+  z-index: 0;
+}
+
+.m2-hw-card,
+.m2-selectivity-bridge,
+.m2-explainer-intro,
+.m2-explainer-prompts {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 900px) {
+  .m2-section-card {
+    min-height: auto;
+    padding: 40px 24px 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .m2-canvas-heading h2,
+  .m2-opening-headline {
+    font-size: 2.55rem;
+  }
+
+  .m2-canvas-heading .m2-section-subtitle,
+  .m2-opening-subtitle {
+    font-size: 16px;
   }
 }

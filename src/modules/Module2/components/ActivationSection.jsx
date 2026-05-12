@@ -59,7 +59,8 @@ export default function ActivationSection() {
 
   return (
     <section className="m2-section">
-      <div className="m2-section-heading">
+      <div className="m2-section-card">
+        <div className="m2-section-heading m2-canvas-heading">
         <p className="m2-eyebrow">B. Activation Functions</p>
         <h2>The Switch That Matters</h2>
         <p className="m2-section-subtitle">
@@ -68,7 +69,6 @@ export default function ActivationSection() {
         </p>
       </div>
 
-      <div className="m2-section-card">
         <svg viewBox="0 0 800 240" className="m2-svg-block" style={{ maxHeight: 240 }}>
           {/* ── ReLU Panel ── */}
           <rect x="20" y="10" width="360" height="218" rx="10" fill="#f8fafc" stroke="#e2e8f0" />

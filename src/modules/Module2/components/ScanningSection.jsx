@@ -82,7 +82,8 @@ function ScanningSection() {
 
   return (
     <section className="m2-section">
-      <div className="m2-section-heading">
+      <div className="m2-section-card">
+        <div className="m2-section-heading m2-canvas-heading">
         <p className="m2-eyebrow">D. CNNs</p>
         <h2>CNNs: Seeing in Patches</h2>
         <p className="m2-section-subtitle">A convolutional neural network slides a filter across the image, producing a feature map — one value for every patch it scans.</p>
@@ -97,7 +98,6 @@ function ScanningSection() {
         ))}
       </div>
 
-      <div className="m2-section-card">
         <svg width={SVG_W} height={SVG_H} className="m2-svg-block">
           <defs>
             <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">

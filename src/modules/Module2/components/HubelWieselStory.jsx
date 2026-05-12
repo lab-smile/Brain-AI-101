@@ -1,4 +1,4 @@
-import hubelWieselImage from '../../../assets/ChatGPT Image May 11, 2026, 07_44_22 PM.png'
+import hubelWieselImage from '../../../assets/module2/selectivity/hubel-wiesel-selectivity.png'
 
 export default function HubelWieselStory() {
   return (
@@ -17,6 +17,7 @@ export default function HubelWieselStory() {
         <img
           src={hubelWieselImage}
           alt="Diagram of a cat visual cortex experiment showing a light bar stimulus, visual cortex recording, and stronger response to one preferred line angle."
+          loading="eager"
         />
         <figcaption>
           One visual cortex neuron can respond strongly to one edge direction and weakly to others.

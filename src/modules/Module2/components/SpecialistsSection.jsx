@@ -71,13 +71,13 @@ function SpecialistsSection() {
 
   return (
     <section className="m2-section">
-      <div className="m2-section-heading">
+      <div className="m2-section-card m2-selectivity-canvas">
+        <div className="m2-section-heading m2-canvas-heading">
         <p className="m2-eyebrow">C. Neural Selectivity</p>
         <h2>Some Neurons Prefer Certain Patterns</h2>
         <p className="m2-section-subtitle">Not every neuron responds to the same visual clue. Some respond more strongly to a vertical edge. Others respond to a horizontal edge or a diagonal edge.</p>
       </div>
 
-      <div className="m2-section-card m2-selectivity-canvas">
         <HubelWieselStory />
 
         <div className="m2-selectivity-bridge">
