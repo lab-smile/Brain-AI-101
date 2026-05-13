@@ -58,26 +58,12 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
                     x3
                   </text>
                 </g>
-
-                <text x="122" y="76" fontSize="12" fill="#64748b" fontWeight="700">
-                  inputs
-                </text>
               </g>
 
               <g className={`bridge-ann__node${activeBridgePart === 'combine' ? ' bridge-part--active' : ''}`}>
                 <circle cx="310" cy="200" r="30" fill="#f3e8ff" stroke="#7c3aed" strokeWidth="2.5" />
-                <path
-                  d="M 327 165 C 342 182, 342 218, 327 235"
-                  fill="none"
-                  stroke="#f59e0b"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
                 <text x="310" y="205" textAnchor="middle" fontSize="13" fill="#6d28d9" fontWeight="700">
-                  N
-                </text>
-                <text x="285" y="150" fontSize="11" fill="#b45309" fontWeight="700">
-                  threshold
+                  n
                 </text>
               </g>
 
@@ -85,30 +71,20 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
                 <line
                   x1="340"
                   y1="200"
-                  x2="424"
+                  x2="468"
                   y2="200"
                   stroke="#c7d2fe"
                   strokeWidth="1.5"
                   markerEnd="url(#ann-bridge-arrow)"
                 />
-                <text x="382" y="182" textAnchor="middle" fontSize="12" fill="#4b5563" fontWeight="700">
+                <text x="404" y="182" textAnchor="middle" fontSize="12" fill="#4b5563" fontWeight="700">
                   output
                 </text>
               </g>
 
               <g className={`bridge-ann__connection${activeBridgePart === 'connection' ? ' bridge-part--active' : ''}`}>
-                <circle cx="456" cy="200" r="16" fill="#ecfeff" stroke="#0891b2" strokeWidth="2" />
-                <text x="456" y="205" textAnchor="middle" fontSize="12" fill="#0f766e" fontWeight="700">
-                  w
-                </text>
-                <line x1="472" y1="200" x2="524" y2="200" stroke="#99aeca" strokeWidth="1.8" />
-                <circle cx="548" cy="200" r="18" fill="#ffffff" stroke="#94a3b8" strokeWidth="2" />
-                <text x="548" y="205" textAnchor="middle" fontSize="10" fill="#475569" fontWeight="700">
-                  next
-                </text>
-                <text x="486" y="178" textAnchor="middle" fontSize="11" fill="#0f766e" fontWeight="700">
-                  weight
-                </text>
+                <line x1="468" y1="200" x2="560" y2="200" stroke="#99aeca" strokeWidth="1.8" />
+                <circle cx="578" cy="200" r="10" fill="#ffffff" stroke="#94a3b8" strokeWidth="2" />
               </g>
             </g>
           </>

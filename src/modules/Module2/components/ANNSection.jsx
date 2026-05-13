@@ -91,9 +91,9 @@ export default function ANNSection() {
           <div className="m2-opening-hero-inner">
             <p className="m2-opening-kicker">A. Neural Networks</p>
             <h2 className="m2-opening-headline">
-              From Artificial Neurons
+              What Can a Network See
               <br />
-              to a Network
+              That One Neuron Cannot?
             </h2>
             <p className="m2-opening-subtitle">
               A neural network is made of connected artificial neurons. Signals move from the input layer, through hidden neurons, to the output layer.
@@ -299,9 +299,6 @@ export default function ANNSection() {
           )}
         </div>
 
-        <div className="m2-observation m2-observation--purple">
-          <p>Later sections zoom into what these hidden neurons learn: selectivity, filters, and CNN layers are all ways of describing how different neurons become sensitive to different visual features.</p>
-        </div>
       </div>
     </section>
   )
