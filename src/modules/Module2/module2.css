@@ -51,11 +51,15 @@
 }
 
 .m2-eyebrow {
-  color: var(--module2-accent);
-  font-size: 12px;
+  background: rgba(124, 58, 237, 0.09);
+  border-radius: var(--module2-radius-pill);
+  color: var(--module2-accent-strong);
+  display: inline-block;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  margin: 0 0 8px;
+  letter-spacing: 0.12em;
+  margin: 0 0 20px;
+  padding: 6px 16px;
   text-transform: uppercase;
 }
 

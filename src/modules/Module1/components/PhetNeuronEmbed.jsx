@@ -34,7 +34,7 @@ function PhetNeuronEmbed({ iframeRef = null, onFrameLoad = null }) {
         className="module1-phet-embed__frame"
         src={PHET_NEURON_SIM_URL}
         title="PhET Neuron simulation"
-        loading="lazy"
+        loading="eager"
         allow="fullscreen"
         onLoad={() => {
           setIsLoading(false)

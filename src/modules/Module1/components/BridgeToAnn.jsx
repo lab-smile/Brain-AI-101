@@ -70,9 +70,6 @@ function BridgeToAnn({ onContinue }) {
             <p className="module1-bridge-footer-title">Step through the mapping</p>
             <h3 className="module1-panel-title">Click one idea at a time to match the two systems</h3>
           </div>
-          <p className="module1-card-muted module1-bridge-panel-note">
-            The button labels stay student-friendly, while the explanation below names the matching biology and AI idea.
-          </p>
         </div>
 
         <div className="bridge-mapping-list" aria-label="Biological neuron to artificial neuron mapping steps">

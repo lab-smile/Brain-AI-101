@@ -120,10 +120,14 @@
 /* ── Typography helpers ───────────────────────────────────────────── */
 
 .shared-eyebrow {
+  background: color-mix(in srgb, var(--shared-accent) 10%, white);
+  border-radius: var(--shared-radius-pill);
   color: var(--shared-accent);
-  font-size: 11px;
+  display: inline-block;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
+  padding: 6px 16px;
   text-transform: uppercase;
 }
 

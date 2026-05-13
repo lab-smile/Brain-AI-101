@@ -40,11 +40,15 @@
 }
 
 .m3-eyebrow {
-  color: var(--module3-accent);
-  font-size: 12px;
+  background: rgba(5, 150, 105, 0.09);
+  border-radius: 999px;
+  color: var(--module3-accent-strong);
+  display: inline-block;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  margin: 0 0 8px;
+  letter-spacing: 0.12em;
+  margin: 0 0 20px;
+  padding: 6px 16px;
   text-transform: uppercase;
 }
 
@@ -1872,6 +1876,188 @@
   gap: 20px;
 }
 
+.m3-signal-activity {
+  gap: 20px;
+}
+
+.m3-signal-activity__process {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.m3-signal-activity__process-step {
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #d6e2f1;
+  border-radius: 18px;
+  display: flex;
+  gap: 10px;
+  min-height: 62px;
+  padding: 10px 14px;
+}
+
+.m3-signal-activity__process-step.is-active {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+}
+
+.m3-signal-activity__process-step.is-complete {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.m3-signal-activity__process-number {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #d6e2f1;
+  border-radius: 999px;
+  color: #0f172a;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 800;
+  height: 30px;
+  justify-content: center;
+  min-width: 30px;
+}
+
+.m3-signal-activity__process-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.m3-signal-activity__process-copy strong {
+  color: #0f172a;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.m3-signal-activity__process-copy span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.m3-signal-activity__process-arrow {
+  color: #94a3b8;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.m3-signal-activity__card {
+  display: grid;
+  gap: 18px;
+}
+
+.m3-signal-activity__controls {
+  justify-content: center;
+}
+
+.m3-signal-activity__grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.m3-signal-activity__input-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.m3-signal-activity__phase {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.m3-signal-activity__phase-label {
+  color: var(--module3-accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.m3-signal-activity__info-list {
+  display: grid;
+  gap: 10px;
+}
+
+.m3-signal-activity__info-item {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #dbe5f0;
+  border-radius: 14px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.m3-signal-activity__info-item span {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.m3-signal-activity__info-item strong {
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.m3-signal-activity__confidence {
+  display: grid;
+  gap: 8px;
+}
+
+.m3-signal-activity__confidence-head {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.m3-signal-activity__confidence-head span {
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.m3-signal-activity__confidence-head strong {
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.m3-signal-activity__confidence-track {
+  background: #e2e8f0;
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.m3-signal-activity__confidence-fill {
+  background: linear-gradient(90deg, #10b981, #34d399);
+  border-radius: 999px;
+  height: 100%;
+  transition: width 0.2s ease;
+}
+
+.m3-signal-activity__confidence-fill.is-after {
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+}
+
 .m3-mechanism-steps,
 .m3-signal-strip {
   display: flex;
@@ -2125,6 +2311,24 @@
 @media (max-width: 640px) {
   .m3-section-heading h2 {
     font-size: 1.6rem;
+  }
+
+  .m3-signal-activity__grid,
+  .m3-signal-activity__input-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .m3-signal-activity__process {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .m3-signal-activity__process-step {
+    justify-content: space-between;
+  }
+
+  .m3-signal-activity__process-arrow {
+    display: none;
   }
 
   .m3-fixed-learning-grid,

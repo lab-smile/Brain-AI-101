@@ -1,141 +1,304 @@
-import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
+import { useState } from 'react'
 
-const INPUTS = [
-  { id: 'x1', label: 'Input x1 = 1', value: 1 },
-  { id: 'x2', label: 'Input x2 = 0', value: 0 },
-  { id: 'x3', label: 'Input x3 = 1', value: 1 },
+const learningExample = {
+  inputLabel: 'Handwritten digit',
+  target: '3',
+  wrongPrediction: '8',
+  before: {
+    prediction: '8',
+    confidenceTarget: 41,
+    confidenceWrong: 59,
+    error: 0.59,
+    weights: [
+      { label: 'Upper curve', before: 0.32, after: 0.47 },
+      { label: 'Closed loop', before: 0.51, after: 0.34 },
+      { label: 'Open gap', before: 0.21, after: 0.39 },
+      { label: 'Lower curve', before: 0.44, after: 0.52 },
+    ],
+  },
+  after: {
+    prediction: '3',
+    confidenceTarget: 74,
+    confidenceWrong: 26,
+    error: 0.26,
+  },
+}
+
+const processSteps = [
+  'Input',
+  'Prediction',
+  'Target',
+  'Error',
+  'Weight Update',
+  'Improved Prediction',
 ]
 
-const BEFORE = [0.4, 0.7, 0.2]
-const AFTER = [0.3, 0.7, 0.1]
-const STAGES = ['Start', 'Predict', 'Compare', 'Update', 'Result']
+const controlSteps = [
+  'Show Input',
+  'Run Prediction',
+  'Reveal Target',
+  'Measure Error',
+  'Update Weights',
+  'Test Again',
+]
+
+function WeightBar({ value, isAfter = false }) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        background: '#e2e8f0',
+        borderRadius: '999px',
+        height: '10px',
+        overflow: 'hidden',
+        width: '100%',
+      }}
+    >
+      <div
+        style={{
+          background: isAfter ? 'linear-gradient(90deg, #2563eb, #60a5fa)' : 'linear-gradient(90deg, #10b981, #34d399)',
+          borderRadius: '999px',
+          height: '100%',
+          width: `${Math.max(0, Math.min(100, value * 100))}%`,
+        }}
+      />
+    </div>
+  )
+}
 
 function LearningProblem() {
   const [step, setStep] = useState(0)
-  const pulseRef = useRef(null)
 
-  useEffect(() => {
-    if (!pulseRef.current) {
-      return
-    }
-
-    gsap.fromTo(
-      pulseRef.current,
-      { y: 8, opacity: 0.7 },
-      { y: 0, opacity: 1, duration: 0.28, ease: 'power2.out' },
-    )
-  }, [step])
+  const showPrediction = step >= 1
+  const showTarget = step >= 2
+  const showError = step >= 3
+  const showWeightUpdate = step >= 4
+  const showImprovedPrediction = step >= 5
 
   return (
     <section className="m3-section">
       <div className="m3-section-heading">
-        <p className="m3-eyebrow">A. FIXED VS LEARNING</p>
-        <h2>From Fixed Weights to Learning Weights</h2>
+        <p className="m3-eyebrow">A. LEARNING MEANS CHANGING</p>
+        <h2>Can the model correct itself?</h2>
         <p className="m3-section-subtitle">
-          Watch how feedback changes weights.
+          A learning system improves by using error to change its weights.
         </p>
       </div>
 
-      <div className="m3-section-card m3-mechanism-card">
-        <div className="m3-mechanism-steps">
-          {STAGES.map((label, index) => (
+      <div className="m3-section-card m3-signal-activity">
+        <div
+          className="m3-human-framing"
+          style={{
+            display: 'grid',
+            gap: '10px',
+          }}
+        >
+          <div>
+            <h3 style={{ margin: '0 0 6px', color: '#0f172a', fontSize: '1.3rem', fontWeight: 800 }}>
+              Prediction, Error, Update
+            </h3>
+            <p style={{ margin: 0, color: '#047857', fontSize: '0.98rem', fontWeight: 700 }}>
+              Error is not failure. Error is information.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gap: '8px' }}>
+            <p>A fixed system uses the same weights every time.</p>
+            <p>A learning system changes its weights after feedback.</p>
+            <p>The model receives an input.</p>
+            <p>It uses weights to make a prediction.</p>
+            <p>It compares the prediction with the target answer.</p>
+            <p>The difference is the error.</p>
+            <p>The error tells the model how its weights need to change.</p>
+            <p>The input is not rewritten.</p>
+            <p>The target is not rewritten.</p>
+            <p>The model changes itself.</p>
+            <p>That change is the beginning of learning.</p>
+          </div>
+        </div>
+
+        <div
+          className="m3-signal-activity__process"
+          aria-label="Learning process"
+          role="list"
+        >
+          {processSteps.map((label, index) => {
+            const isCurrent = step === index
+            const isComplete = step > index
+
+            return (
+              <div
+                key={label}
+                className={`m3-signal-activity__process-step${isCurrent ? ' is-active' : ''}${isComplete ? ' is-complete' : ''}`}
+                role="listitem"
+                aria-current={isCurrent ? 'step' : undefined}
+                style={isCurrent ? { borderWidth: '2px' } : undefined}
+              >
+                <span className="m3-signal-activity__process-number">
+                  {index + 1}
+                </span>
+                <span className="m3-signal-activity__process-copy">
+                  <strong style={isCurrent ? { fontWeight: 800 } : undefined}>{label}</strong>
+                  <span>{isCurrent ? 'Current step' : isComplete ? 'Done' : 'Next step'}</span>
+                </span>
+                {index < processSteps.length - 1 ? (
+                  <span
+                    className="m3-signal-activity__process-arrow"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                ) : null}
+              </div>
+            )
+          })}
+        </div>
+
+        <div className="m3-controls m3-signal-activity__controls">
+          {controlSteps.map((label, index) => (
             <button
               key={label}
               type="button"
-              className={`m3-step-chip${step === index ? ' is-active' : ''}${step > index ? ' is-complete' : ''}`}
+              className={`m3-btn${step === index ? ' m3-btn--primary' : ''}`}
               onClick={() => setStep(index)}
             >
               {label}
             </button>
           ))}
+          <button
+            type="button"
+            className="m3-btn"
+            onClick={() => setStep(0)}
+          >
+            Reset
+          </button>
         </div>
 
-        <div className="m3-fixed-learning-grid">
-          <div className="m3-mechanism-panel">
+        <div className="m3-signal-activity__grid">
+          <article className="m3-mechanism-panel">
             <div className="m3-mechanism-panel__header">
-              <p className="m3-learning-label">Example</p>
-              <h3>A tiny model makes a prediction</h3>
+              <p className="m3-learning-label">Column 1</p>
+              <h3>Input</h3>
             </div>
 
-            <div className="m3-value-grid">
-              {INPUTS.map((item, index) => (
-                <div
-                  key={item.id}
-                  className={`m3-value-card${item.value === 1 ? ' is-on' : ''}${step >= 3 && item.value === 1 ? ' is-updating' : ''}`}
-                >
-                  <span>{item.label}</span>
-                  <strong>x{index + 1} = {item.value}</strong>
+            <div
+              style={{
+                alignItems: 'center',
+                background: 'linear-gradient(180deg, #ffffff 0%, #f8fbff 100%)',
+                border: '1px solid #dbe5f0',
+                borderRadius: '18px',
+                display: 'grid',
+                justifyItems: 'center',
+                minHeight: '220px',
+                padding: '18px',
+              }}
+            >
+              <div
+                aria-label="Handwritten digit 3"
+                style={{
+                  color: '#1e3a8a',
+                  fontFamily: '"Brush Script MT", "Segoe Script", cursive',
+                  fontSize: '7rem',
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  transform: 'rotate(-9deg)',
+                }}
+              >
+                3
+              </div>
+            </div>
+
+            <p className="m3-section-subtitle" style={{ margin: 0, maxWidth: 'none', textAlign: 'left' }}>
+              The model receives an input: a handwritten digit.
+            </p>
+          </article>
+
+          <article className="m3-mechanism-panel">
+            <div className="m3-mechanism-panel__header">
+              <p className="m3-learning-label">Column 2</p>
+              <h3>Prediction, Target, Error</h3>
+            </div>
+
+            <div className="m3-signal-activity__phase">
+              <div className="m3-signal-activity__info-list">
+                <div className="m3-signal-activity__info-item">
+                  <span>Prediction</span>
+                  <strong>{showPrediction ? learningExample.before.prediction : '...'}</strong>
                 </div>
-              ))}
-            </div>
-
-            <div className="m3-mechanism-table">
-              <div className="m3-mechanism-table__row m3-mechanism-table__row--head">
-                <span>Input</span>
-                <span>Weight</span>
-                <span>Update</span>
-              </div>
-              {INPUTS.map((item, index) => (
-                <div key={`${item.id}-weight`} className="m3-mechanism-table__row">
-                  <span>x{index + 1}</span>
-                  <span>{step >= 3 ? `${BEFORE[index].toFixed(1)} → ${AFTER[index].toFixed(1)}` : BEFORE[index].toFixed(1)}</span>
-                  <span className={item.value === 1 && step >= 3 ? 'is-change' : ''}>
-                    {step >= 3 ? (item.value === 1 ? 'changed' : 'held') : item.value === 1 ? 'active' : 'off'}
-                  </span>
+                <div className="m3-signal-activity__info-item">
+                  <span>Target</span>
+                  <strong>{showTarget ? learningExample.target : '...'}</strong>
                 </div>
-              ))}
-            </div>
-
-            <div className="m3-formula-strip">
-              <span>Before: 1×0.4 + 0×0.7 + 1×0.2 = 0.6</span>
-              <span>After: {step >= 4 ? '1×0.3 + 0×0.7 + 1×0.1 = 0.4' : '...'}</span>
-            </div>
-          </div>
-
-          <div className="m3-mechanism-panel m3-mechanism-panel--feedback" ref={pulseRef}>
-            <div className="m3-feedback-stack">
-              <div className="m3-feedback-box">
-                <span>Prediction</span>
-                <strong>{step >= 1 ? (step >= 4 ? '0' : '1') : '...'}</strong>
-              </div>
-              <div className="m3-feedback-box">
-                <span>Target</span>
-                <strong>{step >= 2 ? '0' : '...'}</strong>
-              </div>
-              <div className="m3-feedback-box">
-                <span>Error</span>
-                <strong>{step >= 2 ? '-1' : '...'}</strong>
+                <div className="m3-signal-activity__info-item">
+                  <span>Error</span>
+                  <strong>{showError ? learningExample.before.error.toFixed(2) : '...'}</strong>
+                </div>
+                <div className="m3-signal-activity__info-item">
+                  <span>Confidence in target answer</span>
+                  <strong>{showError ? `${learningExample.before.confidenceTarget}%` : '...'}</strong>
+                </div>
+                <div className="m3-signal-activity__info-item">
+                  <span>Confidence in wrong answer</span>
+                  <strong>{showError ? `${learningExample.before.confidenceWrong}%` : '...'}</strong>
+                </div>
               </div>
             </div>
 
-            <div className="m3-before-after">
-              <div className="m3-before-after__card">
-                <span>Before Update</span>
-                <strong>Weights unchanged</strong>
+            <div className="m3-signal-activity__phase">
+              <p className="m3-signal-activity__phase-label">After learning</p>
+              <div className="m3-signal-activity__info-list">
+                <div className="m3-signal-activity__info-item">
+                  <span>Prediction after update</span>
+                  <strong>{showImprovedPrediction ? learningExample.after.prediction : '...'}</strong>
+                </div>
+                <div className="m3-signal-activity__info-item">
+                  <span>Error after update</span>
+                  <strong>{showImprovedPrediction ? learningExample.after.error.toFixed(2) : '...'}</strong>
+                </div>
+                <div className="m3-signal-activity__info-item">
+                  <span>Confidence in target answer</span>
+                  <strong>{showImprovedPrediction ? `${learningExample.after.confidenceTarget}%` : '...'}</strong>
+                </div>
+                <div className="m3-signal-activity__info-item">
+                  <span>Confidence in wrong answer</span>
+                  <strong>{showImprovedPrediction ? `${learningExample.after.confidenceWrong}%` : '...'}</strong>
+                </div>
               </div>
-              <div className="m3-before-after__arrow">→</div>
-              <div className="m3-before-after__card is-good">
-                <span>After Update</span>
-                <strong>{step >= 4 ? 'Waiting for feedback' : 'Waiting for feedback'}</strong>
-              </div>
+            </div>
+          </article>
+
+          <article className="m3-mechanism-panel">
+            <div className="m3-mechanism-panel__header">
+              <p className="m3-learning-label">Column 3</p>
+              <h3>Weights</h3>
             </div>
 
-            <div className="m3-mini-callout">
-              <strong>Weight Change</strong>
-              <span>{step >= 3 ? 'w1: 0.4 → 0.3\nw2: 0.7 → 0.7\nw3: 0.2 → 0.1\nx2 = 0, so w2 does not change.' : 'No update yet.'}</span>
+            <div className="m3-signal-activity__phase">
+              <div className="m3-signal-activity__info-list">
+                {learningExample.before.weights.map((weight) => (
+                  <div
+                    key={weight.label}
+                    className="m3-signal-activity__info-item"
+                    style={{ alignItems: 'stretch', display: 'grid', gap: '8px' }}
+                  >
+                    <div style={{ alignItems: 'center', display: 'flex', gap: '12px', justifyContent: 'space-between' }}>
+                      <span>{weight.label}</span>
+                      <strong>
+                        {showWeightUpdate
+                          ? `${weight.before.toFixed(2)} → ${weight.after.toFixed(2)}`
+                          : weight.before.toFixed(2)}
+                      </strong>
+                    </div>
+                    <div style={{ display: 'grid', gap: '6px' }}>
+                      <WeightBar value={weight.before} />
+                      {showWeightUpdate ? <WeightBar value={weight.after} isAfter /> : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </article>
         </div>
-
-        <div className="m3-controls">
-          <button className="m3-btn" onClick={() => setStep(1)}>Show Prediction</button>
-          <button className="m3-btn" onClick={() => setStep(2)}>Show Target</button>
-          <button className="m3-btn" onClick={() => setStep(3)}>Update Weights</button>
-          <button className="m3-btn" onClick={() => setStep(0)}>Reset</button>
-        </div>
-
-        <p className="m3-takeaway">Prediction → target → error → weight update.</p>
       </div>
     </section>
   )
