@@ -26,8 +26,10 @@ function SoundNeuronExperiment() {
       <div className="module1-sound-neuron__shell">
         <div className="module1-sound-neuron__intro">
           <p className="module1-eyebrow module1-eyebrow-tight">C. Sound Experiment</p>
-          <h2 className="module1-sound-neuron__title">How the Brain Notices What Matters</h2>
-          <p className="module1-card-muted module1-text-reset">Hearing your name in a noisy room</p>
+          <h2 className="module1-sound-neuron__title">When Does a Neuron Fire?</h2>
+          <p className="module1-card-muted module1-text-reset">
+            Sound signals travel to the ear, become neural input, add together at the soma, and trigger a spike only if enough input reaches threshold in time.
+          </p>
         </div>
 
         <form className="module1-sound-neuron__composer" onSubmit={submitCurrentPhrase}>
