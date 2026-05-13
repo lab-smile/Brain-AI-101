@@ -1,25 +1,20 @@
-import CleanNeuronSvg from './CleanNeuronSvg'
 import FloatingSignal from './FloatingSignal'
 import NeuronResponsePanel from './NeuronResponsePanel'
-import SomaInputMeter from './SomaInputMeter'
+import PhetNeuronPanel from './PhetNeuronPanel'
 import { staticPayAttentionSvg } from './module1SceneAssets'
-import useSoundNeuronExperiment, { EXAMPLE_SIGNALS, MAX_INPUT, THRESHOLD } from '../hooks/useSoundNeuronExperiment'
+import useSoundNeuronExperiment, { EXAMPLE_SIGNALS } from '../hooks/useSoundNeuronExperiment'
 import '../styles/soundNeuronExperiment.css'
 
 function SoundNeuronExperiment() {
   const {
     currentPhrase,
-    somaInput,
     recentSignals,
     isAnimating,
-    isFiring,
     lastResult,
     setCurrentPhrase,
     submitCurrentPhrase,
     submitExamplePhrase,
   } = useSoundNeuronExperiment()
-
-  const fillPercent = Math.round((somaInput / MAX_INPUT) * 100)
 
   return (
     <div className="module1-sound-neuron">
@@ -28,7 +23,7 @@ function SoundNeuronExperiment() {
           <p className="module1-eyebrow module1-eyebrow-tight">C. Sound Experiment</p>
           <h2 className="module1-sound-neuron__title">When Does a Neuron Fire?</h2>
           <p className="module1-card-muted module1-text-reset">
-            Sound signals travel to the ear, become neural input, add together at the soma, and trigger a spike only if enough input reaches threshold in time.
+            Sound signals travel to the ear, become neural input, and trigger a spike when the neuron is stimulated strongly enough.
           </p>
         </div>
 
@@ -87,24 +82,23 @@ function SoundNeuronExperiment() {
           </div>
 
           <div className="module1-sound-neuron__neuron-panel">
-            <NeuronResponsePanel lastResult={lastResult} somaInput={somaInput} maxInput={MAX_INPUT} />
-            <SomaInputMeter value={somaInput} maxInput={MAX_INPUT} threshold={THRESHOLD} isFiring={isFiring} />
-
-            <div className={`module1-sound-neuron__neuron-stage ${isFiring ? 'is-firing' : ''}`}>
-              <div className="module1-sound-neuron__neuron-level">Input level {fillPercent}%</div>
-              <CleanNeuronSvg
-                className="module1-sound-neuron__neuron-svg"
-                level={1}
-                fillPercent={fillPercent}
-                thresholdPercent={THRESHOLD}
-                isFiring={isFiring}
-                mirrored={false}
-                showInputSignals={false}
-                showThreshold={true}
-                showLabels={false}
-              />
-              <div className="module1-sound-neuron__soma-pulse" aria-hidden="true" />
+            <div className="module1-sound-neuron__panel-header">
+              <div>
+                <h3 className="module1-sound-neuron__panel-title">Watch the neuron</h3>
+                <p className="module1-sound-neuron__panel-copy">Stimulate the neuron and watch how it responds.</p>
+              </div>
             </div>
+
+            <NeuronResponsePanel lastResult={lastResult} />
+            <PhetNeuronPanel
+              title="Watch the neuron"
+              helperText="Stimulate the neuron and watch how it responds."
+              showStatus={false}
+              showPlayback={false}
+              showAttribution={false}
+              compact
+              showIntro={false}
+            />
           </div>
         </div>
       </div>
