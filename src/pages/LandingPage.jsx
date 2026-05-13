@@ -6,7 +6,6 @@ import './landing.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const BrainParticleField = lazy(() => import('../components/three/BrainParticleField'))
 const NeuronShowcase = lazy(() => import('../components/three/NeuronShowcase'))
 
 const NOISE_PATTERN = [
@@ -125,11 +124,6 @@ export default function LandingPage({ onStart }) {
             alt="Human profile silhouette"
             className="lp-bust"
           />
-          <div className="lp-hero-canvas-wrap">
-            <Suspense fallback={<div className="lp-canvas-fallback" />}>
-              <BrainParticleField scrollProgress={scrollProgress} />
-            </Suspense>
-          </div>
         </div>
 
         {/* Lower-left info block */}
