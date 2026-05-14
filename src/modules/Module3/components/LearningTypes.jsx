@@ -1,176 +1,156 @@
-import { useMemo, useState } from 'react'
-
-const UNSUPERVISED_ITEMS = [
-  { label: 'Point A', group: 'group1' },
-  { label: 'Point B', group: 'group1' },
-  { label: 'Point C', group: 'group1' },
-  { label: 'Point D', group: 'group2' },
-  { label: 'Point E', group: 'group2' },
-  { label: 'Point F', group: 'group2' },
+const learningTypes = [
+  {
+    title: 'Supervised Learning',
+    variant: 'supervised',
+    question: 'Can the model learn from a known answer?',
+    mechanism: [
+      'The model makes a prediction.',
+      'The target answer is revealed.',
+      'The error is measured.',
+      'Weights are adjusted so the next prediction moves closer to the target.',
+    ],
+    rule: 'Use the target answer to correct the prediction.',
+    exampleIntro: 'A model sees a handwritten digit.',
+    exampleLines: [
+      'Prediction: 8',
+      'Target: 3',
+      'Error: high',
+    ],
+    exampleOutcome: 'After training, the model becomes more likely to predict 3 for similar digits.',
+    human: 'A student solves a physics problem, checks the answer key, finds the mistake, and changes the method used on the next problem.',
+    feedback: 'Prediction compared with target.',
+    flow: 'Prediction → Target → Error → Weight Update',
+  },
+  {
+    title: 'Unsupervised Learning',
+    variant: 'unsupervised',
+    question: 'Can the model find structure without answer labels?',
+    mechanism: [
+      'The model receives data without target answers.',
+      'It compares examples to each other.',
+      'Examples with similar patterns move closer together.',
+      'Examples with different patterns move farther apart.',
+    ],
+    rule: 'Use similarity to organize the data.',
+    exampleIntro: 'A model receives thousands of documents with no labels.',
+    exampleLines: [
+      'It notices that some documents share vocabulary about medicine, others share vocabulary about finance, and others share vocabulary about sports.',
+    ],
+    exampleOutcome: 'The model forms groups from patterns in the data.',
+    human: 'A researcher receives a box of unknown fossils and sorts them by shape, size, structure, and repeated features before knowing their species.',
+    feedback: 'Patterns inside the data.',
+    flow: 'Data → Similarity → Groups → Structure',
+  },
+  {
+    title: 'Reinforcement Learning',
+    variant: 'reinforcement',
+    question: 'Can the model improve by testing actions?',
+    mechanism: [
+      'The model observes a situation.',
+      'It chooses an action.',
+      'The action produces a consequence.',
+      'Actions that lead to better outcomes become more likely in the future.',
+    ],
+    rule: 'Use consequences to improve future choices.',
+    exampleIntro: 'A robot learns to navigate a room.',
+    exampleLines: [
+      'Action: move forward',
+      'Consequence: blocked path',
+      'Action: turn left',
+      'Consequence: reaches the goal',
+    ],
+    exampleOutcome: 'Over time, the robot learns which actions work better in each situation.',
+    human: 'A chess player tests a line of moves, loses material, studies the consequence, and avoids that line in future games.',
+    feedback: 'Reward, penalty, or delayed consequence.',
+    flow: 'Situation → Action → Consequence → Better Strategy',
+  },
 ]
 
-const RL_STEPS = [
-  { label: 'Move up → safe path', reward: '+1', nextValues: { up: 0.1, right: 0.4, down: 0.0, left: 0.0 } },
-  { label: 'Move right → blocked path', reward: '-1', nextValues: { up: 0.1, right: 0.4, down: -0.5, left: 0.0 } },
-  { label: 'Reach goal → success', reward: '+10', nextValues: { up: 0.1, right: 0.9, down: -0.5, left: 0.0 } },
-]
-
-function LearningTypes({ isMobile, onJumpToSectionC }) {
-  const [supervisedStage, setSupervisedStage] = useState(0)
-  const [unsupervisedGrouped, setUnsupervisedGrouped] = useState(false)
-  const [reinforcementStage, setReinforcementStage] = useState(0)
-
-  const reinforcementValues = useMemo(() => {
-    if (reinforcementStage === 0) {
-      return { up: 0.1, right: 0.2, down: 0.0, left: 0.0 }
-    }
-
-    return RL_STEPS[reinforcementStage - 1].nextValues
-  }, [reinforcementStage])
-
-  const bestMove = Object.entries(reinforcementValues).sort((a, b) => b[1] - a[1])[0][0]
-
+function LearningTypes() {
   return (
     <section className="m3-section">
       <div className="m3-section-heading">
-        <p className="m3-eyebrow">B. LEARNING SIGNALS</p>
-        <h2>Same pattern, different feedback.</h2>
-        <p className="m3-section-subtitle">Each learning type uses a different signal.</p>
+        <p className="m3-eyebrow">B. THREE WAYS MACHINES LEARN</p>
+        <h2>What kind of feedback drives the learning?</h2>
+        <p className="m3-section-subtitle">
+          Different learning systems improve by following different feedback rules.
+        </p>
       </div>
 
-      <div
-        className="m3-types-grid m3-types-grid--three m3-types-grid--mechanisms"
-        style={{ gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))' }}
-      >
-        <article className="m3-type-card m3-type-card--story">
-          <div className="m3-type-title">Supervised Learning</div>
-          <p>Signal: target answer</p>
-          <p>The model compares its prediction with the correct answer.</p>
-
-          <div className="m3-feedback-stack">
-            <div className="m3-feedback-box">
-              <span>Prediction</span>
-              <strong>{supervisedStage >= 1 ? '1' : '...'}</strong>
-            </div>
-            <div className="m3-feedback-box">
-              <span>Target</span>
-              <strong>{supervisedStage >= 2 ? '0' : '...'}</strong>
-            </div>
-            <div className="m3-feedback-box">
-              <span>Error</span>
-              <strong>{supervisedStage >= 2 ? '-1' : '...'}</strong>
-            </div>
-          </div>
-
-          <div className="m3-mini-weights">
-            <div className="m3-mini-weights__row">
-              <span>w1</span>
-              <strong>{supervisedStage >= 3 ? '0.4 → 0.3' : '0.4'}</strong>
-            </div>
-            <div className="m3-mini-weights__row">
-              <span>w2</span>
-              <strong>{supervisedStage >= 3 ? '0.7 → 0.7' : '0.7'}</strong>
-            </div>
-            <div className="m3-mini-weights__row">
-              <span>w3</span>
-              <strong>{supervisedStage >= 3 ? '0.2 → 0.1' : '0.2'}</strong>
-            </div>
-          </div>
-
-          <div className="m3-controls">
-            <button className="m3-btn" onClick={() => setSupervisedStage(1)}>Show Prediction</button>
-            <button className="m3-btn" onClick={() => setSupervisedStage(2)}>Show Target</button>
-            <button className="m3-btn" onClick={() => setSupervisedStage(3)}>Update Weights</button>
-            <button className="m3-btn" onClick={() => setSupervisedStage(0)}>Reset</button>
-          </div>
-
-          <p className="m3-type-desc">Weights update after feedback. Target answers guide the update.</p>
-        </article>
-
-        <article className="m3-type-card m3-type-card--story">
-          <div className="m3-type-title">Unsupervised Learning</div>
-          <p>Signal: similarity</p>
-          <p>The model finds groups without target answers.</p>
-
-          <div className={`m3-pattern-board ${unsupervisedGrouped ? 'is-grouped' : ''}`}>
-            {UNSUPERVISED_ITEMS.map((item) => (
-              <span
-                key={item.label}
-                className={`m3-pattern-chip ${unsupervisedGrouped ? `is-${item.group}` : ''}`}
-              >
-                {item.label}
-              </span>
-            ))}
-          </div>
-
-          <div className="m3-before-after">
-            <div className="m3-before-after__card">
-              <span>Before</span>
-              <strong>Mixed items</strong>
-            </div>
-            <div className="m3-before-after__arrow">→</div>
-            <div className="m3-before-after__card is-good">
-              <span>After</span>
-              <strong>{unsupervisedGrouped ? 'Grouped by similarity' : 'Waiting'}</strong>
-            </div>
-          </div>
-
-          <div className="m3-controls">
-            <button className="m3-btn" onClick={() => setUnsupervisedGrouped(true)}>Show Distance</button>
-            <button className="m3-btn" onClick={() => setUnsupervisedGrouped(true)}>Find Groups</button>
-            <button className="m3-btn" onClick={() => setUnsupervisedGrouped(true)}>Move Centers</button>
-            <button className="m3-btn" onClick={() => setUnsupervisedGrouped(false)}>Reset</button>
-          </div>
-
-          <p className="m3-type-desc">Similar points form groups. Distance shows which points belong together.</p>
-        </article>
-
-        <article className="m3-type-card m3-type-card--story">
-          <div className="m3-type-title">Reinforcement Learning</div>
-          <p>Signal: reward</p>
-          <p>The system tries actions and learns from results.</p>
-
-          <div className="m3-reward-track">
-            {RL_STEPS.map((item, index) => (
-              <div
-                key={item.label}
-                className={`m3-reward-step${reinforcementStage >= index + 1 ? ` is-active ${item.reward.startsWith('+') ? 'is-good' : 'is-bad'}` : ''}`}
-              >
-                <strong>{item.label}</strong>
-                <span>{reinforcementStage >= index + 1 ? item.reward : '...'}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="m3-mini-weights">
-            {Object.entries(reinforcementValues).map(([action, value]) => (
-              <div key={action} className={`m3-mini-weights__row${bestMove === action ? ' is-best' : ''}`}>
-                <span>{action}</span>
-                <strong>{value.toFixed(1)}</strong>
-              </div>
-            ))}
-          </div>
-
-          <div className="m3-mini-callout">
-            <strong>Best Action</strong>
-            <span>{bestMove}</span>
-          </div>
-
-          <div className="m3-controls">
-            <button className="m3-btn" onClick={() => setReinforcementStage(1)}>Try Action</button>
-            <button className="m3-btn" onClick={() => setReinforcementStage(2)}>Show Reward</button>
-            <button className="m3-btn" onClick={() => setReinforcementStage(3)}>Update Choice</button>
-            <button className="m3-btn" onClick={() => setReinforcementStage(0)}>Reset</button>
-          </div>
-
-          <p className="m3-type-desc">Rewards shape future actions.</p>
-        </article>
+      <div className="m3-section-card m3-learning-types-intro">
+        <p>Machine learning is not one method.</p>
+        <p>Each type of learning answers a different question:</p>
+        <div className="m3-learning-type-mechanism">
+          <p>Does the model receive correct answers?</p>
+          <p>Does the model need to find structure by itself?</p>
+          <p>Does the model need to choose actions and learn from consequences?</p>
+        </div>
+        <p>
+          The feedback changes, but the deeper mechanism stays the same: experience changes future behavior.
+        </p>
       </div>
 
-      <div className="m3-controls">
-        <button type="button" className="m3-btn m3-btn--primary" onClick={onJumpToSectionC}>
-          Open the hands-on labs
-        </button>
+      <div className="m3-learning-type-grid">
+        {learningTypes.map((type) => (
+          <article
+            key={type.title}
+            className={`m3-learning-type-card ${type.variant}`}
+          >
+            <div className="m3-learning-type-label">{type.title}</div>
+
+            <div className="m3-learning-type-section">
+              <p className="m3-learning-type-section-title">Central question</p>
+              <p className="m3-learning-type-question">{type.question}</p>
+            </div>
+
+            <div className="m3-learning-type-section">
+              <p className="m3-learning-type-section-title">Mechanism</p>
+              <div className="m3-learning-type-mechanism">
+                {type.mechanism.map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
+              </div>
+            </div>
+
+            <div className="m3-learning-type-section">
+              <p className="m3-learning-type-section-title">Rule</p>
+              <p className="m3-learning-type-rule">{type.rule}</p>
+            </div>
+
+            <div className="m3-learning-type-section">
+              <p className="m3-learning-type-section-title">Example</p>
+              <div className="m3-learning-type-example">
+                <p>{type.exampleIntro}</p>
+                {type.exampleLines.map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
+                <p>{type.exampleOutcome}</p>
+              </div>
+            </div>
+
+            <div className="m3-learning-type-section">
+              <p className="m3-learning-type-section-title">Human comparison</p>
+              <p className="m3-learning-type-human">{type.human}</p>
+            </div>
+
+            <div className="m3-learning-type-section">
+              <p className="m3-learning-type-section-title">Feedback signal</p>
+              <p className="m3-learning-type-feedback">{type.feedback}</p>
+            </div>
+
+            <div className="m3-learning-type-section">
+              <p className="m3-learning-type-section-title">Mini-flow</p>
+              <p className="m3-learning-type-flow">{type.flow}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="m3-section-card m3-learning-type-bridge">
+        <p>
+          The next section focuses on supervised learning because it gives the clearest path into error, weight updates, and backpropagation:
+        </p>
+        <p>prediction → target → error → update.</p>
       </div>
     </section>
   )
