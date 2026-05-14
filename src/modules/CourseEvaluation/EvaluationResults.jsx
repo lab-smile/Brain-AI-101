@@ -1,3 +1,7 @@
+import CourseEvaluationQuestionCallback from './CourseEvaluationQuestionCallback'
+import CourseEvaluationCnnVisual from './CourseEvaluationCnnVisual'
+import { knowledgeQuestions } from './courseEvaluationData'
+
 export default function EvaluationResults({
   headingRef,
   attempt,
@@ -44,22 +48,49 @@ export default function EvaluationResults({
 
       <div className="ce-results-list" aria-live="polite">
         {results.questionResults.map((item, index) => (
-          <article key={item.id} className={`ce-result-item${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
-            <div className="ce-result-head">
-              <div>
-                <span className="ce-result-kicker">Question {index + 1}</span>
-                <h3>{item.question}</h3>
-              </div>
-              <span className={`ce-result-badge${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
-                {item.isCorrect ? 'Correct' : 'Incorrect'}
-              </span>
-            </div>
-            <p className="ce-result-meta">
-              Your answer: <strong>{item.selectedAnswer || 'No answer'}</strong>
-              {' '}| Correct answer: <strong>{item.correctAnswer}</strong>
-            </p>
-            <p className="ce-result-explanation">{item.explanation}</p>
-          </article>
+          (() => {
+            const sourceQuestion = knowledgeQuestions.find((question) => question.id === item.id)
+            const moduleLabel = sourceQuestion?.module === 'module1'
+              ? 'Module 1'
+              : sourceQuestion?.module === 'module2'
+                ? 'Module 2'
+                : 'Module 3'
+
+            return (
+              <article key={item.id} className={`ce-result-item${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
+                <div className="ce-result-head">
+                  <div>
+                    <span className="ce-result-kicker">Question {index + 1}</span>
+                    <h3>{item.question}</h3>
+                  </div>
+                  <span className={`ce-result-badge${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
+                    {item.isCorrect ? 'Correct' : 'Incorrect'}
+                  </span>
+                </div>
+
+                {sourceQuestion && (
+                  <CourseEvaluationQuestionCallback module={moduleLabel} sectionTitle={sourceQuestion.sectionTitle} />
+                )}
+
+                <p className="ce-result-meta">
+                  Your answer: <strong>{item.selectedAnswer || 'No answer'}</strong>
+                  {' '}| Correct answer: <strong>{item.correctAnswer}</strong>
+                </p>
+
+                {sourceQuestion?.visualType && (
+                  <CourseEvaluationCnnVisual
+                    visualType={sourceQuestion.visualType}
+                    visualData={sourceQuestion.visualData}
+                    revealAnswer
+                    selectedAnswer={item.selectedAnswer}
+                    correctAnswer={item.correctAnswer}
+                  />
+                )}
+
+                <p className="ce-result-explanation">{item.explanation}</p>
+              </article>
+            )
+          })()
         ))}
       </div>
 

@@ -60,8 +60,11 @@ export const knowledgeQuestions = [
   {
     id: 'q1',
     module: 'module1',
-    concept: 'Threshold / meaningful input',
+    section: 'Section C',
+    sectionTitle: 'Sound Experiment',
+    concept: 'meaningful input and threshold',
     question: 'In Module 1, the phrase "Alex" is more likely to trigger firing than "page turning" because:',
+    callback: 'This question connects to the sound experiment, where different sounds contributed different amounts of input toward the neuron’s threshold.',
     choices: [
       { id: 'A', text: 'dendrites only respond to words, not background sounds' },
       { id: 'B', text: 'all sounds are treated equally once they reach the ear' },
@@ -74,8 +77,11 @@ export const knowledgeQuestions = [
   {
     id: 'q2',
     module: 'module1',
-    concept: 'Summation / threshold',
+    section: 'Section C',
+    sectionTitle: 'Sound Experiment',
+    concept: 'summation and threshold',
     question: 'In the sound experiment, suppose three inputs reach the soma close together with strengths 18, 22, and 35, and the threshold is 70. What should happen?',
+    callback: 'This question connects to the soma input activity, where signals that arrived close together could add up and make the neuron fire.',
     choices: [
       { id: 'A', text: 'The neuron fires because the combined input reaches 75' },
       { id: 'B', text: 'The neuron definitely stays quiet because no single input reached 70' },
@@ -87,9 +93,12 @@ export const knowledgeQuestions = [
   },
   {
     id: 'q3',
-    module: 'synthesis',
-    concept: 'Biological neuron to artificial neuron bridge',
+    module: 'module1',
+    section: 'Section D',
+    sectionTitle: 'Bridge: From Biology to Algorithm',
+    concept: 'biological neuron to artificial neuron',
     question: 'Which statement best matches the "Bridge" section from biological neurons to artificial neurons?',
+    callback: 'This question connects to the bridge section, where dendrites, soma, and axon were compared with inputs, summation, and output.',
     choices: [
       { id: 'A', text: 'Artificial neurons are exact copies of biological neurons' },
       { id: 'B', text: 'Biological neurons use thresholds, but artificial neurons do not' },
@@ -102,8 +111,11 @@ export const knowledgeQuestions = [
   {
     id: 'q4',
     module: 'module2',
-    concept: 'Hidden layers / feature hierarchy',
+    section: 'Section A',
+    sectionTitle: 'Inside a Neural Network',
+    concept: 'hidden layers and feature hierarchy',
     question: 'In Module 2A, why does adding hidden layers make a network more powerful?',
+    callback: 'This question connects to the network section, where signals moved from inputs through hidden layers to produce an output.',
     choices: [
       { id: 'A', text: 'Deeper layers can combine simpler features into more complex patterns' },
       { id: 'B', text: 'Hidden layers guarantee that the model will always be correct' },
@@ -116,8 +128,11 @@ export const knowledgeQuestions = [
   {
     id: 'q5',
     module: 'module2',
-    concept: 'ReLU activation',
+    section: 'Section B',
+    sectionTitle: 'Activation Functions',
+    concept: 'ReLU',
     question: 'In Module 2B, if the input to a ReLU unit is x = -2, which output is most reasonable?',
+    callback: 'This question connects to the activation section, where ReLU turned negative input values into zero.',
     choices: [
       { id: 'A', text: '-2' },
       { id: 'B', text: '0.5' },
@@ -130,8 +145,11 @@ export const knowledgeQuestions = [
   {
     id: 'q6',
     module: 'module2',
-    concept: 'Selectivity / weights',
+    section: 'Selectivity Activity',
+    sectionTitle: 'Neural Selectivity',
+    concept: 'weights and preferred features',
     question: 'In the selectivity activity, two artificial neurons are shown the same 3x3 input pattern but respond differently. What is the best explanation?',
+    callback: 'This question connects to the selectivity activity, where neurons responded differently to the same input because they preferred different patterns.',
     choices: [
       { id: 'A', text: 'the input pattern changes automatically for each neuron' },
       { id: 'B', text: 'they have different weights, so they prefer different features' },
@@ -144,8 +162,20 @@ export const knowledgeQuestions = [
   {
     id: 'q7',
     module: 'module2',
+    section: 'CNN Section',
+    sectionTitle: 'Convolution and Output Size',
     concept: 'CNN output size',
     question: 'In the CNN section, a 5x5 input is scanned by a 3x3 filter with no padding and stride = 1. What is the output size?',
+    callback: 'This question connects to the CNN section, where a filter scanned across an input grid to produce a smaller output grid.',
+    visualType: 'cnn-output-size',
+    visualData: {
+      inputSize: '5×5',
+      filterSize: '3×3',
+      padding: 0,
+      stride: 1,
+      formula: '5 - 3 + 1 = 3',
+      outputSize: '3 × 3',
+    },
     choices: [
       { id: 'A', text: '2x2' },
       { id: 'B', text: '4x4' },
@@ -158,8 +188,16 @@ export const knowledgeQuestions = [
   {
     id: 'q8',
     module: 'module2',
-    concept: 'CNN filter calculation',
+    section: 'CNN Section',
+    sectionTitle: 'CNN Filter Calculation',
+    concept: 'convolution filter calculation',
     question: 'Using the CNN convention (no kernel flipping), with no padding and stride = 1, a 3x3 filter is applied to this 3x3 image patch: [[3, 1, 0], [2, 2, 1], [0, 1, 3]] using this kernel: [[1, 0, -1], [1, 0, -1], [1, 0, -1]]. What is the output for that patch?',
+    callback: 'This question connects to the CNN filter activity, where a 3×3 kernel was applied to a 3×3 image patch.',
+    visualType: 'cnn-matrix-calculation',
+    visualData: {
+      patch: [3, 1, 0, 2, 2, 1, 0, 1, 3],
+      kernel: [1, 0, -1, 1, 0, -1, 1, 0, -1],
+    },
     choices: [
       { id: 'A', text: '-1' },
       { id: 'B', text: '0' },
@@ -172,8 +210,11 @@ export const knowledgeQuestions = [
   {
     id: 'q9',
     module: 'module3',
-    concept: 'Supervised vs reinforcement learning',
+    section: 'Learning Types',
+    sectionTitle: 'Supervised, Unsupervised, and Reinforcement Learning',
+    concept: 'supervised learning and reinforcement learning',
     question: 'Which pairing is correct?',
+    callback: 'This question connects to Module 3’s learning-types section, where different kinds of feedback were compared.',
     choices: [
       { id: 'A', text: 'Comparing a prediction with a correct answer -> reinforcement learning; learning from rewards and penalties -> supervised learning' },
       { id: 'B', text: 'Comparing a prediction with a correct answer -> unsupervised learning; learning from rewards and penalties -> supervised learning' },
@@ -186,8 +227,11 @@ export const knowledgeQuestions = [
   {
     id: 'q10',
     module: 'module3',
-    concept: 'Backpropagation / weight updates',
+    section: 'Backpropagation',
+    sectionTitle: 'Learning from Error',
+    concept: 'backpropagation and weight updates',
     question: 'In the backpropagation section, what is the main purpose of sending error backward through the network?',
+    callback: 'This question connects to the backpropagation section, where error was sent backward to guide weight updates.',
     choices: [
       { id: 'A', text: 'to create new hidden layers automatically' },
       { id: 'B', text: 'to decide which weights should be updated' },
