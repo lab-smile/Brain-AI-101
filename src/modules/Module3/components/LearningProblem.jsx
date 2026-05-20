@@ -24,17 +24,7 @@ const learningExample = {
   },
 }
 
-const processSteps = [
-  'Input',
-  'Prediction',
-  'Target',
-  'Error',
-  'Weight Update',
-  'Improved Prediction',
-]
-
 const controlSteps = [
-  'Show Input',
   'Run Prediction',
   'Reveal Target',
   'Measure Error',
@@ -42,94 +32,40 @@ const controlSteps = [
   'Test Again',
 ]
 
-function WeightBar({ value, isAfter = false }) {
-  return (
-    <div
-      aria-hidden="true"
-      style={{
-        background: '#e2e8f0',
-        borderRadius: '999px',
-        height: '10px',
-        overflow: 'hidden',
-        width: '100%',
-      }}
-    >
-      <div
-        style={{
-          background: isAfter ? 'linear-gradient(90deg, #2563eb, #60a5fa)' : 'linear-gradient(90deg, #10b981, #34d399)',
-          borderRadius: '999px',
-          height: '100%',
-          width: `${Math.max(0, Math.min(100, value * 100))}%`,
-        }}
-      />
-    </div>
-  )
-}
-
 function LearningProblem() {
   const [step, setStep] = useState(0)
 
-  const showPrediction = step >= 1
-  const showTarget = step >= 2
-  const showError = step >= 3
-  const showWeightUpdate = step >= 4
-  const showImprovedPrediction = step >= 5
-  const isComplete = step === 5
+  const showPrediction = step >= 0
+  const showTarget = step >= 1
+  const showError = step >= 2
+  const showWeightUpdate = step >= 3
+  const showImprovedPrediction = step >= 4
+  const isComplete = step === 4
   const primaryLabel = controlSteps[step]
 
   const handleAdvance = () => {
-    setStep((currentStep) => Math.min(currentStep + 1, 5))
+    setStep((currentStep) => Math.min(currentStep + 1, 4))
   }
 
+  const strongestWeight = learningExample.before.weights.reduce((strongest, weight) => (
+    weight.before > strongest.before ? weight : strongest
+  ), learningExample.before.weights[0])
+
   return (
-    <section className="m3-section">
+    <section className="m3-section m3-section--centered">
       <div className="m3-section-heading">
         <p className="m3-eyebrow">A. LEARNING MEANS CHANGING</p>
         <h2>Can the model correct itself?</h2>
         <p className="m3-section-subtitle">
-          A learning system improves by using error to change its weights.
+          A model improves when it compares its prediction with the correct answer.
+        </p>
+        <p className="m3-section-subtitle">
+          First, it makes a prediction. Then it checks the target. The difference is the error. The model uses that error to adjust its weights, so the next prediction can improve.
         </p>
       </div>
 
       <div className="m3-section-card m3-signal-activity">
-        <div
-          className="m3-signal-activity__process"
-          aria-label="Learning process"
-          role="list"
-        >
-          {processSteps.map((label, index) => {
-            const isCurrent = step === index
-            const isComplete = step > index
-
-            return (
-              <div
-                key={label}
-                className={`m3-signal-activity__process-step${isCurrent ? ' is-active' : ''}${isComplete ? ' is-complete' : ''}`}
-                role="listitem"
-                aria-current={isCurrent ? 'step' : undefined}
-                style={isCurrent ? { borderWidth: '2px' } : undefined}
-              >
-                <span className="m3-signal-activity__process-number">
-                  {index + 1}
-                </span>
-                <span className="m3-signal-activity__process-copy">
-                  <strong style={isCurrent ? { fontWeight: 800 } : undefined}>{label}</strong>
-                  <span>{isCurrent ? 'Current step' : isComplete ? 'Done' : 'Next step'}</span>
-                </span>
-                {index < processSteps.length - 1 ? (
-                  <span
-                    className="m3-signal-activity__process-arrow"
-                    aria-hidden="true"
-                  >
-                    {'\u2192'}
-                  </span>
-                ) : null}
-              </div>
-            )
-          })}
-        </div>
-
-        <div className="m3-controls m3-signal-activity__controls">
+        <div className="m3-controls m3-signal-activity__controls m3-signal-activity__controls--compact">
           {!isComplete ? (
             <button
               type="button"
@@ -206,53 +142,56 @@ function LearningProblem() {
               <h3>Prediction, Target, Error</h3>
             </div>
 
-            <div className="m3-signal-activity__phase">
-              <div className="m3-signal-activity__info-list">
-                <div className="m3-signal-activity__info-item">
-                  <span>Prediction</span>
-                  <strong>{showPrediction ? learningExample.before.prediction : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Target</span>
-                  <strong>{showTarget ? learningExample.target : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Error</span>
-                  <strong>{showError ? learningExample.before.error.toFixed(2) : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Confidence in target answer</span>
-                  <strong>{showError ? `${learningExample.before.confidenceTarget}%` : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Confidence in wrong answer</span>
-                  <strong>{showError ? `${learningExample.before.confidenceWrong}%` : '...'}</strong>
+            <div className="m3-compare-grid">
+              <div className="m3-compare-card m3-compare-card--before">
+                <p className="m3-compare-card__label">Before Learning</p>
+                <div className="m3-compare-card__metrics">
+                  <div className="m3-compare-metric">
+                    <span>Prediction</span>
+                    <strong>{showPrediction ? learningExample.before.prediction : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric">
+                    <span>Target</span>
+                    <strong>{showTarget ? learningExample.target : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric m3-compare-metric--error">
+                    <span>Error</span>
+                    <strong>{showError ? learningExample.before.error.toFixed(2) : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric">
+                    <span>Target confidence</span>
+                    <strong>{showError ? `${learningExample.before.confidenceTarget}%` : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric">
+                    <span>Wrong-answer confidence</span>
+                    <strong>{showError ? `${learningExample.before.confidenceWrong}%` : '...'}</strong>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="m3-signal-activity__phase">
-              <p className="m3-signal-activity__phase-label">After learning</p>
-              <div className="m3-signal-activity__info-list">
-                <div className="m3-signal-activity__info-item">
-                  <span>Prediction after update</span>
-                  <strong>{showImprovedPrediction ? learningExample.after.prediction : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Target</span>
-                  <strong>{showImprovedPrediction ? learningExample.target : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Error after update</span>
-                  <strong>{showImprovedPrediction ? learningExample.after.error.toFixed(2) : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Confidence in target answer</span>
-                  <strong>{showImprovedPrediction ? `${learningExample.after.confidenceTarget}%` : '...'}</strong>
-                </div>
-                <div className="m3-signal-activity__info-item">
-                  <span>Confidence in wrong answer</span>
-                  <strong>{showImprovedPrediction ? `${learningExample.after.confidenceWrong}%` : '...'}</strong>
+              <div className="m3-compare-card m3-compare-card--after">
+                <p className="m3-compare-card__label">After Learning</p>
+                <div className="m3-compare-card__metrics">
+                  <div className="m3-compare-metric">
+                    <span>Prediction</span>
+                    <strong>{showImprovedPrediction ? learningExample.after.prediction : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric">
+                    <span>Target</span>
+                    <strong>{showImprovedPrediction ? learningExample.target : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric m3-compare-metric--error">
+                    <span>Error</span>
+                    <strong>{showImprovedPrediction ? learningExample.after.error.toFixed(2) : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric">
+                    <span>Target confidence</span>
+                    <strong>{showImprovedPrediction ? `${learningExample.after.confidenceTarget}%` : '...'}</strong>
+                  </div>
+                  <div className="m3-compare-metric">
+                    <span>Wrong-answer confidence</span>
+                    <strong>{showImprovedPrediction ? `${learningExample.after.confidenceWrong}%` : '...'}</strong>
+                  </div>
                 </div>
               </div>
             </div>
@@ -264,54 +203,31 @@ function LearningProblem() {
               <h3>Weights</h3>
             </div>
 
-            <div className="m3-signal-activity__phase">
-              <div className="m3-signal-activity__info-list">
-                {learningExample.before.weights.map((weight) => (
+            <div className="m3-weight-tile-grid">
+              {learningExample.before.weights.map((weight) => {
+                const isStrongest = weight.label === strongestWeight.label
+
+                return (
                   <div
                     key={weight.label}
-                    className="m3-signal-activity__info-item"
-                    style={{ alignItems: 'stretch', display: 'grid', gap: '8px' }}
+                    className={`m3-weight-tile${isStrongest ? ' is-strongest' : ''}${showWeightUpdate ? ' is-updated' : ''}`}
                   >
-                    <div style={{ alignItems: 'center', display: 'flex', gap: '12px', justifyContent: 'space-between' }}>
-                      <span>{weight.label}</span>
-                      <strong>
-                        {showWeightUpdate
-                          ? `${weight.before.toFixed(2)} \u2192 ${weight.after.toFixed(2)}`
-                          : weight.before.toFixed(2)}
-                      </strong>
+                    <div className="m3-weight-tile__head">
+                      <span className="m3-weight-tile__label">{weight.label}</span>
+                      {isStrongest ? <span className="m3-weight-tile__tag">Strongest</span> : null}
                     </div>
-                    <div style={{ display: 'grid', gap: '6px' }}>
-                      <WeightBar value={weight.before} />
-                      {showWeightUpdate ? <WeightBar value={weight.after} isAfter /> : null}
-                    </div>
+                    <strong className="m3-weight-tile__value">
+                      {showWeightUpdate
+                        ? `${weight.before.toFixed(2)} \u2192 ${weight.after.toFixed(2)}`
+                        : weight.before.toFixed(2)}
+                    </strong>
                   </div>
-                ))}
-              </div>
+                )
+              })}
             </div>
           </article>
         </div>
 
-        {showImprovedPrediction ? (
-          <div
-            className="m3-signal-activity__phase"
-            style={{
-              background: 'linear-gradient(180deg, #f8fbff 0%, #ffffff 100%)',
-              borderColor: '#bfdbfe',
-            }}
-          >
-            <p className="m3-signal-activity__phase-label">Final takeaway</p>
-            <div style={{ display: 'grid', gap: '8px' }}>
-              <p style={{ margin: 0, color: '#0f172a', fontSize: '1rem', fontWeight: 700 }}>
-                Learning happened because the model changed its weights.
-              </p>
-              <p style={{ margin: 0 }}>The input stayed the same.</p>
-              <p style={{ margin: 0 }}>The target stayed the same.</p>
-              <p style={{ margin: 0 }}>The error provided feedback.</p>
-              <p style={{ margin: 0 }}>The weights changed.</p>
-              <p style={{ margin: 0 }}>The next prediction improved.</p>
-            </div>
-          </div>
-        ) : null}
       </div>
 
       <div className="m3-section-card">
