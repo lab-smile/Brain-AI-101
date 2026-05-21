@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Brain-AI-101/',
+  base: process.env.VITE_PUBLIC_BASE_PATH || '/',
   optimizeDeps: {
     exclude: ['onnxruntime-web'],
   },
