@@ -35,10 +35,10 @@ const controlSteps = [
 function LearningProblem() {
   const [step, setStep] = useState(0)
 
-  const showPrediction = step >= 0
-  const showTarget = step >= 1
-  const showError = step >= 2
-  const showWeightUpdate = step >= 3
+  const showPrediction = step >= 1
+  const showTarget = step >= 2
+  const showError = step >= 3
+  const showWeightUpdate = step >= 4
   const showImprovedPrediction = step >= 4
   const isComplete = step === 4
   const primaryLabel = controlSteps[step]
@@ -53,18 +53,18 @@ function LearningProblem() {
 
   return (
     <section className="m3-section m3-section--centered">
-      <div className="m3-section-heading">
-        <p className="m3-eyebrow">A. LEARNING MEANS CHANGING</p>
-        <h2>Can the model correct itself?</h2>
-        <p className="m3-section-subtitle">
-          A model improves when it compares its prediction with the correct answer.
-        </p>
-        <p className="m3-section-subtitle">
-          First, it makes a prediction. Then it checks the target. The difference is the error. The model uses that error to adjust its weights, so the next prediction can improve.
-        </p>
-      </div>
+      <div className="m3-section-card m3-section-card--feature m3-signal-activity m3-learning-problem-card">
+        <div className="m3-section-heading">
+          <p className="m3-eyebrow">A. LEARNING MEANS CHANGING</p>
+          <h2>Can the model correct itself?</h2>
+          <p className="m3-section-subtitle">
+            A model improves when it compares its prediction with the correct answer.
+          </p>
+          <p className="m3-section-subtitle">
+            First, it makes a prediction. Then it checks the target. The difference is the error. The model uses that error to adjust its weights, so the next prediction can improve.
+          </p>
+        </div>
 
-      <div className="m3-section-card m3-signal-activity">
         <div className="m3-controls m3-signal-activity__controls m3-signal-activity__controls--compact">
           {!isComplete ? (
             <button
@@ -103,35 +103,19 @@ function LearningProblem() {
             </div>
 
             <div
-              style={{
-                alignItems: 'center',
-                background: 'linear-gradient(180deg, #ffffff 0%, #f8fbff 100%)',
-                border: '1px solid #dbe5f0',
-                borderRadius: '18px',
-                display: 'grid',
-                justifyItems: 'center',
-                minHeight: '220px',
-                padding: '18px',
-              }}
+              className="m3-digit-card"
             >
               {step >= 0 ? (
                 <div
                   aria-label="Handwritten digit 3"
-                  style={{
-                    color: '#1e3a8a',
-                    fontFamily: '"Brush Script MT", "Segoe Script", cursive',
-                    fontSize: '7rem',
-                    fontWeight: 700,
-                    lineHeight: 1,
-                    transform: 'rotate(-9deg)',
-                  }}
+                  className="m3-digit-mark"
                 >
                   3
                 </div>
               ) : null}
             </div>
 
-            <p className="m3-section-subtitle" style={{ margin: 0, maxWidth: 'none', textAlign: 'left' }}>
+            <p className="m3-section-subtitle m3-learning-copy">
               {step >= 0 ? `The model receives an input: a ${learningExample.inputLabel.toLowerCase()}.` : ''}
             </p>
           </article>
@@ -228,16 +212,6 @@ function LearningProblem() {
           </article>
         </div>
 
-      </div>
-
-      <div className="m3-section-card">
-        <div className="m3-mechanism-panel__header">
-          <p className="m3-learning-label">Biology bridge</p>
-          <h3>Same idea, different system</h3>
-        </div>
-        <p className="m3-section-subtitle" style={{ margin: 0, maxWidth: 'none', textAlign: 'left' }}>
-          Brains also change through experience. Synaptic plasticity means connections between neurons can strengthen or weaken over time. In machine learning, weights between artificial neurons also increase or decrease during training. The mechanisms are different, but the shared idea is adaptive connection strength.
-        </p>
       </div>
     </section>
   )

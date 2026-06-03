@@ -91,6 +91,45 @@
   padding: 28px;
 }
 
+.m3-section-card > .m3-section-heading {
+  width: 100%;
+}
+
+.m3-section-shell {
+  gap: 24px;
+}
+
+.m3-section-card--feature,
+.m3-learning-problem-card {
+  background: linear-gradient(160deg, #ffffff 0%, #f9fffc 42%, #effcf5 100%);
+  border: none;
+  box-shadow: none;
+  gap: 24px;
+  overflow: hidden;
+  padding: 40px 32px 32px;
+  position: relative;
+}
+
+.m3-section-card--feature::after,
+.m3-learning-problem-card::after {
+  background: radial-gradient(circle, rgba(5, 150, 105, 0.16) 0%, rgba(16, 185, 129, 0.08) 42%, rgba(16, 185, 129, 0) 70%);
+  border-radius: 50%;
+  content: '';
+  height: 240px;
+  pointer-events: none;
+  position: absolute;
+  right: -72px;
+  top: -88px;
+  width: 240px;
+  z-index: 0;
+}
+
+.m3-section-card--feature > *,
+.m3-learning-problem-card > * {
+  position: relative;
+  z-index: 1;
+}
+
 /* ── SVG block ───────────────────────────────────────────────────── */
 
 .m3-svg-block {
@@ -3359,7 +3398,6 @@
 .m3-human-framing {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-left: 3px solid var(--module3-accent);
   border-radius: 12px;
   color: #475569;
   font-size: 15px;
@@ -3494,7 +3532,6 @@
 .m3-signal-activity__summary {
   background: linear-gradient(180deg, #f8fffb 0%, #ffffff 100%);
   border: 1px solid #dbe7e2;
-  border-left: 4px solid #059669;
   border-radius: 14px;
   display: grid;
   gap: 4px;
@@ -3918,6 +3955,13 @@
   font-size: clamp(4.75rem, 8vw, 7rem);
   font-weight: 700;
   line-height: 1;
+  transform: rotate(-9deg);
+}
+
+.m3-learning-copy {
+  margin: 0;
+  max-width: none;
+  text-align: left;
 }
 
 .m3-metric-list,
@@ -3966,16 +4010,6 @@
   height: 10px;
   overflow: hidden;
   width: 100%;
-}
-
-.m3-biology-bridge {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fdfb 100%);
-  border: 1px solid #dbe7e2;
-  border-left: 3px solid #059669;
-  border-radius: 20px;
-  display: grid;
-  gap: 10px;
-  padding: 22px 24px;
 }
 
 .m3-learning-final-takeaway {
@@ -4037,12 +4071,6 @@
 .m3-mechanism-panel {
   background: #ffffff;
   border-color: #dbe7e2;
-}
-
-.m3-section > .m3-section-card:last-child {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fdfb 100%);
-  border: 1px solid #dbe7e2;
-  border-left: 3px solid #059669;
 }
 
 .m3-value-grid {
@@ -4508,7 +4536,6 @@
 .m3-training-mini-note {
   background: #f8fafc;
   border: 1px solid #dbe7e2;
-  border-left: 3px solid #059669;
   border-radius: 18px;
   display: grid;
   gap: 8px;
@@ -4720,14 +4747,10 @@
 
 .m3-advanced-labs,
 .m3-advanced-learning-labs {
-  background: linear-gradient(180deg, rgba(248, 250, 252, 0.92) 0%, rgba(241, 245, 249, 0.92) 100%);
-  border: 1px solid #dbe5f0;
-  border-radius: 24px;
   display: grid;
   gap: 18px;
   margin-top: 8px;
   overflow: hidden;
-  padding: 22px 20px;
 }
 
 .m3-advanced-labs-header,
@@ -4749,6 +4772,7 @@
 
 .m3-advanced-labs-header h3,
 .m3-advanced-learning-labs__intro h3,
+.m3-advanced-learning-labs__intro h2,
 .m3-advanced-lab-title,
 .m3-advanced-learning-labs__card-copy h4 {
   color: #0f172a;
@@ -4761,7 +4785,8 @@
 }
 
 .m3-advanced-labs-header h3,
-.m3-advanced-learning-labs__intro h3 {
+.m3-advanced-learning-labs__intro h3,
+.m3-advanced-learning-labs__intro h2 {
   font-size: clamp(1.1rem, 2vw, 1.4rem);
 }
 

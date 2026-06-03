@@ -119,21 +119,20 @@ function InferenceFeedbackSection() {
 
   return (
     <section className="m3-section">
-      <div className="m3-section-heading">
-        <p className="m3-eyebrow">F. FEEDBACK DURING INFERENCE</p>
-        <h2>How Context Refines a Prediction</h2>
-        <p className="m3-section-subtitle">
-          After training, weights are frozen. But the model can still improve a
-          prediction by using context from higher layers to refine lower-layer
-          interpretation — without changing anything permanently.
-        </p>
-        <p className="m3-module-callback">
-          In Section D, feedback changed weights. Here, feedback changes activations.
-          The weights stay fixed.
-        </p>
-      </div>
-
-      <div className="m3-section-card m3-infer-card">
+      <div className="m3-section-card m3-section-card--feature m3-infer-card">
+        <div className="m3-section-heading">
+          <p className="m3-eyebrow">F. FEEDBACK DURING INFERENCE</p>
+          <h2>How Context Refines a Prediction</h2>
+          <p className="m3-section-subtitle">
+            After training, weights are frozen. But the model can still improve a
+            prediction by using context from higher layers to refine lower-layer
+            interpretation — without changing anything permanently.
+          </p>
+          <p className="m3-module-callback">
+            In Section D, feedback changed weights. Here, feedback changes activations.
+            The weights stay fixed.
+          </p>
+        </div>
 
         {/* ── Contrast table ── */}
         <div className="m3-infer-contrast">

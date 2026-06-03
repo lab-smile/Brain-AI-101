@@ -41,18 +41,18 @@ export default function LearningTypes({ onJumpToSectionC }) {
 
   return (
     <section className="m3-section">
-      <div className="m3-section-heading">
-        <p className="m3-eyebrow">B. THREE FEEDBACK GAMES</p>
-        <h2>What kind of clue does the model get?</h2>
-        <p className="m3-section-subtitle">
-          A model can learn from different kinds of feedback. Select each one and notice what kind of clue the model receives.
-        </p>
-        <p className="m3-module-callback">
-          These are the same weights from Module 2 — learning is how they get adjusted.
-        </p>
-      </div>
+      <div className="m3-section-card m3-section-card--feature m3-feedback-games">
+        <div className="m3-section-heading">
+          <p className="m3-eyebrow">B. THREE FEEDBACK GAMES</p>
+          <h2>What kind of clue does the model get?</h2>
+          <p className="m3-section-subtitle">
+            A model can learn from different kinds of feedback. Select each one and notice what kind of clue the model receives.
+          </p>
+          <p className="m3-module-callback">
+            These are the same weights from Module 2 — learning is how they get adjusted.
+          </p>
+        </div>
 
-      <div className="m3-section-card m3-feedback-games">
         <div className="m3-feedback-games__grid">
           {learningGames.map((game) => {
             const isActive = selectedGame === game.id

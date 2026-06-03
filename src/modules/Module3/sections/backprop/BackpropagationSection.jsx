@@ -269,16 +269,16 @@ function BackpropagationSection() {
 
   return (
     <section className="m3-section">
-      <div className="m3-section-heading">
-        <p className="m3-eyebrow">D. BACKPROPAGATION</p>
-        <h2>How the Model Learns from Mistakes</h2>
-        <p className="m3-section-subtitle">
-          Each time the model is wrong, it traces that mistake backward and adjusts.
-          Step through the four phases to see how.
-        </p>
-      </div>
+      <div className="m3-section-card m3-section-card--feature m3-backprop-card">
+        <div className="m3-section-heading">
+          <p className="m3-eyebrow">D. BACKPROPAGATION</p>
+          <h2>How the Model Learns from Mistakes</h2>
+          <p className="m3-section-subtitle">
+            Each time the model is wrong, it traces that mistake backward and adjusts.
+            Step through the four phases to see how.
+          </p>
+        </div>
 
-      <div className="m3-section-card m3-backprop-card">
         <div className="m3-backprop-layout">
           <div className="m3-backprop-network">
             <div className="m3-backprop-phase-card">

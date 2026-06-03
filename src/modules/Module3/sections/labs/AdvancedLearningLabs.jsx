@@ -25,30 +25,32 @@ const ADVANCED_CARDS = [
 
 function AdvancedLearningLabs() {
   return (
-    <section className="m3-advanced-learning-labs">
-      <div className="m3-advanced-learning-labs__intro">
-        <p className="m3-advanced-learning-labs__eyebrow">Optional Extensions</p>
-        <h3>Advanced Learning Labs</h3>
-        <p>
-          These extensions show full learning systems after the core training loop is clear.
-        </p>
-      </div>
+    <section className="m3-section">
+      <div className="m3-section-card m3-section-card--feature m3-section-shell m3-advanced-learning-labs">
+        <div className="m3-section-heading m3-advanced-learning-labs__intro">
+          <p className="m3-eyebrow">G. OPTIONAL EXTENSIONS</p>
+          <h2>Advanced Learning Labs</h2>
+          <p className="m3-section-subtitle">
+            These extensions show full learning systems after the core training loop is clear.
+          </p>
+        </div>
 
-      <div className="m3-advanced-learning-labs__stack">
-        {ADVANCED_CARDS.map((card) => (
-          <article
-            key={card.title}
-            className={`m3-advanced-learning-labs__card ${card.accent}`}
-          >
-            <div className="m3-advanced-learning-labs__card-copy">
-              <p className="m3-advanced-learning-labs__label">{card.title}</p>
-              <h4>{card.subtitle}</h4>
-            </div>
-            <div className="m3-advanced-learning-labs__card-body">
-              {card.render()}
-            </div>
-          </article>
-        ))}
+        <div className="m3-advanced-learning-labs__stack">
+          {ADVANCED_CARDS.map((card) => (
+            <article
+              key={card.title}
+              className={`m3-advanced-learning-labs__card ${card.accent}`}
+            >
+              <div className="m3-advanced-learning-labs__card-copy">
+                <p className="m3-advanced-learning-labs__label">{card.title}</p>
+                <h4>{card.subtitle}</h4>
+              </div>
+              <div className="m3-advanced-learning-labs__card-body">
+                {card.render()}
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   )

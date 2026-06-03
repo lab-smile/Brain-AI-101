@@ -244,16 +244,15 @@ function NeuroCorrelationPreview() {
 function BrainConnection() {
   return (
     <section className="m3-section">
-      <div className="m3-section-heading">
-        <p className="m3-eyebrow">E. BRAIN × AI FEEDBACK</p>
-        <h2>A More Brain-Like Way to Learn</h2>
-        <p className="m3-section-subtitle">
-          In the brain, nearby neurons update their connection based on timing —
-          not a global error signal. This simulation shows what that looks like.
-        </p>
-      </div>
-
-      <div className="m3-section-card m3-brain-feedback">
+      <div className="m3-section-card m3-section-card--feature m3-brain-feedback">
+        <div className="m3-section-heading">
+          <p className="m3-eyebrow">E. BRAIN × AI FEEDBACK</p>
+          <h2>A More Brain-Like Way to Learn</h2>
+          <p className="m3-section-subtitle">
+            In the brain, nearby neurons update their connection based on timing —
+            not a global error signal. This simulation shows what that looks like.
+          </p>
+        </div>
 
         <div className="m3-brain-feedback__compare">
           <div className="m3-brain-feedback__compare-card">
