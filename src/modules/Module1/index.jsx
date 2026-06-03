@@ -5,6 +5,7 @@ import ModuleNav from '../../components/ui/ModuleNav'
 import useScrollProgress from '../../hooks/useScrollProgress'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectModuleSectionProgress, setModuleSectionProgress } from '../../store/progress'
+import { updateSectionProgress } from '../../store/userProgress/userProgressSlice'
 import BridgeToAnn from './sections/bridge/BridgeToAnn'
 import InteractionSection from './sections/interaction/InteractionSection'
 import Module1AnatomySection from './sections/anatomy/Module1AnatomySection'
@@ -42,6 +43,14 @@ function Module1({ onBack, onContinue, onNavigate }) {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [refs])
+
+  useEffect(() => {
+    dispatch(updateSectionProgress({
+      moduleId: 'module1',
+      sectionIndex: activeIndex,
+      totalSections: SECTIONS.length,
+    }))
+  }, [activeIndex, dispatch])
 
   useEffect(() => {
     if (savedProgress.activeIndex <= 0) return

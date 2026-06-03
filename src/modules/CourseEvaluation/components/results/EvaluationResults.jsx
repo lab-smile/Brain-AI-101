@@ -10,6 +10,7 @@ export default function EvaluationResults({
   onRetryUpload,
   onRetake,
   onContinue,
+  submissionStatus = 'idle',
 }) {
   const breakdownItems = Object.values(results.moduleBreakdown)
   const uploadStatus = attempt.remoteSubmissionStatus || 'idle'
@@ -21,11 +22,6 @@ export default function EvaluationResults({
       : uploadStatus === 'failed'
         ? 'Saved locally, sync needs retry'
         : 'Saved locally'
-  const uploadStatusMessage = uploadStatus === 'synced'
-    ? 'Your feedback and quiz results are saved in this browser and stored in the backend database.'
-    : uploadStatus === 'syncing'
-      ? 'Your feedback and quiz results are saved in this browser while the backend storage finishes.'
-      : 'Your feedback and quiz results are stored in this browser while you finish the course.'
 
   return (
     <section className="ce-panel ce-results-panel" aria-labelledby="results-heading">
@@ -44,7 +40,22 @@ export default function EvaluationResults({
         <div className="ce-save-card">
           <span className="ce-score-label">Saved status</span>
           <strong>{attempt.completedAt ? uploadStatusLabel : 'In progress'}</strong>
-          <p>{uploadStatusMessage}</p>
+          {submissionStatus === 'success' && (
+            <p className="eval-results__storage-note eval-results__storage-note--success">
+              Your responses are saved in this browser and submitted to the study database.
+            </p>
+          )}
+          {submissionStatus === 'error' && (
+            <p className="eval-results__storage-note eval-results__storage-note--error">
+              Your responses are saved in this browser. The database submission did not go through —
+              your facilitator can collect results manually.
+            </p>
+          )}
+          {(submissionStatus === 'idle' || submissionStatus === 'submitting') && (
+            <p className="eval-results__storage-note eval-results__storage-note--pending">
+              Your responses are saved in this browser.
+            </p>
+          )}
           {attempt.remoteSubmissionError && (
             <p className="ce-inline-error">{attempt.remoteSubmissionError}</p>
           )}

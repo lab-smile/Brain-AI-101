@@ -5,6 +5,7 @@ import ModuleNav from '../../components/ui/ModuleNav'
 import useScrollProgress from '../../hooks/useScrollProgress'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectModuleSectionProgress, setModuleSectionProgress } from '../../store/progress'
+import { updateSectionProgress } from '../../store/userProgress/userProgressSlice'
 import ANNSection from './sections/networks/ANNSection'
 import ActivationSection from './sections/activations/ActivationSection'
 import SpecialistsSection from './sections/selectivity/SpecialistsSection'
@@ -47,6 +48,14 @@ function Module2({ onBack, onContinue, onNavigate }) {
 
     return () => window.clearTimeout(timeoutId)
   }, [savedProgress.activeIndex, scrollTo])
+
+  useEffect(() => {
+    dispatch(updateSectionProgress({
+      moduleId: 'module2',
+      sectionIndex: activeIndex,
+      totalSections: SECTIONS.length,
+    }))
+  }, [activeIndex, dispatch])
 
   useEffect(() => {
     const ctx = gsap.context(() => {

@@ -1,8 +1,13 @@
 import type { ApiErrorPayload } from '../../types/api'
 
-async function readErrorMessage(response: Response) {
-  const payload = (await response.json().catch(() => null)) as ApiErrorPayload | null
-  return payload?.error || `Request failed with status ${response.status}.`
+export let isDatabaseAvailable = true
+
+async function readErrorPayload(response: Response): Promise<ApiErrorPayload | null> {
+  return response.json().catch(() => null) as Promise<ApiErrorPayload | null>
+}
+
+function extractErrorMessage(payload: ApiErrorPayload | null, status: number) {
+  return payload?.error || `Request failed with status ${status}.`
 }
 
 export async function requestJson<T>(input: string, init?: RequestInit): Promise<T> {
@@ -16,7 +21,11 @@ export async function requestJson<T>(input: string, init?: RequestInit): Promise
   })
 
   if (!response.ok) {
-    throw new Error(await readErrorMessage(response))
+    const payload = await readErrorPayload(response)
+    if (payload?.code === 'DB_UNAVAILABLE') {
+      isDatabaseAvailable = false
+    }
+    throw new Error(extractErrorMessage(payload, response.status))
   }
 
   return response.json() as Promise<T>
@@ -32,7 +41,11 @@ export async function requestText(input: string, init?: RequestInit): Promise<st
   })
 
   if (!response.ok) {
-    throw new Error(await readErrorMessage(response))
+    const payload = await readErrorPayload(response)
+    if (payload?.code === 'DB_UNAVAILABLE') {
+      isDatabaseAvailable = false
+    }
+    throw new Error(extractErrorMessage(payload, response.status))
   }
 
   return response.text()

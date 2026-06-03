@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'brainAi101.courseEvaluation.v1'
 const PRE_COURSE_STORAGE_KEY = 'brainAi101.preCourseEvaluation.v1'
+const SESSION_ID_KEY = 'brain_ai_101_session_id'
 
 function canUseStorage() {
   return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
@@ -42,6 +43,16 @@ function normalizePreCourseAttempt(raw = {}) {
     source: 'pre-course',
     version: 1,
   }
+}
+
+export function getOrCreateSessionId() {
+  const existing = localStorage.getItem(SESSION_ID_KEY)
+  if (existing) return existing
+  const id = typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `session-${Date.now()}-${Math.random().toString(36).slice(2)}`
+  localStorage.setItem(SESSION_ID_KEY, id)
+  return id
 }
 
 export function createEvaluationAttempt(seed = {}) {
@@ -93,6 +104,36 @@ export function submitEvaluationAttempt(attempt) {
   })
 
   return saveEvaluationAttempt(normalized)
+}
+
+export function saveSubmissionToLocalStorage(kind, payload) {
+  try {
+    const STORAGE_KEY = `brain_ai_101_${kind}_backup`
+    const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+    existing.push({ ...payload, savedAt: new Date().toISOString() })
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing))
+  } catch {
+    // localStorage unavailable — silently skip
+  }
+}
+
+export function exportLocalBackups() {
+  const keys = ['brain_ai_101_quiz_backup', 'brain_ai_101_evaluation_backup', 'brain_ai_101_pre_evaluation_backup']
+  const result = {}
+  keys.forEach((key) => {
+    try {
+      result[key] = JSON.parse(localStorage.getItem(key) || '[]')
+    } catch {
+      result[key] = []
+    }
+  })
+  const blob = new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `brain_ai_101_backup_${new Date().toISOString().slice(0, 10)}.json`
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
 export function createPreCourseEvaluationAttempt(seed = {}) {

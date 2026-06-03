@@ -74,3 +74,19 @@ export function methodNotAllowed(response: VercelResponseLike, ...allowedMethods
 export function safeErrorMessage(error: unknown, fallback: string) {
   return error instanceof Error && error.message ? error.message : fallback
 }
+
+export function sendDbUnavailableIfNeeded(error: unknown, response: VercelResponseLike) {
+  if (
+    error instanceof Error &&
+    (error.message.includes('DATABASE_URL') ||
+      error.message.includes("Can't reach database") ||
+      error.message.includes('Connection refused'))
+  ) {
+    return sendJson(response, 503, {
+      error: 'Database not available',
+      message: 'The study database is not configured on this deployment. Responses are saved locally in the browser.',
+      code: 'DB_UNAVAILABLE',
+    })
+  }
+  return null
+}

@@ -5,9 +5,11 @@ import { preCourseLikertQuestions } from './data/courseEvaluationData'
 import { areLikertQuestionsComplete } from './lib/courseEvaluationLogic'
 import {
   createPreCourseEvaluationAttempt,
+  getOrCreateSessionId,
   loadPreCourseEvaluationAttempt,
   markPreCourseEvaluationSkipped,
   savePreCourseEvaluationAttempt,
+  saveSubmissionToLocalStorage,
 } from './lib/courseEvaluationStorage'
 import {
   completePreCourseEvaluation,
@@ -96,17 +98,19 @@ export default function PreCourseEvaluationPage({ onBack, onContinue }) {
   const handleSkip = async () => {
     const skippedAttempt = markPreCourseEvaluationSkipped()
     dispatch(skipPreCourseEvaluation(skippedAttempt))
+    const evaluationPayload = {
+      sessionId: getOrCreateSessionId(),
+      source: 'pre-course',
+      startedAt: skippedAttempt.startedAt,
+      completedAt: skippedAttempt.completedAt,
+      skipped: true,
+      likertResponses: skippedAttempt.likertResponses,
+      openResponses: skippedAttempt.openResponse ? { 'pre-goal': skippedAttempt.openResponse } : {},
+    }
     try {
-      await submitEvaluation({
-        sessionId: skippedAttempt.attemptId,
-        source: 'pre-course',
-        startedAt: skippedAttempt.startedAt,
-        completedAt: skippedAttempt.completedAt,
-        skipped: true,
-        likertResponses: skippedAttempt.likertResponses,
-        openResponses: skippedAttempt.openResponse ? { 'pre-goal': skippedAttempt.openResponse } : {},
-      })
+      await submitEvaluation(evaluationPayload)
     } catch (error) {
+      saveSubmissionToLocalStorage('pre_evaluation', evaluationPayload)
       console.warn('Pre-course evaluation sync failed', error)
     }
     onContinue?.()
@@ -127,17 +131,19 @@ export default function PreCourseEvaluationPage({ onBack, onContinue }) {
     })
 
     dispatch(completePreCourseEvaluation(completedAttempt))
+    const evaluationPayload = {
+      sessionId: getOrCreateSessionId(),
+      source: 'pre-course',
+      startedAt: completedAttempt.startedAt,
+      completedAt: completedAttempt.completedAt,
+      skipped: false,
+      likertResponses: completedAttempt.likertResponses,
+      openResponses: completedAttempt.openResponse ? { 'pre-goal': completedAttempt.openResponse } : {},
+    }
     try {
-      await submitEvaluation({
-        sessionId: completedAttempt.attemptId,
-        source: 'pre-course',
-        startedAt: completedAttempt.startedAt,
-        completedAt: completedAttempt.completedAt,
-        skipped: false,
-        likertResponses: completedAttempt.likertResponses,
-        openResponses: completedAttempt.openResponse ? { 'pre-goal': completedAttempt.openResponse } : {},
-      })
+      await submitEvaluation(evaluationPayload)
     } catch (error) {
+      saveSubmissionToLocalStorage('pre_evaluation', evaluationPayload)
       console.warn('Pre-course evaluation sync failed', error)
     }
     onContinue?.()

@@ -6,7 +6,7 @@ import KnowledgeCheckSection from './components/knowledge/KnowledgeCheckSection'
 import EvaluationResults from './components/results/EvaluationResults'
 import { likertQuestions, openEndedQuestions, knowledgeQuestions } from './data/courseEvaluationData'
 import { areKnowledgeQuestionsComplete, areLikertQuestionsComplete, calculateKnowledgeResults } from './lib/courseEvaluationLogic'
-import { createEvaluationAttempt, loadEvaluationAttempt, saveEvaluationAttempt, submitEvaluationAttempt } from './lib/courseEvaluationStorage'
+import { createEvaluationAttempt, getOrCreateSessionId, loadEvaluationAttempt, saveEvaluationAttempt, saveSubmissionToLocalStorage, submitEvaluationAttempt } from './lib/courseEvaluationStorage'
 import {
   hydrateEvaluationState,
   selectEvaluationAttempt,
@@ -39,7 +39,7 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
   const currentStep = useAppSelector(selectEvaluationCurrentStep)
   const hydrated = useAppSelector(selectEvaluationHydrated)
   const { submit: submitQuizAttempt } = useSubmitQuizAttempt()
-  const { submit: submitEvaluation, isSubmitting: isSubmittingEvaluation } = useSubmitEvaluation()
+  const { submit: submitEvaluation, isSubmitting: isSubmittingEvaluation, status: evaluationSubmitStatus } = useSubmitEvaluation()
   const [feedbackError, setFeedbackError] = useState('')
   const [knowledgeError, setKnowledgeError] = useState('')
   const [isRetryingUpload, setIsRetryingUpload] = useState(false)
@@ -97,23 +97,29 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
       remoteSubmissionError: '',
     })
 
+    const activeAttempt = completedAttempt || syncingAttempt
+    const quizPayload = {
+      sessionId: getOrCreateSessionId(),
+      startedAt: activeAttempt.startedAt,
+      completedAt: activeAttempt.completedAt,
+      selectedAnswers: activeAttempt.quizAnswers || {},
+      source: 'course-evaluation',
+    }
+    const evaluationPayload = {
+      sessionId: getOrCreateSessionId(),
+      source: 'course-evaluation',
+      startedAt: activeAttempt.startedAt,
+      completedAt: activeAttempt.completedAt,
+      skipped: false,
+      likertResponses: activeAttempt.likertResponses || {},
+      openResponses: activeAttempt.openResponses || {},
+    }
+
     try {
-      const quizResponse = await submitQuizAttempt({
-        sessionId: (completedAttempt || syncingAttempt).attemptId,
-        startedAt: (completedAttempt || syncingAttempt).startedAt,
-        completedAt: (completedAttempt || syncingAttempt).completedAt,
-        selectedAnswers: (completedAttempt || syncingAttempt).quizAnswers || {},
-        source: 'course-evaluation',
-      })
+      const quizResponse = await submitQuizAttempt(quizPayload)
 
       const evaluationResponse = await submitEvaluation({
-        sessionId: (completedAttempt || syncingAttempt).attemptId,
-        source: 'course-evaluation',
-        startedAt: (completedAttempt || syncingAttempt).startedAt,
-        completedAt: (completedAttempt || syncingAttempt).completedAt,
-        skipped: false,
-        likertResponses: (completedAttempt || syncingAttempt).likertResponses || {},
-        openResponses: (completedAttempt || syncingAttempt).openResponses || {},
+        ...evaluationPayload,
         quizAttemptId: quizResponse.attempt.id,
       })
 
@@ -127,6 +133,8 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
         remoteSubmissionFiles: [quizResponse.attempt.id, evaluationResponse.submission.id],
       })
     } catch (error) {
+      saveSubmissionToLocalStorage('quiz', quizPayload)
+      saveSubmissionToLocalStorage('evaluation', evaluationPayload)
       updateAttempt({
         remoteSubmissionStatus: 'failed',
         remoteSubmissionError: error instanceof Error && error.message
@@ -280,6 +288,7 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
             onRetryUpload={handleRetryUpload}
             onRetake={handleRetake}
             onContinue={onContinue}
+            submissionStatus={evaluationSubmitStatus}
           />
         )}
       </div>

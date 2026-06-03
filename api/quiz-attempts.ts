@@ -1,5 +1,5 @@
 import { prisma } from './_lib/prisma'
-import { methodNotAllowed, readJsonBody, safeErrorMessage, sendJson, type VercelRequestLike, type VercelResponseLike } from './_lib/http'
+import { methodNotAllowed, readJsonBody, safeErrorMessage, sendDbUnavailableIfNeeded, sendJson, type VercelRequestLike, type VercelResponseLike } from './_lib/http'
 import { scoreQuizAnswers } from './_lib/submissions'
 import { validateQuizAttemptPayload } from './_lib/validation'
 import { questionMap } from './_lib/courseData'
@@ -52,7 +52,7 @@ export default async function handler(request: VercelRequestLike, response: Verc
       },
     })
   } catch (error) {
-    return sendJson(response, 400, {
+    return sendDbUnavailableIfNeeded(error, response) ?? sendJson(response, 400, {
       ok: false,
       error: safeErrorMessage(error, 'Unable to store quiz attempt.'),
     })
