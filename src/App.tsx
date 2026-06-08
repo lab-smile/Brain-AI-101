@@ -6,6 +6,7 @@ import Module3 from './modules/Module3'
 import CourseEvaluation from './modules/CourseEvaluation'
 import PreCourseEvaluationPage from './modules/CourseEvaluation/PreCourseEvaluationPage'
 import CompletionScreen from './pages/CompletionScreen'
+import AdminSubmissionsPage from './pages/AdminSubmissionsPage'
 import { loadPreCourseEvaluationAttempt } from './modules/CourseEvaluation/lib/courseEvaluationStorage'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { selectCurrentView, setCurrentView } from './store/app'
@@ -98,6 +99,8 @@ function App() {
         <LandingPage onStart={startCourse} onNavigate={goTo} />
       </Suspense>
     )
+  } else if (currentView === 'adminSubmissions') {
+    content = <AdminSubmissionsPage onBack={() => goTo('landing')} />
   } else if (currentView === 'preCourseEvaluation') {
     content = <PreCourseEvaluationPage onBack={() => goTo('landing')} onContinue={() => goTo('module1')} />
   } else if (currentView === 'module1') {

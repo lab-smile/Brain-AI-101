@@ -1,5 +1,6 @@
 export type AppView =
   | 'landing'
+  | 'adminSubmissions'
   | 'preCourseEvaluation'
   | 'module1'
   | 'module2'
