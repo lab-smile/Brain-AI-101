@@ -9,7 +9,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://brain-ai-101.vercel.app"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
