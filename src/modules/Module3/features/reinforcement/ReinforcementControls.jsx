@@ -46,7 +46,7 @@ function ReinforcementControls({
   onSetParameter,
 }) {
   return (
-    <div className="m3-rl-controls">
+    <aside className="m3-rl-controls" aria-label="Reinforcement learning controls">
       <div className="m3-rl-control-card">
         <p className="m3-rl-control-label">Simulation controls</p>
         <div className="m3-controls m3-controls--rl">
@@ -144,7 +144,7 @@ function ReinforcementControls({
           <Slider label="Learning rate α" value={config.alpha} min={0.1} max={0.8} step={0.05} onChange={(value) => onSetParameter('alpha', value)} />
           <Slider label="Discount γ" value={config.gamma} min={0.5} max={0.99} step={0.01} onChange={(value) => onSetParameter('gamma', value)} />
         </div>
-        <p className="m3-type-desc">Changing grid size, rewards, or episode length resets learning so the Q-values match the new setup.</p>
+        <p className="m3-type-desc m3-rl-control-note">Changing grid size, rewards, or episode length resets learning so the Q-values match the new setup.</p>
       </div>
 
       <div className="m3-rl-control-card">
@@ -154,7 +154,7 @@ function ReinforcementControls({
           <p><strong>Editing the board:</strong> pauses the simulation and restarts learning so the Q-table matches the new map.</p>
         </div>
       </div>
-    </div>
+    </aside>
   )
 }
 

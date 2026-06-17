@@ -115,17 +115,6 @@ function ReinforcementLab({ embedded = false }) {
             </div>
           </div>
 
-          <div className="m3-rl-insight">
-            <strong>Signal:</strong> {summaryCopy(config, completedEpisodes, averageReward, greedyAction)}
-          </div>
-
-          {lastTransition && (
-            <div className="m3-rl-insight m3-rl-insight--soft">
-              <strong>Last step:</strong> Move <strong>{ACTION_LABELS[lastTransition.action].toLowerCase()}</strong>, {formatOutcome(lastTransition.outcome)}, reward <strong>{lastTransition.reward.toFixed(2)}</strong>.
-              {lastEpisodeOutcome && ` Last finished episode ${formatOutcome(lastEpisodeOutcome)}.`}
-            </div>
-          )}
-
           <div className="m3-rl-q-card m3-rl-q-card--inline">
             <p className="m3-rl-control-label">Action values for the current cell</p>
             <div className="m3-rl-q-grid">
@@ -137,6 +126,19 @@ function ReinforcementLab({ embedded = false }) {
               ))}
             </div>
             <p className="m3-type-desc">The highest value is the move the agent currently prefers.</p>
+          </div>
+
+          <div className="m3-rl-summary-stack">
+            <div className="m3-rl-insight">
+              <strong>Signal:</strong> {summaryCopy(config, completedEpisodes, averageReward, greedyAction)}
+            </div>
+
+            {lastTransition && (
+              <div className="m3-rl-insight m3-rl-insight--soft">
+                <strong>Last step:</strong> Move <strong>{ACTION_LABELS[lastTransition.action].toLowerCase()}</strong>, {formatOutcome(lastTransition.outcome)}, reward <strong>{lastTransition.reward.toFixed(2)}</strong>.
+                {lastEpisodeOutcome && ` Last finished episode ${formatOutcome(lastEpisodeOutcome)}.`}
+              </div>
+            )}
           </div>
         </div>
 
@@ -156,14 +158,16 @@ function ReinforcementLab({ embedded = false }) {
         />
       </div>
 
-      <div className="m3-rl-q-card m3-rl-q-card--bottom">
-        <p className="m3-rl-control-label">Quick help</p>
-        <div className="m3-rl-copy-list">
-          <p><strong>Start:</strong> let the agent keep running through episodes on its own.</p>
-          <p><strong>Step Episode:</strong> run one full episode, then pause so you can inspect the result.</p>
-          <p><strong>Reset Environment:</strong> restart the agent on the same map, but keep what it learned.</p>
-          <p><strong>Reset Learning:</strong> erase the learned action values and start fresh.</p>
-          <p><strong>Edit the board:</strong> click cells to change gems, pits, walls, or empty spaces, then let the agent learn again.</p>
+      <div className="m3-rl-help-strip">
+        <div className="m3-rl-help-copy">
+          <p className="m3-rl-control-label">Quick help</p>
+          <div className="m3-rl-copy-list m3-rl-copy-list--inline">
+            <p><strong>Start:</strong> auto-run episodes.</p>
+            <p><strong>Step Episode:</strong> run one episode, then pause.</p>
+            <p><strong>Reset Environment:</strong> restart the agent but keep learning.</p>
+            <p><strong>Reset Learning:</strong> clear learned values.</p>
+            <p><strong>Board Editor:</strong> click cells to change the map.</p>
+          </div>
         </div>
         <div className="m3-rl-reward-row">
           {recentRewards.length === 0 ? (

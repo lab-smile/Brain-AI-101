@@ -28,7 +28,7 @@ function AdvancedLearningLabs() {
     <section className="m3-section">
       <div className="m3-section-card m3-section-card--feature m3-section-shell m3-advanced-learning-labs">
         <div className="m3-section-heading m3-advanced-learning-labs__intro">
-          <p className="m3-eyebrow">F. OPTIONAL EXTENSIONS</p>
+          <p className="m3-eyebrow">G. OPTIONAL EXTENSIONS</p>
           <h2>Advanced Learning Labs</h2>
         </div>
 
@@ -41,6 +41,11 @@ function AdvancedLearningLabs() {
               <div className="m3-advanced-learning-labs__card-copy">
                 <p className="m3-advanced-learning-labs__label">{card.title}</p>
                 <h4>{card.subtitle}</h4>
+                {card.accent === 'reinforcement' ? (
+                  <p className="m3-advanced-learning-labs__helper">
+                    Watch an agent improve its choices by using rewards and penalties.
+                  </p>
+                ) : null}
               </div>
               <div className="m3-advanced-learning-labs__card-body">
                 {card.render()}
