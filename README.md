@@ -54,6 +54,10 @@ An interactive neuroscience + AI learning platform that turns neurons, networks,
   </tr>
 </table>
 
+## Presenter Materials
+
+- [Brain AI 101 speech PDF](docs/Brain_AI_101_SPPECH.pdf)
+
 ## What Learners Do
 
 Learners move through a guided web experience that starts with biological neuron signals, then connects that idea to artificial neural networks and CNN filters. Each concept is paired with something students can manipulate: signals, layers, kernels, clustering points, rewards, and feedback loops.
