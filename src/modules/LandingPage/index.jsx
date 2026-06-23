@@ -288,8 +288,9 @@ export default function LandingPage({ onStart, onNavigate }) {
           <h2 className="lp-bd-bottom-headline">
             Build the idea<br />step by <span className="lp-hero-accent">step</span>
           </h2>
-          <button className="lp-btn-primary" onClick={onStart}>
-            Begin Module 1 <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+          <button className="lp-btn-text" onClick={scrollToModules}>
+            See what each module covers
+            <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
           </button>
         </div>
       </section>
@@ -324,6 +325,11 @@ export default function LandingPage({ onStart, onNavigate }) {
                     </div>
                   ))}
                 </div>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 24 }}>
+                <button className="lp-btn-secondary" onClick={() => handleNavigate('module1')}>
+                  Explore Module 1 <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+                </button>
               </div>
             </div>
           </div>
