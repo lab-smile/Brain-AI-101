@@ -115,7 +115,7 @@ function LearningProblem() {
           </article>
         </div>
 
-        <p className="m3-sa-takeaway">
+        <p className="m3-section-takeaway m3-sa-takeaway">
           The model learns by comparing its prediction with the target and adjusting which features matter most.
         </p>
       </div>

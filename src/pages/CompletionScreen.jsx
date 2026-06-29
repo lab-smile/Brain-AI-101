@@ -305,7 +305,7 @@ function CompletionScreen({ onGoToModule, onBackToHome }) {
                     Your name is stored only for this browser session.
                   </p>
                   <p className="completion-certificate-note">
-                    The certificate is generated from the official template. For local testing, run <code>npm run dev:full</code>.
+                    The certificate is generated from the official PDF template.
                   </p>
                   {nameError ? (
                     <p className="completion-certificate-error" role="alert">{nameError}</p>

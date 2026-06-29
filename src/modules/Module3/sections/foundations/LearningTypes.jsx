@@ -161,7 +161,7 @@ export default function LearningTypes({ onJumpToSectionC }) {
         </div>
 
         <div className="m3-learning-type-bridge m3-learning-type-bridge--compact">
-          <p className="m3-bridge-main">
+          <p className="m3-bridge-main m3-section-takeaway">
             All three use feedback — they differ in <strong>what kind</strong>.
           </p>
           <p className="m3-bridge-sub">

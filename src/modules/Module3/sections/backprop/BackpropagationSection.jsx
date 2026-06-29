@@ -562,7 +562,7 @@ function BackpropagationSection() {
           </div>
         </div>
 
-        <p className="m3-takeaway">
+        <p className="m3-takeaway m3-section-takeaway">
           Backpropagation does not guess which weights to change.
           It calculates exactly how much each weight contributed to the mistake.
         </p>

@@ -112,6 +112,7 @@ Speech/
 /certificate/*
 !/certificate/
 !/certificate/BrainxAI_101_Certificate_Template.docx
+!/certificate/BrainxAI_101_Certificate_Template.pdf
 !/certificate/BrainxAI_101_Certificate_of_Completion.pdf
 .vercel
 .env*
