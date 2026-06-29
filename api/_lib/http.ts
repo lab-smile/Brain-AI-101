@@ -10,6 +10,7 @@ export interface VercelRequestLike extends AsyncIterable<Uint8Array | Buffer | s
 
 export interface VercelResponseLike {
   statusCode: number
+  headersSent?: boolean
   setHeader(name: string, value: string | string[]): void
   end(body?: string | Buffer): void
 }

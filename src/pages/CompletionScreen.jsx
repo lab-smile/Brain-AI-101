@@ -63,6 +63,11 @@ function sanitizeName(value) {
   return value.trim().replace(/\s+/g, ' ')
 }
 
+function isValidStoredCertificateName(value) {
+  const normalized = sanitizeName(value)
+  return normalized.length >= 2 && /\p{L}/u.test(normalized) && !/\{\{[^}]*\}\}/.test(normalized)
+}
+
 function CompletionScreen({ onGoToModule, onBackToHome }) {
   const completionStatus = useAppSelector(selectCourseCompletionStatus)
   const heroRef = useRef(null)
@@ -75,8 +80,10 @@ function CompletionScreen({ onGoToModule, onBackToHome }) {
   useEffect(() => {
     try {
       const savedName = window.sessionStorage.getItem(CERTIFICATE_NAME_STORAGE_KEY) || ''
-      if (savedName) {
-        setStudentName(savedName)
+      if (isValidStoredCertificateName(savedName)) {
+        setStudentName(sanitizeName(savedName))
+      } else if (savedName) {
+        window.sessionStorage.removeItem(CERTIFICATE_NAME_STORAGE_KEY)
       }
     } catch {
       // sessionStorage unavailable — keep runtime-only state
@@ -85,8 +92,8 @@ function CompletionScreen({ onGoToModule, onBackToHome }) {
 
   useEffect(() => {
     try {
-      if (studentName) {
-        window.sessionStorage.setItem(CERTIFICATE_NAME_STORAGE_KEY, studentName)
+      if (isValidStoredCertificateName(studentName)) {
+        window.sessionStorage.setItem(CERTIFICATE_NAME_STORAGE_KEY, sanitizeName(studentName))
       } else {
         window.sessionStorage.removeItem(CERTIFICATE_NAME_STORAGE_KEY)
       }
@@ -298,7 +305,7 @@ function CompletionScreen({ onGoToModule, onBackToHome }) {
                     Your name is stored only for this browser session.
                   </p>
                   <p className="completion-certificate-note">
-                    The certificate is generated on the backend from the official award template. Use the Vercel deployment, or run <code>npm run dev:full</code> locally.
+                    The certificate is generated from the official template. For local testing, run <code>npm run dev:full</code>.
                   </p>
                   {nameError ? (
                     <p className="completion-certificate-error" role="alert">{nameError}</p>

@@ -1,5 +1,5 @@
 import { prisma } from './_lib/prisma.js'
-import { methodNotAllowed, readJsonBody, safeErrorMessage, sendDbUnavailableIfNeeded, sendJson, type VercelRequestLike, type VercelResponseLike } from './_lib/http.js'
+import { methodNotAllowed, readJsonBody, sendJson, type VercelRequestLike, type VercelResponseLike } from './_lib/http.js'
 import { mapEvaluationSource, serializeEvaluationSource } from './_lib/submissions.js'
 import { validateEvaluationPayload } from './_lib/validation.js'
 import { checkRateLimit } from './_lib/rateLimit.js'
@@ -9,6 +9,13 @@ export default async function handler(request: VercelRequestLike, response: Verc
 
   if (request.method !== 'POST') {
     return methodNotAllowed(response, 'POST')
+  }
+
+  if (!process.env.DATABASE_URL) {
+    return sendJson(response, 503, {
+      ok: false,
+      error: 'DATABASE_URL is not configured. Evaluation submission is disabled in local mode.',
+    })
   }
 
   try {
@@ -58,9 +65,15 @@ export default async function handler(request: VercelRequestLike, response: Verc
       },
     })
   } catch (error) {
-    return sendDbUnavailableIfNeeded(error, response) ?? sendJson(response, 400, {
-      ok: false,
-      error: safeErrorMessage(error, 'Unable to store evaluation.'),
-    })
+    console.error(error)
+
+    if (!response.headersSent) {
+      return sendJson(response, 500, {
+        ok: false,
+        error: 'Evaluation submission failed.',
+      })
+    }
+
+    return
   }
 }

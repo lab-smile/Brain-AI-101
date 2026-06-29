@@ -1,182 +1,123 @@
-import { useState } from 'react'
+const DIGIT_FEATURE_IMAGE = '/assets/module3/ChatGPT Image Jun 27, 2026, 11_13_38 PM.png'
 
-const weights = [
-  { label: 'Top arc',         desc: 'curve at the top',        color: '#534AB7', before: 0.32, after: 0.47 },
-  { label: 'Middle point',    desc: 'where the strokes meet',  color: '#1D9E75', before: 0.51, after: 0.34 },
-  { label: 'Open right side', desc: 'gap on the right',        color: '#D85A30', before: 0.21, after: 0.39 },
-  { label: 'Bottom arc',      desc: 'curve at the bottom',     color: '#BA7517', before: 0.44, after: 0.52 },
+const beforeWeights = [
+  { label: 'Upper curve', value: 'Medium', tone: 'neutral', desc: 'top arc of the digit', color: '#534AB7' },
+  { label: 'Closed loop', value: 'Too strong', tone: 'danger', desc: 'where the two strokes meet', color: '#1D9E75' },
+  { label: 'Open gap', value: 'Too weak', tone: 'warn', desc: 'open space on the right side', color: '#D85A30' },
+  { label: 'Lower curve', value: 'Medium', tone: 'neutral', desc: 'bottom arc of the digit', color: '#BA7517' },
 ]
 
-const learningExample = {
-  inputLabel: 'Handwritten digit',
-  target: '3',
-  wrongPrediction: '8',
-  before: {
-    prediction: '8',
-    confidenceTarget: 41,
-    confidenceWrong: 59,
-    error: 0.59,
-    weights: [
-      { label: 'Upper curve', before: 0.32, after: 0.47 },
-      { label: 'Closed loop', before: 0.51, after: 0.34 },
-      { label: 'Open gap', before: 0.21, after: 0.39 },
-      { label: 'Lower curve', before: 0.44, after: 0.52 },
-    ],
-  },
-  after: {
-    prediction: '3',
-    confidenceTarget: 74,
-    confidenceWrong: 26,
-    error: 0.26,
-  },
+const afterWeights = [
+  { label: 'Upper curve', value: 'Strong', tone: 'success', desc: 'top arc of the digit', color: '#534AB7' },
+  { label: 'Closed loop', value: 'Weak', tone: 'soft', desc: 'where the two strokes meet', color: '#1D9E75' },
+  { label: 'Open gap', value: 'Strongest', tone: 'successStrong', desc: 'open space on the right side', color: '#D85A30' },
+  { label: 'Lower curve', value: 'Strong', tone: 'success', desc: 'bottom arc of the digit', color: '#BA7517' },
+]
+
+function PredictionSummary({ prediction, target, status, improved = false }) {
+  return (
+    <div className={`m3-sa-prediction${improved ? ' m3-sa-prediction--improved' : ''}`}>
+      <div>
+        <span>Prediction</span>
+        <strong>{prediction}</strong>
+      </div>
+      <div>
+        <span>Target</span>
+        <strong>{target}</strong>
+      </div>
+      <p>{status}</p>
+    </div>
+  )
 }
 
-const controlSteps = [
-  'Run Prediction',
-  'Reveal Target',
-  'Measure Error',
-  'Update Weights',
-  'Test Again',
-]
+function FeatureWeights({ items }) {
+  return (
+    <div className="m3-sa-weights" aria-label="Feature weights">
+      {items.map((item) => (
+        <div
+          key={item.label}
+          className="m3-sa-weight-row"
+          style={{ '--m3-sa-feature-color': item.color }}
+        >
+          <span className="m3-sa-weight-dot" aria-hidden="true" />
+          <span className="m3-sa-weight-copy">
+            <span className="m3-sa-weight-label">{item.label}</span>
+            <span className="m3-sa-weight-desc">{item.desc}</span>
+          </span>
+          <strong className={`m3-sa-weight-pill m3-sa-weight-pill--${item.tone}`}>
+            {item.value}
+          </strong>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 function LearningProblem() {
-  const [step, setStep] = useState(0)
-
-  const showPrediction = step >= 1
-  const showTarget = step >= 2
-  const showError = step >= 3
-  const showWeightUpdate = step >= 4
-  const showImprovedPrediction = step >= 4
-  const isComplete = step === 4
-  const primaryLabel = controlSteps[step]
-
-  const handleAdvance = () => {
-    setStep((currentStep) => Math.min(currentStep + 1, 4))
-  }
-
   return (
     <section className="m3-section m3-section--centered">
-      <p className="m3-feature-card-label">What the model checks when it sees a &#39;3&#39;:</p>
-      <div className="m3-section-card m3-section-card--feature m3-signal-activity m3-learning-problem-card">
+      <div className="m3-section-card m3-section-card--feature m3-learning-problem-card m3-sa-card">
         <div className="m3-section-heading">
           <p className="m3-eyebrow">A. LEARNING MEANS CHANGING</p>
           <h2>Can the model correct itself?</h2>
           <p className="m3-section-subtitle">
-            Each round, the model makes a guess, checks how wrong it was,
-            and nudges its weights in the right direction.
+            A model learns when feedback changes which features matter most.
           </p>
         </div>
 
-        <div className="m3-controls m3-signal-activity__controls m3-signal-activity__controls--compact">
-          {!isComplete ? (
-            <button
-              type="button"
-              className="m3-btn m3-btn--primary"
-              onClick={handleAdvance}
-            >
-              {primaryLabel}
-            </button>
-          ) : null}
-          {isComplete ? (
-            <>
-              <button
-                type="button"
-                className="m3-btn m3-btn--primary"
-                onClick={() => setStep(0)}
-              >
-                {primaryLabel}
-              </button>
-              <button
-                type="button"
-                className="m3-btn"
-                onClick={() => setStep(0)}
-              >
-                Reset
-              </button>
-            </>
-          ) : null}
-        </div>
-
-        <div className="m3-signal-activity__grid">
-          <article className="m3-mechanism-panel">
-            <img
-              src="/assets/module3/digit3_feature_boxes.svg"
-              alt="Digit 3 with four labeled feature boxes: top arc, middle point, open right side, and bottom arc"
-              className="m3-digit-asset"
-            />
-            <div className="m3-mechanism-panel__header">
-              <h3>Input</h3>
+        <div className="m3-sa-layout">
+          <article className="m3-sa-panel m3-sa-panel--input">
+            <div className="m3-sa-panel-head">
+              <h3>Input digit</h3>
+              <p>The model looks at parts of the shape.</p>
             </div>
-            <p className="m3-section-subtitle m3-learning-copy">
-              {step >= 0 ? `The model receives an input: a ${learningExample.inputLabel.toLowerCase()}.` : ''}
+            <div className="m3-sa-digit-frame">
+              <img
+                src={DIGIT_FEATURE_IMAGE}
+                alt="Digit 3 with labels for upper curve, open gap, and lower curve"
+                className="m3-sa-digit-image"
+              />
+            </div>
+            <p className="m3-sa-note">The model checks different parts of the shape.</p>
+          </article>
+
+          <article className="m3-sa-panel m3-sa-panel--before">
+            <div className="m3-sa-panel-head">
+              <h3>Before learning</h3>
+              <p>The model makes a wrong prediction.</p>
+            </div>
+            <PredictionSummary prediction="8" target="3" status="Error detected" />
+            <FeatureWeights items={beforeWeights} />
+            <p className="m3-sa-note">
+              The model focuses too much on the wrong feature and misses the open gap.
             </p>
           </article>
 
-          <article className="m3-mechanism-panel">
-            <div className="m3-mechanism-panel__header">
-              <h3>Prediction, Target, Error</h3>
+          <div className="m3-sa-connector" aria-hidden="true">
+            <span>Feedback updates weights</span>
+          </div>
+
+          <article className="m3-sa-panel m3-sa-panel--after">
+            <div className="m3-sa-panel-head">
+              <h3>After learning</h3>
+              <p>The model makes the correct prediction.</p>
             </div>
-
-            <div className="m3-compare-grid">
-              <div className="m3-compare-card m3-compare-card--before">
-                <p className="m3-compare-card__label">Before Learning</p>
-                <div className="m3-compare-card__metrics">
-                  <div className="m3-compare-metric">
-                    <span>Prediction</span>
-                    <strong>{showPrediction ? learningExample.before.prediction : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric">
-                    <span>Target</span>
-                    <strong>{showTarget ? learningExample.target : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric m3-compare-metric--error">
-                    <span>Error</span>
-                    <strong>{showError ? learningExample.before.error.toFixed(2) : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric">
-                    <span>Correct answer score</span>
-                    <strong>{showError ? `${learningExample.before.confidenceTarget}%` : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric">
-                    <span>Wrong answer score</span>
-                    <strong>{showError ? `${learningExample.before.confidenceWrong}%` : '...'}</strong>
-                  </div>
-                </div>
-              </div>
-
-              <div className="m3-compare-card m3-compare-card--after">
-                <p className="m3-compare-card__label">After Learning</p>
-                <div className="m3-compare-card__metrics">
-                  <div className="m3-compare-metric">
-                    <span>Prediction</span>
-                    <strong>{showImprovedPrediction ? learningExample.after.prediction : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric">
-                    <span>Target</span>
-                    <strong>{showImprovedPrediction ? learningExample.target : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric m3-compare-metric--error">
-                    <span>Error</span>
-                    <strong>{showImprovedPrediction ? learningExample.after.error.toFixed(2) : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric">
-                    <span>Correct answer score</span>
-                    <strong>{showImprovedPrediction ? `${learningExample.after.confidenceTarget}%` : '...'}</strong>
-                  </div>
-                  <div className="m3-compare-metric">
-                    <span>Wrong answer score</span>
-                    <strong>{showImprovedPrediction ? `${learningExample.after.confidenceWrong}%` : '...'}</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article className="m3-mechanism-panel">
-            <h3 className="m3-mechanism-panel__header">What the model checks</h3>
+            <PredictionSummary
+              prediction="3"
+              target="3"
+              status="Prediction improved"
+              improved
+            />
+            <FeatureWeights items={afterWeights} />
+            <p className="m3-sa-note">
+              The model focuses on the right features and predicts correctly.
+            </p>
           </article>
         </div>
 
+        <p className="m3-sa-takeaway">
+          The model learns by comparing its prediction with the target and adjusting which features matter most.
+        </p>
       </div>
     </section>
   )

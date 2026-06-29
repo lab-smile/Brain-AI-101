@@ -1,22 +1,18 @@
+import { existsSync } from 'node:fs'
 import { readFile, writeFile, unlink } from 'node:fs/promises'
-import { execSync } from 'node:child_process'
+import { execFileSync, execSync } from 'node:child_process'
 import { tmpdir } from 'node:os'
 import { randomUUID } from 'node:crypto'
 import path from 'node:path'
 import JSZip from 'jszip'
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 
 const DOCX_TEMPLATE_PATH = path.join(
   process.cwd(),
   'certificate',
   'BrainxAI_101_Certificate_Template.docx',
 )
-const PDF_TEMPLATE_PATH = path.join(
-  process.cwd(),
-  'certificate',
-  'BrainxAI_101_Certificate_Template.pdf',
-)
 const DOCUMENT_XML_PATH = 'word/document.xml'
+const PDF_CONVERSION_ERROR = 'PDF conversion failed. LibreOffice is required for local certificate PDF generation.'
 
 export interface CertificateTemplateValues {
   recipientName: string
@@ -37,18 +33,81 @@ function escapeXml(str: string): string {
     .replace(/'/g, '&apos;')
 }
 
-// Cached — soffice availability does not change during process lifetime.
-let sofficeAvailable: boolean | null = null
+function findContainingParagraphStart(xml: string, index: number) {
+  const paragraphStartPattern = /<w:p(?=[\s>])/g
+  let paragraphStart = -1
+  let match: RegExpExecArray | null
 
-function isSofficeAvailable(): boolean {
-  if (sofficeAvailable !== null) return sofficeAvailable
-  try {
-    execSync('which soffice', { stdio: 'ignore' })
-    sofficeAvailable = true
-  } catch {
-    sofficeAvailable = false
+  while ((match = paragraphStartPattern.exec(xml)) && match.index <= index) {
+    paragraphStart = match.index
   }
-  return sofficeAvailable
+
+  return paragraphStart
+}
+
+function centerParagraphContaining(xml: string, marker: string) {
+  const markerIndex = xml.indexOf(marker)
+  if (markerIndex === -1) return xml
+
+  const paragraphStart = findContainingParagraphStart(xml, markerIndex)
+  const paragraphEnd = xml.indexOf('</w:p>', markerIndex)
+  if (paragraphStart === -1 || paragraphEnd === -1) return xml
+
+  const paragraphCloseEnd = paragraphEnd + '</w:p>'.length
+  const paragraph = xml.slice(paragraphStart, paragraphCloseEnd)
+  const openTagEnd = paragraph.indexOf('>')
+  if (openTagEnd === -1) return xml
+
+  const centeredParagraph = paragraph.replace(
+    /<w:pPr\b[^>]*>[\s\S]*?<\/w:pPr>/,
+    (pPr) => {
+      if (/<w:jc\b/.test(pPr)) {
+        return pPr.replace(
+          /<w:jc\b[^>]*(?:\/>|>[\s\S]*?<\/w:jc>)/,
+          '<w:jc w:val="center"/>',
+        )
+      }
+
+      return pPr.replace('</w:pPr>', '<w:jc w:val="center"/></w:pPr>')
+    },
+  )
+
+  const updatedParagraph = centeredParagraph === paragraph
+    ? `${paragraph.slice(0, openTagEnd + 1)}<w:pPr><w:jc w:val="center"/></w:pPr>${paragraph.slice(openTagEnd + 1)}`
+    : centeredParagraph
+
+  return `${xml.slice(0, paragraphStart)}${updatedParagraph}${xml.slice(paragraphCloseEnd)}`
+}
+
+let sofficeCommand: string | null | undefined
+
+function getSofficeCommand(): string | null {
+  if (sofficeCommand !== undefined) return sofficeCommand
+
+  const windowsCandidates = [
+    'C:\\Program Files\\LibreOffice\\program\\soffice.exe',
+    'C:\\Program Files (x86)\\LibreOffice\\program\\soffice.exe',
+  ]
+
+  for (const candidate of windowsCandidates) {
+    if (existsSync(candidate)) {
+      sofficeCommand = candidate
+      return sofficeCommand
+    }
+  }
+
+  try {
+    const command = process.platform === 'win32' ? 'where soffice' : 'command -v soffice'
+    const result = execSync(command, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)[0]
+    sofficeCommand = result || null
+  } catch {
+    sofficeCommand = null
+  }
+
+  return sofficeCommand
 }
 
 async function fillDocxTemplate(values: CertificateTemplateValues): Promise<Buffer> {
@@ -62,21 +121,12 @@ async function fillDocxTemplate(values: CertificateTemplateValues): Promise<Buff
 
   let xml = await documentEntry.async('string')
 
-  // Word's spell-checker inserts <w:proofErr> markers between runs, splitting
-  // {{recipient_name}} into three separate runs: "{{" + "recipient_name" + "}}".
-  // Remove those markers first so the adjacent runs become contiguous.
+  // Word can split {{recipient_name}} across runs and proofing markers.
   xml = xml.replace(/<w:proofErr[^>]*\/>/g, '')
+  xml = centerParagraphContaining(xml, 'recipient_name')
 
-  // rPr safe-content pattern: matches everything inside <w:rPr>...</w:rPr>
-  // without crossing element boundaries. [\s\S]*? (lazy any-char) is unsafe here
-  // because it backtracks across </w:rPr> closing tags and ends up matching whole
-  // swathes of unrelated XML. The pattern below stops at the first </w:rPr>.
-  const RPC = '(?:[^<]|<(?!\\/w:rPr>))*' // rPr content — no [\s\S]*?
+  const RPC = '(?:[^<]|<(?!\\/w:rPr>))*'
 
-  // {{recipient_name}} is split by Word's spell-checker across three adjacent runs:
-  //   run("{{")  run("recipient_name")  run("}}")
-  // After proofErr removal they are contiguous. Collapse all three into one run
-  // at the Name paragraph style size (sz=74 = 37pt, bold).
   if (xml.includes('{{recipient_name}}')) {
     xml = xml.split('{{recipient_name}}').join(escapeXml(values.recipientName))
   } else {
@@ -85,16 +135,15 @@ async function fillDocxTemplate(values: CertificateTemplateValues): Promise<Buff
       `<w:r\\b[^>]*>(?:<w:rPr>${RPC}<\\/w:rPr>)?<w:t[^>]*>recipient_name<\\/w:t><\\/w:r>` +
       `<w:r\\b[^>]*>(?:<w:rPr>${RPC}<\\/w:rPr>)?<w:t[^>]*>\\}\\}<\\/w:t><\\/w:r>`,
     )
-    xml = xml.replace(nameRe,
+    xml = xml.replace(
+      nameRe,
       `<w:r><w:rPr><w:b/><w:bCs/><w:sz w:val="74"/><w:szCs w:val="74"/></w:rPr>` +
       `<w:t xml:space="preserve">${escapeXml(values.recipientName)}</w:t></w:r>`,
     )
   }
 
-  // Month: the Date paragraph style defines only 13pt (sz=26). Override with 20pt
-  // by injecting an explicit sz on the replacement run.
   const monthRe = new RegExp(
-    `(<w:r[^>]*>)(<w:rPr>${RPC}<\\/w:rPr>)?(<w:t[^>]*>)\\{\\{issue_month\\}\\}(<\\/w:t><\\/w:r>)`,
+    `(<w:r[^>]*>)(<w:rPr>${RPC}<\\/w:rPr>)?(<w:t[^>]*>)\\{\\{(?:issue_month|ISSUE_MONTH)\\}\\}(<\\/w:t><\\/w:r>)`,
   )
   xml = xml.replace(monthRe,
     (_m, runOpen: string, rPr: string | undefined, tOpen: string, tClose: string) => {
@@ -105,11 +154,11 @@ async function fillDocxTemplate(values: CertificateTemplateValues): Promise<Buff
       return `${runOpen}${newRPr}${tOpen}${escapeXml(values.issueMonth.toUpperCase())}${tClose}`
     },
   )
+  xml = xml.split('{{issue_month}}').join(escapeXml(values.issueMonth.toUpperCase()))
+  xml = xml.split('{{ISSUE_MONTH}}').join(escapeXml(values.issueMonth.toUpperCase()))
 
-  // Year: the run carries an inline sz=28 (14pt) that overrides the Year paragraph
-  // style's sz=64 (32pt). Replace sz=28 → sz=64 so the style size is honoured.
   const yearRe = new RegExp(
-    `(<w:r[^>]*>)(<w:rPr>)(${RPC})(<\\/w:rPr>)(<w:t[^>]*>)\\{\\{issue_year\\}\\}`,
+    `(<w:r[^>]*>)(<w:rPr>)(${RPC})(<\\/w:rPr>)(<w:t[^>]*>)\\{\\{(?:issue_year|ISSUE_YEAR)\\}\\}`,
   )
   xml = xml.replace(yearRe,
     (_m, runOpen: string, rPrOpen: string, rPrContent: string, rPrClose: string, tOpen: string) => {
@@ -120,94 +169,41 @@ async function fillDocxTemplate(values: CertificateTemplateValues): Promise<Buff
     },
   )
   xml = xml.split('{{issue_year}}').join(escapeXml(values.issueYear))
+  xml = xml.split('{{ISSUE_YEAR}}').join(escapeXml(values.issueYear))
 
   zip.file(DOCUMENT_XML_PATH, xml)
   return zip.generateAsync({ type: 'nodebuffer' })
 }
 
-async function generatePdfLibCertificate(values: CertificateTemplateValues): Promise<Buffer> {
-  const templateBuffer = await readFile(PDF_TEMPLATE_PATH)
-  const pdf = await PDFDocument.load(templateBuffer)
-  const page = pdf.getPage(0)
-  const { width, height } = page.getSize()
-
-  const timesItalic = await pdf.embedFont(StandardFonts.TimesRomanItalic)
-  const timesRoman = await pdf.embedFont(StandardFonts.TimesRoman)
-
-  // Name — centered horizontally, 26pt italic
-  const nameFontSize = 26
-  const nameY = height * 0.38
-  const nameTextWidth = timesItalic.widthOfTextAtSize(values.recipientName, nameFontSize)
-  const nameX = (width - nameTextWidth) / 2
-
-  console.log('certificate name Y:', nameY.toFixed(1), 'x:', nameX.toFixed(1), 'pageH:', height)
-
-  page.drawText(values.recipientName, {
-    x: nameX,
-    y: nameY,
-    size: nameFontSize,
-    font: timesItalic,
-    color: rgb(0.2, 0.14, 0.07),
-  })
-
-  // Month — 20pt
-  page.drawText(values.issueMonth.toUpperCase(), {
-    x: width * 0.128,
-    y: height * 0.15,
-    size: 20,
-    font: timesRoman,
-    color: rgb(0.17, 0.1, 0.05),
-  })
-
-  // Year — 22pt
-  page.drawText(values.issueYear, {
-    x: width * 0.122,
-    y: height * 0.11,
-    size: 22,
-    font: timesRoman,
-    color: rgb(0.17, 0.1, 0.05),
-  })
-
-  return Buffer.from(await pdf.save())
-}
-
 export async function generateCertificateDocument(values: CertificateTemplateValues): Promise<{
   buffer: Buffer
   mimeType: string
-  extension: 'pdf' | 'docx'
+  extension: 'pdf'
 }> {
-  // Path 1: LibreOffice DOCX→PDF (available in some environments, not Vercel)
-  if (isSofficeAvailable()) {
-    const docxBuffer = await fillDocxTemplate(values)
-    const tmp = tmpdir()
-    const id = randomUUID()
-    const tmpDocx = path.join(tmp, `cert_${id}.docx`)
-    const tmpPdf = path.join(tmp, `cert_${id}.pdf`)
-    try {
-      await writeFile(tmpDocx, docxBuffer)
-      execSync(`soffice --headless --convert-to pdf "${tmpDocx}" --outdir "${tmp}"`, {
-        timeout: 25000,
-      })
-      const pdfBuffer = await readFile(tmpPdf)
-      return { buffer: pdfBuffer, mimeType: 'application/pdf', extension: 'pdf' }
-    } finally {
-      await unlink(tmpDocx).catch(() => {})
-      await unlink(tmpPdf).catch(() => {})
-    }
+  const soffice = getSofficeCommand()
+  if (!soffice) {
+    throw new Error(PDF_CONVERSION_ERROR)
   }
 
-  // Path 2: pdf-lib overlay on the PDF template (works on Vercel)
+  const docxBuffer = await fillDocxTemplate(values)
+  const tmp = tmpdir()
+  const id = randomUUID()
+  const tmpDocx = path.join(tmp, `cert_${id}.docx`)
+  const tmpPdf = path.join(tmp, `cert_${id}.pdf`)
+
   try {
-    const pdfBuffer = await generatePdfLibCertificate(values)
+    await writeFile(tmpDocx, docxBuffer)
+    execFileSync(soffice, ['--headless', '--convert-to', 'pdf', '--outdir', tmp, tmpDocx], {
+      timeout: 25000,
+      stdio: 'pipe',
+    })
+    const pdfBuffer = await readFile(tmpPdf)
     return { buffer: pdfBuffer, mimeType: 'application/pdf', extension: 'pdf' }
   } catch {
-    // Path 3: last resort — return filled DOCX if PDF template is missing
-    const docxBuffer = await fillDocxTemplate(values)
-    return {
-      buffer: docxBuffer,
-      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      extension: 'docx',
-    }
+    throw new Error(PDF_CONVERSION_ERROR)
+  } finally {
+    await unlink(tmpDocx).catch(() => {})
+    await unlink(tmpPdf).catch(() => {})
   }
 }
 
