@@ -23,6 +23,11 @@ export interface QuizAttemptRecord {
   passed: boolean
   selectedAnswers: Record<string, string>
   moduleBreakdown: Record<string, { module: string; label: string; correct: number; total: number }>
+  answers?: {
+    questionId: string
+    selectedOptionId: string
+    isCorrect: boolean
+  }[]
 }
 
 export interface QuizAttemptSubmissionResponse {

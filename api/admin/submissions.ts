@@ -49,6 +49,11 @@ export default async function handler(request: VercelRequestLike, response: Verc
         passed: attempt.passed,
         selectedAnswers: attempt.selectedAnswers,
         moduleBreakdown: attempt.moduleBreakdown,
+        answers: attempt.answers.map((answer) => ({
+          questionId: answer.questionId,
+          selectedOptionId: answer.selectedOptionId,
+          isCorrect: answer.isCorrect,
+        })),
       })),
       evaluations: evaluations.map((submission) => ({
         id: submission.id,

@@ -774,7 +774,33 @@ export default function AdminSubmissionsPage({ onBack }: { onBack: () => void })
                                 <td colSpan={5}>
                                   <div className="admin-quiz-detail">
                                     <strong>Quiz score: {row.quiz ? `${row.quiz.score}/${row.quiz.maxScore}` : '—'}</strong>
-                                    <p>Per-question breakdown not available.</p>
+                                    {(() => {
+                                      const answers = row.quiz?.answers
+                                      if (!answers || answers.length === 0) {
+                                        return <p>Per-question breakdown not available.</p>
+                                      }
+
+                                      return (
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8, padding: '12px 0' }}>
+                                          {answers.map((answer, index) => (
+                                            <div
+                                              key={answer.questionId}
+                                              style={{
+                                                padding: '6px 10px',
+                                                borderRadius: 6,
+                                                fontSize: 13,
+                                                fontWeight: 500,
+                                                textAlign: 'center',
+                                                background: answer.isCorrect ? 'var(--bg-success)' : 'var(--bg-danger)',
+                                                color: answer.isCorrect ? 'var(--text-success)' : 'var(--text-danger)',
+                                              }}
+                                            >
+                                              Q{index + 1} {answer.isCorrect ? '✓' : '✗'}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      )
+                                    })()}
                                   </div>
                                 </td>
                               </tr>
