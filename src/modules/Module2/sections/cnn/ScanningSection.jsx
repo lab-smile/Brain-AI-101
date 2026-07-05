@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import butterflyImage from '../../../../assets/module2/cnn/butterfly-original.png'
 import {
   DEFAULT_KERNEL,
   KERNEL_PRESETS,
@@ -13,9 +14,81 @@ import {
   getReceptiveFieldValues,
   padImageGrid,
 } from '../../module2Config'
+import {
+  applyBoxBlurPerChannel,
+  applyConvolution,
+  applyConvolutionPerChannel,
+  toGrayscale,
+} from '../../utils/imageProcessing'
 
 const SVG_W = 1260
 const SVG_H = 500
+const EDGE_IMAGE_WIDTH = 1474
+const EDGE_IMAGE_HEIGHT = 1067
+const EDGE_IMAGE_ASPECT_RATIO = `${EDGE_IMAGE_WIDTH} / ${EDGE_IMAGE_HEIGHT}`
+const EMPTY_EDGE_IMAGE = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${EDGE_IMAGE_WIDTH}' height='${EDGE_IMAGE_HEIGHT}' viewBox='0 0 ${EDGE_IMAGE_WIDTH} ${EDGE_IMAGE_HEIGHT}'%3E%3Crect width='${EDGE_IMAGE_WIDTH}' height='${EDGE_IMAGE_HEIGHT}' fill='%23020617'/%3E%3C/svg%3E`
+const BLUR_RADIUS = 7
+
+const EDGE_FILTERS = {
+  vertical: {
+    kernel: [-1, 0, 1, -1, 0, 1, -1, 0, 1],
+    caption: 'Vertical kernel — picks up vertical lines',
+    alt: 'Vertical edge filter output for the butterfly.',
+  },
+  horizontal: {
+    kernel: [-1, -1, -1, 0, 0, 0, 1, 1, 1],
+    caption: 'Horizontal kernel — picks up horizontal lines',
+    alt: 'Horizontal edge filter output for the butterfly.',
+  },
+  sharpen: {
+    kernel: [0, -1, 0, -1, 5, -1, 0, -1, 0],
+    caption: 'Sharpen kernel — boosts contrast at edges',
+    alt: 'Sharpen filter output for the butterfly.',
+  },
+  blur: {
+    kernel: [1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9, 1 / 9],
+    caption: 'Blur kernel — averages neighboring pixels, softens detail',
+    alt: 'Blur filter output for the butterfly.',
+  },
+}
+
+const EDGE_PRESET_BY_KERNEL = {
+  verticalEdge: 'vertical',
+  horizontalEdge: 'horizontal',
+  sharpen: 'sharpen',
+  blur: 'blur',
+}
+
+const edgePanelStyle = {
+  background: '#020617',
+  border: '1px solid rgba(148, 163, 184, 0.28)',
+  borderRadius: 18,
+  boxShadow: '0 18px 40px rgba(15, 23, 42, 0.16)',
+  display: 'grid',
+  gap: 12,
+  margin: 0,
+  overflow: 'hidden',
+  padding: 14,
+}
+
+const edgeVisualFrameStyle = {
+  aspectRatio: EDGE_IMAGE_ASPECT_RATIO,
+  background: '#020617',
+  borderRadius: 14,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  width: '100%',
+}
+
+const edgeVisualStyle = {
+  display: 'block',
+  height: '100%',
+  objectFit: 'contain',
+  objectPosition: 'center',
+  width: '100%',
+}
 
 function getCellTone(value) {
   if (value > 0) {
@@ -59,6 +132,108 @@ function getOutputTone(value) {
   }
 }
 
+function createEdgeImage(sourceImage, filterType) {
+  const scratchCanvas = document.createElement('canvas')
+  const scratchContext = scratchCanvas.getContext('2d', { willReadFrequently: true })
+  const outputCanvas = document.createElement('canvas')
+  const outputContext = outputCanvas.getContext('2d')
+  const filter = EDGE_FILTERS[filterType]
+
+  if (!scratchContext || !outputContext || !filter) return EMPTY_EDGE_IMAGE
+
+  scratchCanvas.width = EDGE_IMAGE_WIDTH
+  scratchCanvas.height = EDGE_IMAGE_HEIGHT
+  outputCanvas.width = EDGE_IMAGE_WIDTH
+  outputCanvas.height = EDGE_IMAGE_HEIGHT
+
+  scratchContext.fillStyle = '#000000'
+  scratchContext.fillRect(0, 0, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT)
+  scratchContext.drawImage(sourceImage, 0, 0, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT)
+
+  const sourceData = scratchContext.getImageData(0, 0, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT)
+  let edgeData
+
+  if (filterType === 'vertical' || filterType === 'horizontal') {
+    edgeData = applyConvolution(toGrayscale(sourceData), EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT, filter.kernel)
+  } else if (filterType === 'blur') {
+    edgeData = applyBoxBlurPerChannel(sourceData, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT, BLUR_RADIUS)
+  } else if (filterType === 'sharpen') {
+    const sharpenedData = applyConvolutionPerChannel(sourceData, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT, filter.kernel)
+    edgeData = applyConvolutionPerChannel(sharpenedData, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT, filter.kernel)
+  } else {
+    edgeData = applyConvolutionPerChannel(sourceData, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT, filter.kernel)
+  }
+
+  outputContext.fillStyle = '#000000'
+  outputContext.fillRect(0, 0, EDGE_IMAGE_WIDTH, EDGE_IMAGE_HEIGHT)
+  outputContext.putImageData(edgeData, 0, 0)
+
+  return outputCanvas.toDataURL('image/png')
+}
+
+function EdgeDetectionCards({ activeEdgePreset }) {
+  const imageRef = useRef(null)
+  const [isReady, setIsReady] = useState(false)
+  const [edgeImages, setEdgeImages] = useState({})
+
+  useEffect(() => {
+    const sourceImage = imageRef.current
+
+    if (!isReady || !sourceImage) return
+
+    setEdgeImages({
+      vertical: createEdgeImage(sourceImage, 'vertical'),
+      horizontal: createEdgeImage(sourceImage, 'horizontal'),
+      sharpen: createEdgeImage(sourceImage, 'sharpen'),
+      blur: createEdgeImage(sourceImage, 'blur'),
+    })
+  }, [isReady])
+
+  const activeFilter = activeEdgePreset ? EDGE_FILTERS[activeEdgePreset] : null
+  const activeImage = activeEdgePreset ? edgeImages[activeEdgePreset] ?? EMPTY_EDGE_IMAGE : null
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gap: 18,
+        gridTemplateColumns: activeFilter ? 'repeat(2, minmax(0, 1fr))' : 'minmax(0, min(100%, 520px))',
+        justifyContent: activeFilter ? 'stretch' : 'center',
+      }}
+    >
+      <figure style={edgePanelStyle}>
+        <div style={edgeVisualFrameStyle}>
+          <img
+            ref={imageRef}
+            src={butterflyImage}
+            alt="Original color butterfly used for edge detection."
+            onLoad={() => setIsReady(true)}
+            style={edgeVisualStyle}
+          />
+        </div>
+        <figcaption style={{ color: '#e2e8f0', fontSize: 14, fontWeight: 700 }}>
+          Original
+        </figcaption>
+      </figure>
+
+      {activeFilter && (
+        <figure style={edgePanelStyle}>
+          <div style={edgeVisualFrameStyle}>
+            <img
+              src={activeImage}
+              alt={activeFilter.alt}
+              style={edgeVisualStyle}
+            />
+          </div>
+          <figcaption style={{ color: '#e2e8f0', fontSize: 14, fontWeight: 700, lineHeight: 1.5 }}>
+            {activeFilter.caption}
+          </figcaption>
+        </figure>
+      )}
+    </div>
+  )
+}
+
 function ScanningSection() {
   const [convImage, setConvImage] = useState([...SAMPLE_IMAGE])
   const [kernel, setKernel] = useState([...DEFAULT_KERNEL])
@@ -71,6 +246,7 @@ function ScanningSection() {
   })
   const [isAnimating, setIsAnimating] = useState(false)
   const [showScoreBreakdown, setShowScoreBreakdown] = useState(false)
+  const [activeEdgePreset, setActiveEdgePreset] = useState(null)
 
   const paddedImage = padImageGrid(convImage, SOURCE_SIZE, PADDING)
 
@@ -109,6 +285,7 @@ function ScanningSection() {
     const preset = KERNEL_PRESETS[name]
     if (!preset) return
     setKernel([...preset])
+    setActiveEdgePreset(EDGE_PRESET_BY_KERNEL[name] ?? null)
     updateStoredValue(paddedImage, preset, receptiveFieldPos.row, receptiveFieldPos.col, true)
   }
 
@@ -122,6 +299,7 @@ function ScanningSection() {
 
   const resetConvolution = () => {
     setReceptiveFieldPos({ row: 0, col: 0 })
+    setActiveEdgePreset(null)
     const field = getReceptiveFieldValues(paddedImage, 0, 0, PADDED_SIZE)
     const sum = computeWeightedSum(field, kernel)
     setStoredOutputs({ '0,0': sum })
@@ -531,6 +709,11 @@ function ScanningSection() {
             </div>
           )}
         </div>
+
+        <p className="m2-section-subtitle" style={{ marginTop: 28 }}>
+          Same idea, now on a real image.
+        </p>
+        <EdgeDetectionCards activeEdgePreset={activeEdgePreset} />
       </div>
     </section>
   )

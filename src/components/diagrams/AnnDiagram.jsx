@@ -34,9 +34,19 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
 
             <g className={activeBridgePart ? 'bridge-svg--has-highlight' : ''} opacity="1">
               <g className={`bridge-ann__inputs${activeBridgePart === 'inputs' ? ' bridge-part--active' : ''}`}>
-                <line x1="92" y1="98" x2="268" y2="190" stroke="#c7d2fe" strokeWidth="2" />
-                <line x1="92" y1="190" x2="268" y2="190" stroke="#c7d2fe" strokeWidth="2" />
-                <line x1="92" y1="282" x2="268" y2="190" stroke="#c7d2fe" strokeWidth="2" />
+                <line x1="92" y1="98" x2="268" y2="190" stroke="#818cf8" strokeWidth="4.5" />
+                <line x1="92" y1="190" x2="268" y2="190" stroke="#a5b4fc" strokeWidth="2.5" />
+                <line x1="92" y1="282" x2="268" y2="190" stroke="#c7d2fe" strokeWidth="1.5" />
+
+                <text x="180" y="144" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                  w1
+                </text>
+                <text x="180" y="190" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                  w2
+                </text>
+                <text x="180" y="236" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                  w3
+                </text>
 
                 <g>
                   <circle cx="64" cy="98" r="24" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2.5" />

@@ -6,6 +6,7 @@ import useScrollProgress from '../../hooks/useScrollProgress'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectModuleSectionProgress, setModuleSectionProgress } from '../../store/progress'
 import { updateSectionProgress } from '../../store/userProgress/userProgressSlice'
+import ActivationSection from './sections/activation/ActivationSection'
 import BridgeToAnn from './sections/bridge/BridgeToAnn'
 import InteractionSection from './sections/interaction/InteractionSection'
 import Module1AnatomySection from './sections/anatomy/Module1AnatomySection'
@@ -19,6 +20,7 @@ const SECTIONS = [
   { label: 'Neuron Anatomy' },
   { label: 'Sound Experiment' },
   { label: 'Bridge to AI' },
+  { label: 'Activation Function' },
 ]
 
 function Module1({ onBack, onContinue, onNavigate }) {
@@ -101,7 +103,11 @@ function Module1({ onBack, onContinue, onNavigate }) {
         </div>
 
         <section ref={setRef(3)} className="module1-anchor-section">
-          <BridgeToAnn onContinue={onContinue} />
+          <BridgeToAnn onContinue={() => scrollTo(4)} />
+        </section>
+
+        <section ref={setRef(4)} className="module1-anchor-section">
+          <ActivationSection onContinue={onContinue} />
         </section>
       </main>
     </div>

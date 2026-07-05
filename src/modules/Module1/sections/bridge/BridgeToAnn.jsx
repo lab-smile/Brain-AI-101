@@ -21,8 +21,8 @@ const MAPPING_STEPS = [
     bioTitle: 'Cell body',
     bioText: 'The cell body combines those signals and checks whether the total is strong enough.',
     annTitle: 'Processing rule',
-    annText: 'The model combines its inputs, then uses an activation decision when the total passes the threshold.',
-    mappingText: 'The soma or cell body maps to signal processing, and the firing threshold maps to the activation decision.',
+    annText: 'The model combines its inputs and checks whether the total passes a threshold.',
+    mappingText: 'The soma or cell body maps to signal processing, and the firing threshold maps to that same check.',
     takeaway: 'This is the moment where both systems decide whether the evidence is strong enough to respond.',
   },
   {
@@ -147,7 +147,6 @@ function BridgeToAnn({ onContinue }) {
             </p>
             <h3 className="module1-panel-title">{activeStep.buttonLabel}</h3>
           </div>
-          <span className="module1-bridge-current-label">Current match</span>
         </div>
 
         <div className="module1-mapping-list-bridge">

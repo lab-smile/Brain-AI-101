@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectModuleSectionProgress, setModuleSectionProgress } from '../../store/progress'
 import { updateSectionProgress } from '../../store/userProgress/userProgressSlice'
 import ANNSection from './sections/networks/ANNSection'
-import ActivationSection from './sections/activations/ActivationSection'
 import SpecialistsSection from './sections/selectivity/SpecialistsSection'
 import ScanningSection from './sections/cnn/ScanningSection'
 import CnnExplainerSection from './sections/cnn/CnnExplainerSection'
@@ -17,7 +16,6 @@ gsap.registerPlugin(ScrollTrigger)
 
 const SECTIONS = [
   { label: 'Neural Networks' },
-  { label: 'Activation Functions' },
   { label: 'Neural Selectivity' },
   { label: 'CNNs' },
   { label: 'CNN Explainer' },
@@ -84,10 +82,9 @@ function Module2({ onBack, onContinue, onNavigate }) {
 
       <main className="m2-main">
         <div ref={setRef(0)}><ANNSection /></div>
-        <div ref={setRef(1)}><ActivationSection /></div>
-        <div ref={setRef(2)}><SpecialistsSection /></div>
-        <div ref={setRef(3)}><ScanningSection /></div>
-        <div ref={setRef(4)}><CnnExplainerSection /></div>
+        <div ref={setRef(1)}><SpecialistsSection /></div>
+        <div ref={setRef(2)}><ScanningSection /></div>
+        <div ref={setRef(3)}><CnnExplainerSection /></div>
 
         <section className="m2-section m2-continue-section">
           <div className="m2-continue-card" onClick={onContinue} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onContinue?.()}>
