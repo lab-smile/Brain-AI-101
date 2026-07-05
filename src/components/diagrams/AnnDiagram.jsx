@@ -1,8 +1,13 @@
 function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 'inputs' }) {
   const isBridge = variant === 'bridge'
   const width = isBridge || isMobile ? '100%' : 800
-  const viewBox = isBridge ? '0 0 620 380' : '0 0 800 300'
+  const viewBox = isBridge ? '0 0 620 280' : '0 0 800 300'
   const ariaLabel = isBridge ? 'One neuron simplified model diagram' : 'Artificial neuron diagram'
+  const activationCheckX = 388
+  const activationCheckWidth = 80
+  const activationCheckRightEdge = activationCheckX + activationCheckWidth
+  const outputConnectionStartX = 508
+  const outputLabelX = (activationCheckRightEdge + outputConnectionStartX) / 2 + 8
 
   return (
     <div className={`ann-diagram-shell ${isBridge ? 'ann-diagram-shell--bridge' : ''}`}>
@@ -12,7 +17,6 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
         role="img"
         aria-label={ariaLabel}
         className="ann-diagram-svg"
-        style={isBridge ? { maxHeight: '340px' } : undefined}
       >
         {!isBridge && <rect x="0" y="0" width="800" height="300" rx="18" fill="#F8FAFC" />}
 
@@ -34,45 +38,45 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
 
             <g className={activeBridgePart ? 'bridge-svg--has-highlight' : ''} opacity="1">
               <g className={`bridge-ann__inputs${activeBridgePart === 'inputs' ? ' bridge-part--active' : ''}`}>
-                <line x1="92" y1="98" x2="268" y2="190" stroke="#818cf8" strokeWidth="4.5" />
-                <line x1="92" y1="190" x2="268" y2="190" stroke="#a5b4fc" strokeWidth="2.5" />
-                <line x1="92" y1="282" x2="268" y2="190" stroke="#c7d2fe" strokeWidth="1.5" />
+                <line x1="92" y1="48" x2="268" y2="140" stroke="#818cf8" strokeWidth="4.5" />
+                <line x1="92" y1="140" x2="268" y2="140" stroke="#a5b4fc" strokeWidth="2.5" />
+                <line x1="92" y1="232" x2="268" y2="140" stroke="#c7d2fe" strokeWidth="1.5" />
 
-                <text x="180" y="144" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                <text x="180" y="94" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
                   w1
                 </text>
-                <text x="180" y="190" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                <text x="180" y="140" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
                   w2
                 </text>
-                <text x="180" y="236" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                <text x="180" y="186" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
                   w3
                 </text>
 
                 <g>
-                  <circle cx="64" cy="98" r="24" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2.5" />
-                  <text x="64" y="104" textAnchor="middle" fontSize="14" fill="#1d4ed8" fontWeight="700">
+                  <circle cx="64" cy="48" r="24" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2.5" />
+                  <text x="64" y="54" textAnchor="middle" fontSize="14" fill="#1d4ed8" fontWeight="700">
                     x1
                   </text>
                 </g>
 
                 <g>
-                  <circle cx="64" cy="190" r="24" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2.5" />
-                  <text x="64" y="196" textAnchor="middle" fontSize="14" fill="#1d4ed8" fontWeight="700">
+                  <circle cx="64" cy="140" r="24" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2.5" />
+                  <text x="64" y="146" textAnchor="middle" fontSize="14" fill="#1d4ed8" fontWeight="700">
                     x2
                   </text>
                 </g>
 
                 <g>
-                  <circle cx="64" cy="282" r="24" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2.5" />
-                  <text x="64" y="288" textAnchor="middle" fontSize="14" fill="#1d4ed8" fontWeight="700">
+                  <circle cx="64" cy="232" r="24" fill="#eff6ff" stroke="#3b82f6" strokeWidth="2.5" />
+                  <text x="64" y="238" textAnchor="middle" fontSize="14" fill="#1d4ed8" fontWeight="700">
                     x3
                   </text>
                 </g>
               </g>
 
               <g className={`bridge-ann__node${activeBridgePart === 'combine' ? ' bridge-part--active' : ''}`}>
-                <circle cx="320" cy="190" r="40" fill="#f3e8ff" stroke="#7c3aed" strokeWidth="3" />
-                <text x="320" y="198" textAnchor="middle" fontSize="18" fill="#6d28d9" fontWeight="700">
+                <circle cx="320" cy="140" r="40" fill="#f3e8ff" stroke="#7c3aed" strokeWidth="3" />
+                <text x="320" y="148" textAnchor="middle" fontSize="18" fill="#6d28d9" fontWeight="700">
                   n
                 </text>
               </g>
@@ -80,21 +84,37 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
               <g className={`bridge-ann__output${activeBridgePart === 'output' ? ' bridge-part--active' : ''}`}>
                 <line
                   x1="360"
-                  y1="190"
-                  x2="496"
-                  y2="190"
+                  y1="140"
+                  x2="388"
+                  y2="140"
+                  stroke="#c7d2fe"
+                  strokeWidth="2.4"
+                />
+                <line
+                  x1={activationCheckRightEdge}
+                  y1="140"
+                  x2={outputConnectionStartX}
+                  y2="140"
                   stroke="#c7d2fe"
                   strokeWidth="2.4"
                   markerEnd="url(#ann-bridge-arrow)"
                 />
-                <text x="428" y="166" textAnchor="middle" fontSize="14" fill="#4b5563" fontWeight="700">
+                <text x={outputLabelX} y="116" textAnchor="middle" fontSize="14" fill="#4b5563" fontWeight="700">
                   output
                 </text>
               </g>
 
+              <g className={`bridge-ann__activation${activeBridgePart === 'combine' ? ' bridge-part--active' : ''}`}>
+                <rect x={activationCheckX} y="114" width={activationCheckWidth} height="52" rx="8" fill="#dbeafe" stroke="#1d4ed8" strokeWidth="2.4" />
+                <text textAnchor="middle" fontSize="10" fill="#1d4ed8" fontWeight="700">
+                  <tspan x="428" y="136">Activation</tspan>
+                  <tspan x="428" y="150">Check</tspan>
+                </text>
+              </g>
+
               <g className={`bridge-ann__connection${activeBridgePart === 'connection' ? ' bridge-part--active' : ''}`}>
-                <line x1="496" y1="190" x2="564" y2="190" stroke="#99aeca" strokeWidth="2.1" />
-                <circle cx="584" cy="190" r="12" fill="#ffffff" stroke="#94a3b8" strokeWidth="2.4" />
+                <line x1="508" y1="140" x2="576" y2="140" stroke="#99aeca" strokeWidth="2.1" />
+                <circle cx="596" cy="140" r="12" fill="#ffffff" stroke="#94a3b8" strokeWidth="2.4" />
               </g>
             </g>
           </>
