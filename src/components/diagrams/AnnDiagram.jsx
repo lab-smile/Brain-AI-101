@@ -42,13 +42,13 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
                 <line x1="92" y1="140" x2="268" y2="140" stroke="#a5b4fc" strokeWidth="2.5" />
                 <line x1="92" y1="232" x2="268" y2="140" stroke="#c7d2fe" strokeWidth="1.5" />
 
-                <text x="180" y="94" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                <text x="180" y="83" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
                   w1
                 </text>
-                <text x="180" y="140" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                <text x="180" y="132" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
                   w2
                 </text>
-                <text x="180" y="186" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
+                <text x="180" y="178" textAnchor="middle" dominantBaseline="middle" fontSize="13" fontWeight="700" fill="#1d4ed8">
                   w3
                 </text>
 

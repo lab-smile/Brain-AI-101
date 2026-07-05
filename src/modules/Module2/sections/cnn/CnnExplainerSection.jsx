@@ -6,7 +6,7 @@ function CnnExplainerSection() {
     <section className="m2-section">
       <div className="m2-section-card m2-explainer-card">
         <div className="m2-section-heading m2-canvas-heading">
-          <p className="m2-eyebrow">E. CNN Explainer</p>
+          <p className="m2-eyebrow">D. CNN Explainer</p>
           <h2>See How a CNN Reads an Image</h2>
           <p className="m2-section-subtitle">
             This interactive explainer makes convolution, feature maps,

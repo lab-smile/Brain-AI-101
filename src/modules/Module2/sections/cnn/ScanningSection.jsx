@@ -341,7 +341,7 @@ function ScanningSection() {
     <section className="m2-section">
       <div className="m2-section-card m2-cnn-card">
         <div className="m2-section-heading m2-canvas-heading">
-          <p className="m2-eyebrow">D. CNNs</p>
+          <p className="m2-eyebrow">C. CNNs</p>
           <h2>Seeing in Patches</h2>
           <p className="m2-section-subtitle">
             A CNN looks at small parts of an image one step at a time. It uses a filter, a small
