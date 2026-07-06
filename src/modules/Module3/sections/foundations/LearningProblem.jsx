@@ -1,18 +1,6 @@
-const DIGIT_FEATURE_IMAGE = '/assets/module3/ChatGPT Image Jun 27, 2026, 11_13_38 PM.png'
+import digitFeatureImage from '../../../../assets/module3/digit/digit-4-ambiguous-9.png'
 
-const beforeWeights = [
-  { label: 'Upper curve', value: 'Medium', tone: 'neutral', desc: 'top arc of the digit', color: '#534AB7' },
-  { label: 'Closed loop', value: 'Too strong', tone: 'danger', desc: 'where the two strokes meet', color: '#1D9E75' },
-  { label: 'Open gap', value: 'Too weak', tone: 'warn', desc: 'open space on the right side', color: '#D85A30' },
-  { label: 'Lower curve', value: 'Medium', tone: 'neutral', desc: 'bottom arc of the digit', color: '#BA7517' },
-]
-
-const afterWeights = [
-  { label: 'Upper curve', value: 'Strong', tone: 'success', desc: 'top arc of the digit', color: '#534AB7' },
-  { label: 'Closed loop', value: 'Weak', tone: 'soft', desc: 'where the two strokes meet', color: '#1D9E75' },
-  { label: 'Open gap', value: 'Strongest', tone: 'successStrong', desc: 'open space on the right side', color: '#D85A30' },
-  { label: 'Lower curve', value: 'Strong', tone: 'success', desc: 'bottom arc of the digit', color: '#BA7517' },
-]
+const DIGIT_FEATURE_IMAGE = digitFeatureImage
 
 function PredictionSummary({ prediction, target, status, improved = false }) {
   return (
@@ -26,29 +14,6 @@ function PredictionSummary({ prediction, target, status, improved = false }) {
         <strong>{target}</strong>
       </div>
       <p>{status}</p>
-    </div>
-  )
-}
-
-function FeatureWeights({ items }) {
-  return (
-    <div className="m3-sa-weights" aria-label="Feature weights">
-      {items.map((item) => (
-        <div
-          key={item.label}
-          className="m3-sa-weight-row"
-          style={{ '--m3-sa-feature-color': item.color }}
-        >
-          <span className="m3-sa-weight-dot" aria-hidden="true" />
-          <span className="m3-sa-weight-copy">
-            <span className="m3-sa-weight-label">{item.label}</span>
-            <span className="m3-sa-weight-desc">{item.desc}</span>
-          </span>
-          <strong className={`m3-sa-weight-pill m3-sa-weight-pill--${item.tone}`}>
-            {item.value}
-          </strong>
-        </div>
-      ))}
     </div>
   )
 }
@@ -74,7 +39,7 @@ function LearningProblem() {
             <div className="m3-sa-digit-frame">
               <img
                 src={DIGIT_FEATURE_IMAGE}
-                alt="Digit 3 with labels for upper curve, open gap, and lower curve"
+                alt="Handwritten digit 4 with an ambiguous shape that could be mistaken for a 9"
                 className="m3-sa-digit-image"
               />
             </div>
@@ -86,10 +51,12 @@ function LearningProblem() {
               <h3>Before learning</h3>
               <p>The model makes a wrong prediction.</p>
             </div>
-            <PredictionSummary prediction="8" target="3" status="Error detected" />
-            <FeatureWeights items={beforeWeights} />
+            <PredictionSummary prediction="9" target="4" status="Error detected" />
             <p className="m3-sa-note">
-              The model focuses too much on the wrong feature and misses the open gap.
+              The top of this stroke looks almost closed, so the model reads it as a loop and guesses 9.
+            </p>
+            <p className="m3-sa-note">
+              The model overweights the near-closed top and misreads the digit.
             </p>
           </article>
 
@@ -103,14 +70,16 @@ function LearningProblem() {
               <p>The model makes the correct prediction.</p>
             </div>
             <PredictionSummary
-              prediction="3"
-              target="3"
+              prediction="4"
+              target="4"
               status="Prediction improved"
               improved
             />
-            <FeatureWeights items={afterWeights} />
             <p className="m3-sa-note">
-              The model focuses on the right features and predicts correctly.
+              The model now weighs the open gap at the top more heavily, and correctly reads this as 4.
+            </p>
+            <p className="m3-sa-note">
+              The model correctly reads the open top as a 4.
             </p>
           </article>
         </div>
