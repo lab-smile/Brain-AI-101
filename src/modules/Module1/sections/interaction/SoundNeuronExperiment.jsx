@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import FloatingSignal from './FloatingSignal'
 import NeuronResponsePanel from './NeuronResponsePanel'
 import PhetNeuronPanel from './PhetNeuronPanel'
+import neuronFiringVideo from '../../../../assets/firing/neurons_s1.mp4'
 import { staticPayAttentionSvg } from '../intro/module1SceneAssets'
 import useSoundNeuronExperiment, { EXAMPLE_SIGNALS, MAX_INPUT, THRESHOLD } from '../../hooks/useSoundNeuronExperiment'
 import './soundNeuronExperiment.css'
@@ -18,6 +20,7 @@ function SoundNeuronExperiment() {
     submitCurrentPhrase,
     submitExamplePhrase,
   } = useSoundNeuronExperiment()
+  const [showFiringVideo, setShowFiringVideo] = useState(false)
 
   const somaFillPercent = Math.max(0, Math.min(100, (somaInput / MAX_INPUT) * 100))
   const thresholdPercent = (THRESHOLD / MAX_INPUT) * 100
@@ -127,6 +130,35 @@ function SoundNeuronExperiment() {
               showIntro={false}
             />
           </div>
+        </div>
+
+        <div className="module1-anatomy-video-panel">
+          <button
+            type="button"
+            className="module1-secondary-button module1-anatomy-video-toggle"
+            onClick={() => setShowFiringVideo((prev) => !prev)}
+          >
+            {showFiringVideo ? 'Hide neuron firing example' : 'Show neuron firing example'}
+          </button>
+
+          {showFiringVideo && (
+            <div className="module1-anatomy-video-content">
+              <video className="module1-anatomy-video" controls>
+                <source src={neuronFiringVideo} type="video/mp4" />
+              </video>
+              <p className="module1-anatomy-video-credit">
+                Source: HHMI BioInteractive - Neuron Activity Click-and-Learn (
+                <a
+                  href="https://media.hhmi.org/biointeractive/click/Neuron_Activity/01.html"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  https://media.hhmi.org/biointeractive/click/Neuron_Activity/01.html
+                </a>
+                )
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

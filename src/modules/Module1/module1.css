@@ -405,6 +405,55 @@
   min-width: 0;
 }
 
+.module1-anatomy-video-panel {
+  border-top: 1px solid #dbe7f5;
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+}
+
+.module1-anatomy-video-toggle {
+  align-self: start;
+  background: #e8f0ff;
+  border: 1px solid #bfd5ff;
+  border-radius: var(--module1-radius-pill);
+  color: #1d4ed8;
+  cursor: pointer;
+  min-height: 44px;
+  padding: 12px 18px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.module1-anatomy-video-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.module1-anatomy-video-content {
+  display: grid;
+  gap: 12px;
+}
+
+.module1-anatomy-video {
+  background: #0f172a;
+  border: 1px solid #dbe7f5;
+  border-radius: 18px;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.module1-anatomy-video-credit {
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.module1-anatomy-video-credit a {
+  color: #1d4ed8;
+  word-break: break-word;
+}
+
 .module1-intro-panel-scene {
   display: grid;
   gap: 12px;
