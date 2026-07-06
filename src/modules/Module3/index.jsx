@@ -21,7 +21,7 @@ const SECTIONS = [
   { label: 'Three Learning Types' },
   { label: 'Error Goes Down Over Time' },
   { label: 'Backpropagation' },
-  { label: 'Brain × AI Feedback' },
+  { label: 'Neurocorrelation' },
   { label: 'Advanced Learning Labs' },
 ]
 

@@ -50,15 +50,18 @@
 
 .m3-eyebrow {
   background: rgba(5, 150, 105, 0.09);
+  border: 1px solid #a7f3d0;
   border-radius: 999px;
   color: var(--module3-accent-strong);
   display: inline-block;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  margin: 0 0 20px;
+  margin: 0 auto 20px;
   padding: 6px 16px;
   text-transform: uppercase;
+  white-space: nowrap;
+  width: fit-content;
 }
 
 .m3-section-heading h2 {
