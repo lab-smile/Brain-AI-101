@@ -101,8 +101,7 @@ function ActivationSection({ onContinue }) {
         <p className="module1-eyebrow">E. Activation Function</p>
         <h2>The Switch That Matters</h2>
         <p>
-          That activation check in the last diagram has a name: it's called an activation function. ReLU and Sigmoid,
-          covered next, are two common ones.
+          This threshold step is called an activation function. ReLU is used in this diagram. Sigmoid is another common type.
         </p>
       </div>
 
