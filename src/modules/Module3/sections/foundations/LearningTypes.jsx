@@ -10,7 +10,7 @@ const learningGames = [
     mechanism: 'Makes a guess → compares to correct answer → adjusts weights.',
     flowSteps: ['Guess', 'Correct answer', 'Adjust'],
     animClass: 'anim-supervised',
-    exampleChips: ['Prediction: 8', 'Correct answer: 3', 'Weights update'],
+    exampleChips: ['Prediction: 9', 'Correct answer: 4', 'Weights update'],
   },
   {
     id: 'unsupervised',
@@ -97,18 +97,18 @@ export default function LearningTypes({ onJumpToSectionC }) {
                 {/* 6. Animated micro-demo */}
                 {game.id === 'supervised' && (
                   <div className={`m3-anim-demo ${game.animClass}${selectedGame === game.id ? ' is-playing' : ''}`}>
-                    <div className="anim-sup__digit">8</div>
+                    <div className="anim-sup__digit">4</div>
                     <div className="anim-sup__arrow">→</div>
                     <div className="anim-sup__guess">
                       <span className="anim-sup__guess-label">model guess</span>
-                      <span className="anim-sup__guess-val">3</span>
+                      <span className="anim-sup__guess-val">9</span>
                     </div>
                     <div className="anim-sup__correct">
                       <span className="anim-sup__guess-label">correct</span>
-                      <span className="anim-sup__correct-val">8</span>
+                      <span className="anim-sup__correct-val">4</span>
                     </div>
                     <div className="anim-sup__feedback anim-sup__feedback--wrong">✗ wrong</div>
-                    <div className="anim-sup__feedback anim-sup__feedback--right">✓ correct: 8</div>
+                    <div className="anim-sup__feedback anim-sup__feedback--right">✓ correct: 4</div>
                   </div>
                 )}
 

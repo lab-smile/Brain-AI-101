@@ -3456,6 +3456,7 @@
 .bridge-bio__terminal,
 .bridge-ann__inputs,
 .bridge-ann__node,
+.bridge-ann__activation,
 .bridge-ann__output,
 .bridge-ann__connection {
   transition: opacity 0.3s;
@@ -3469,6 +3470,7 @@
 .bridge-svg--has-highlight .bridge-bio__terminal,
 .bridge-svg--has-highlight .bridge-ann__inputs,
 .bridge-svg--has-highlight .bridge-ann__node,
+.bridge-svg--has-highlight .bridge-ann__activation,
 .bridge-svg--has-highlight .bridge-ann__output,
 .bridge-svg--has-highlight .bridge-ann__connection {
   opacity: 0.18;

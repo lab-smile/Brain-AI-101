@@ -103,7 +103,7 @@ function Module1({ onBack, onContinue, onNavigate }) {
         </div>
 
         <section ref={setRef(3)} className="module1-anchor-section">
-          <BridgeToAnn onContinue={() => scrollTo(4)} />
+          <BridgeToAnn />
         </section>
 
         <section ref={setRef(4)} className="module1-anchor-section">

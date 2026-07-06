@@ -4,16 +4,16 @@ import ReinforcementLab from '../../features/reinforcement/ReinforcementLab'
 
 const ADVANCED_CARDS = [
   {
-    title: 'Unsupervised Extension',
-    subtitle: 'Find groups in unlabeled data',
-    accent: 'unsupervised',
-    render: () => <ClusteringLab />,
-  },
-  {
     title: 'Supervised Extension',
     subtitle: 'Explore decision boundaries',
     accent: 'supervised',
     render: () => <NetworkPlaygroundCard />,
+  },
+  {
+    title: 'Unsupervised Extension',
+    subtitle: 'Find groups in unlabeled data',
+    accent: 'unsupervised',
+    render: () => <ClusteringLab />,
   },
   {
     title: 'Reinforcement Extension',

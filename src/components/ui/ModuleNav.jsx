@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './moduleNav.css'
 
 const MODULE_CONFIG = {
-  module1: { num: '01', label: 'Neurons', fullTitle: 'Biological Neuron', color: '#2563eb', time: '~12 min' },
+  module1: { num: '01', label: 'Neurons', fullTitle: 'Biological Neuron', color: '#2563eb', time: '~22 min' },
   module2: { num: '02', label: 'Perception', fullTitle: 'Pattern Recognition', color: '#7c3aed', time: '~18 min' },
   module3: { num: '03', label: 'Learning', fullTitle: 'Learning to Learn', color: '#059669', time: '~26 min' },
 }

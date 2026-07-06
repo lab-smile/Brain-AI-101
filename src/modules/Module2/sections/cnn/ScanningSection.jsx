@@ -341,7 +341,7 @@ function ScanningSection() {
     <section className="m2-section">
       <div className="m2-section-card m2-cnn-card">
         <div className="m2-section-heading m2-canvas-heading">
-          <p className="m2-eyebrow">C. CNNs</p>
+          <p className="m2-eyebrow">B. CNNs</p>
           <h2>Seeing in Patches</h2>
           <p className="m2-section-subtitle">
             A CNN looks at small parts of an image one step at a time. It uses a filter, a small
@@ -371,7 +371,7 @@ function ScanningSection() {
         <div className="m2-cnn-legend">
           <span className="m2-cnn-legend-chip m2-cnn-legend-chip--image">Original 3x3</span>
           <span className="m2-cnn-legend-chip m2-cnn-legend-chip--padding">Padding</span>
-          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--active">Active filter window</span>
+          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--active">Current scan window</span>
         </div>
 
         <svg

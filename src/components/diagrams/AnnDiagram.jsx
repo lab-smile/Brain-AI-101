@@ -107,8 +107,7 @@ function AnnDiagram({ isMobile = false, variant = 'default', activeBridgePart = 
               <g className={`bridge-ann__activation${activeBridgePart === 'combine' ? ' bridge-part--active' : ''}`}>
                 <rect x={activationCheckX} y="114" width={activationCheckWidth} height="52" rx="8" fill="#dbeafe" stroke="#1d4ed8" strokeWidth="2.4" />
                 <text textAnchor="middle" fontSize="10" fill="#1d4ed8" fontWeight="700">
-                  <tspan x="428" y="136">Activation</tspan>
-                  <tspan x="428" y="150">Check</tspan>
+                  <tspan x="428" y="143">Activation</tspan>
                 </text>
               </g>
 

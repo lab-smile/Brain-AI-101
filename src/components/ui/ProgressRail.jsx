@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import '../../styles/shared.css'
 
 const MODULES = [
-  { id: 'module1', label: 'Module 1', time: '~12 min' },
-  { id: 'module2', label: 'Module 2', time: '~22 min' },
+  { id: 'module1', label: 'Module 1', time: '~22 min' },
+  { id: 'module2', label: 'Module 2', time: '~18 min' },
   { id: 'module3', label: 'Module 3', time: '~26 min' },
 ]
 

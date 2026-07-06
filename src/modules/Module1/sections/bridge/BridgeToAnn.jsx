@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import AnnDiagram from '../../../../components/diagrams/AnnDiagram'
 import biologicalNeuronBridgeImage from '../../../../assets/ChatGPT Image Apr 24, 2026, 01_40_31 PM.png'
+import ConnectedNetworkSection from './ConnectedNetworkSection'
 
 const MAPPING_STEPS = [
   {
@@ -21,8 +22,8 @@ const MAPPING_STEPS = [
     bioTitle: 'Cell body',
     bioText: 'The cell body combines those signals and checks whether the total is strong enough.',
     annTitle: 'Processing rule',
-    annText: 'The model combines its inputs and checks whether the total passes a threshold.',
-    mappingText: 'The soma or cell body maps to signal processing, and the firing threshold maps to that same check.',
+    annText: 'The model combines its inputs, then runs an activation function — a math rule that decides what passes through and what gets blocked.',
+    mappingText: 'The soma or cell body maps to signal processing, and the firing threshold maps to an activation function — the general term for that pass/block rule.',
     takeaway: 'This is the moment where both systems decide whether the evidence is strong enough to respond.',
   },
   {
@@ -49,7 +50,7 @@ const MAPPING_STEPS = [
   },
 ]
 
-function BridgeToAnn({ onContinue }) {
+function BridgeToAnn() {
   const [activeStepId, setActiveStepId] = useState(MAPPING_STEPS[0].id)
   const activeStep = MAPPING_STEPS.find((step) => step.id === activeStepId) ?? MAPPING_STEPS[0]
 
@@ -166,11 +167,7 @@ function BridgeToAnn({ onContinue }) {
         <p className="bridge-summary">{activeStep.takeaway}</p>
       </section>
 
-      <div className="module1-bridge-actions">
-        <button className="module1-primary-button" onClick={onContinue}>
-          Continue to Module 2
-        </button>
-      </div>
+      <ConnectedNetworkSection />
     </section>
   )
 }

@@ -32,8 +32,8 @@ const ANATOMY_STEPS = [
 ]
 
 const COURSE_MODULES = [
-  { key: 'module1', mod: 'Module 1', label: 'Meet the Neuron', time: '~12 min', color: '#2D7EFF' },
-  { key: 'module2', mod: 'Module 2', label: 'From Neurons to Patterns', time: '~22 min', color: '#7C3AED' },
+  { key: 'module1', mod: 'Module 1', label: 'Meet the Neuron', time: '~22 min', color: '#2D7EFF' },
+  { key: 'module2', mod: 'Module 2', label: 'From Neurons to Patterns', time: '~18 min', color: '#7C3AED' },
   { key: 'module3', mod: 'Module 3', label: 'Learning Through Feedback', time: '~26 min', color: '#10B981' },
 ]
 
