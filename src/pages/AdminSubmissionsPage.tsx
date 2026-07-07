@@ -546,6 +546,15 @@ export default function AdminSubmissionsPage({ onBack }: { onBack: () => void })
                 <div className="ce-actions-group">
                   <button
                     type="button"
+                    className="shared-btn shared-btn-primary"
+                    onClick={() => handleExport('learner-level')}
+                    disabled={!canExport}
+                    aria-disabled={!canExport}
+                  >
+                    {exporting === 'learner-level' ? 'Exporting…' : 'Export learner-level CSV'}
+                  </button>
+                  <button
+                    type="button"
                     className="shared-btn shared-btn-secondary"
                     onClick={() => handleExport('quiz')}
                     disabled={!canExport}
@@ -581,7 +590,7 @@ export default function AdminSubmissionsPage({ onBack }: { onBack: () => void })
                 </div>
               </div>
               <p className="admin-export-note">
-                Detailed exports expand each answer and Likert response into individual columns — ready to open directly in Google Sheets.
+                The learner-level export merges latest pre, post, and quiz results into one row per session with a final mean row. The detailed exports remain available for raw review.
               </p>
             </section>
 

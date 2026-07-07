@@ -6,6 +6,7 @@ const ADMIN_EXPORT_PATHS: Record<AdminExportType, string> = {
   evaluations: '/api/admin/export-evaluations.csv',
   'quiz-detailed': '/api/admin/export-quiz-detailed.csv',
   'evaluations-detailed': '/api/admin/export-evaluations-detailed.csv',
+  'learner-level': '/api/admin/export-learner-level.csv',
 }
 
 const ADMIN_EXPORT_FILENAMES: Record<AdminExportType, string> = {
@@ -13,6 +14,7 @@ const ADMIN_EXPORT_FILENAMES: Record<AdminExportType, string> = {
   evaluations: 'brain-ai-101-evaluations.csv',
   'quiz-detailed': 'brain-ai-101-quiz-detailed.csv',
   'evaluations-detailed': 'brain-ai-101-evaluations-detailed.csv',
+  'learner-level': 'brain-ai-101-learner-level.csv',
 }
 
 class AdminApiError extends Error {
