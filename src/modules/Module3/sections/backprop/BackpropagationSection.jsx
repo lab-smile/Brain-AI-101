@@ -271,7 +271,7 @@ function BackpropagationSection() {
     <section className="m3-section">
       <div className="m3-section-card m3-section-card--feature m3-backprop-card">
         <div className="m3-section-heading">
-          <p className="m3-eyebrow">D. BACKPROPAGATION</p>
+          <p className="m3-eyebrow">C. BACKPROPAGATION</p>
           <h2>Which Weight Gets the Blame?</h2>
           <p className="m3-section-intro">The model made a mistake. Which weight was responsible?</p>
         </div>

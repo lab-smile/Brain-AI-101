@@ -5,7 +5,7 @@ function SectionCLab() {
     <section className="m3-section">
       <div className="m3-section-card m3-section-card--feature m3-section-shell">
         <div className="m3-section-heading">
-          <p className="m3-eyebrow">C. ERROR GOES DOWN OVER TIME</p>
+          <p className="m3-eyebrow">D. ERROR GOES DOWN OVER TIME</p>
           <h2>Watching a Model Learn</h2>
           <p className="m3-section-subtitle">
             Each round, the model guesses, checks its error, and adjusts its weights.

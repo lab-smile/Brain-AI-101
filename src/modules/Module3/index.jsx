@@ -19,8 +19,8 @@ gsap.registerPlugin(ScrollTrigger)
 const SECTIONS = [
   { label: 'Learning Means Changing' },
   { label: 'Three Learning Types' },
-  { label: 'Error Goes Down Over Time' },
   { label: 'Backpropagation' },
+  { label: 'Error Goes Down Over Time' },
   { label: 'Neurocorrelation' },
   { label: 'Advanced Learning Labs' },
 ]
@@ -94,8 +94,8 @@ function Module3({ onBack, onContinue, onNavigate }) {
       <main className="m3-main">
         <div ref={setRef(0)}><LearningProblem /></div>
         <div ref={setRef(1)}><LearningTypes isMobile={isMobile} onJumpToSectionC={() => scrollTo(2)} /></div>
-        <div ref={setRef(2)}><SectionCLab /></div>
-        <div ref={setRef(3)}><BackpropagationSection /></div>
+        <div ref={setRef(2)}><BackpropagationSection /></div>
+        <div ref={setRef(3)}><SectionCLab /></div>
         <div ref={setRef(4)}><BrainConnection /></div>
         <div ref={setRef(5)}><AdvancedLearningLabs /></div>
 
