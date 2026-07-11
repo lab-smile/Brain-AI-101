@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useT } from '../../../../i18n/useT'
 
 const NEUROCORRELATION_ARTICLE_URL = 'https://axelwickman.com/articles/neurocorrelation?utm_source=gh_neurocorrelation'
 const NEUROCORRELATION_EMBED_URL = `${NEUROCORRELATION_ARTICLE_URL}#:~:text=Live%20App`
@@ -7,6 +8,7 @@ const NEUROCORRELATION_REPO_URL = 'https://github.com/Axelwickm/NeuroCorrelation
 
 
 function NeuroCorrelationPreview() {
+  const t = useT()
   const canvasRef = useRef(null)
   const viewerRef = useRef(null)
   const mountedAppRef = useRef(null)
@@ -156,31 +158,28 @@ function NeuroCorrelationPreview() {
   const showCanvas = state === 'ready'
   const showLiveFrame = state === 'embedded-live'
   const description = availability === 'local'
-    ? 'A local browser build was detected, so this preview can start directly inside Module 3.'
-    : 'The live NeuroCorrelation app is embedded below so you can explore the simulation without leaving Module 3.'
-  const buttonCopy = 'Launch the local NeuroCorrelation simulation in this page.'
+    ? t('module3.neuro.localBuild')
+    : t('module3.neuro.webglBody')
+  const buttonCopy = t('module3.neuro.localCopy')
 
   return (
     <div className="m3-brain-feedback__viewer" ref={viewerRef}>
       <canvas
         ref={canvasRef}
         className={`m3-brain-feedback__canvas${showCanvas ? ' is-active' : ''}`}
-        aria-label="NeuroCorrelation simulation canvas"
+        aria-label={t('module3.neuro.simulationTitle')}
       />
 
       {showLiveFrame ? (
         <div className="m3-brain-feedback__linkout">
           <div className="m3-brain-feedback__linkout-body">
-            <p className="m3-brain-feedback__fallback-tag">Interactive simulation</p>
-            <h4>NeuroCorrelation runs in its own tab</h4>
-            <p>
-              The simulation uses WebGL and shared memory that require a dedicated
-              browser context. Click below to open it — it loads in about 5 seconds.
-            </p>
+            <p className="m3-brain-feedback__fallback-tag">{t('module3.neuro.interactive')}</p>
+            <h4>{t('module3.neuro.ownTab')}</h4>
+            <p>{t('module3.neuro.webglBody')}</p>
             <ul className="m3-brain-feedback__fallback-list">
-              <li>Neurons that fire together strengthen their connection over time.</li>
-              <li>Uncorrelated activity weakens those links.</li>
-              <li>Watch the 3D network reorganize itself in real time.</li>
+              <li>{t('module3.neuro.fireTogether')}</li>
+              <li>{t('module3.neuro.uncorrelated')}</li>
+              <li>{t('module3.neuro.watchNetwork')}</li>
             </ul>
           </div>
           <a
@@ -189,20 +188,20 @@ function NeuroCorrelationPreview() {
             rel="noreferrer"
             className="m3-brain-feedback__linkout-btn"
           >
-            Open NeuroCorrelation simulation ↗
+            {t('module3.neuro.openSimulation')}
           </a>
         </div>
       ) : null}
 
       {!showCanvas && !showLiveFrame ? (
-        <div className="m3-brain-feedback__fallback" aria-label="NeuroCorrelation preview unavailable">
-          <p className="m3-brain-feedback__fallback-tag">Simulation preview</p>
-          <h4>{availability === 'checking' ? 'Preparing the preview' : 'Interactive simulation ready to launch'}</h4>
-          <p>{availability === 'checking' ? 'Checking how this simulation can be launched on this machine.' : description}</p>
+        <div className="m3-brain-feedback__fallback" aria-label={t('module3.neuro.previewUnavailable')}>
+          <p className="m3-brain-feedback__fallback-tag">{t('module3.neuro.preview')}</p>
+          <h4>{availability === 'checking' ? t('module3.neuro.preparing') : t('module3.neuro.ready')}</h4>
+          <p>{availability === 'checking' ? t('module3.neuro.checking') : description}</p>
           <ul className="m3-brain-feedback__fallback-list">
-            <li>Neurons that fire together strengthen their connection over time.</li>
-            <li>Uncorrelated activity weakens those links.</li>
-            <li>This gives a more biological contrast to backpropagation in AI.</li>
+            <li>{t('module3.neuro.fireTogether')}</li>
+            <li>{t('module3.neuro.uncorrelated')}</li>
+            <li>{t('module3.neuro.biologicalContrast')}</li>
           </ul>
 
         </div>
@@ -217,14 +216,14 @@ function NeuroCorrelationPreview() {
             disabled={state === 'starting' || state === 'ready'}
           >
             <span className="m3-brain-feedback__launch-label">
-              {state === 'starting' ? 'Starting…' : 'Start Local App'}
+              {state === 'starting' ? t('module3.neuro.starting') : t('module3.neuro.startLocal')}
             </span>
             <span className="m3-brain-feedback__launch-copy">{buttonCopy}</span>
           </button>
         ) : availability === 'checking' ? (
           <div className="m3-brain-feedback__launch is-static">
-            <span className="m3-brain-feedback__launch-label">Checking app mode</span>
-            <span className="m3-brain-feedback__launch-copy">Looking for a local browser build before enabling the section controls.</span>
+            <span className="m3-brain-feedback__launch-label">{t('module3.neuro.checkingMode')}</span>
+            <span className="m3-brain-feedback__launch-copy">{t('module3.neuro.localBuild')}</span>
           </div>
         ) : null}
 
@@ -234,7 +233,7 @@ function NeuroCorrelationPreview() {
           target="_blank"
           rel="noreferrer"
         >
-          Open Full Article
+          {t('module3.neuro.fullArticle')}
         </a>
       </div>
     </div>
@@ -242,28 +241,26 @@ function NeuroCorrelationPreview() {
 }
 
 function BrainConnection() {
+  const t = useT()
   return (
     <section className="m3-section">
       <div className="m3-section-card m3-section-card--feature m3-brain-feedback">
         <div className="m3-section-heading">
-          <p className="m3-eyebrow">E. NEUROCORRELATION</p>
-          <h2>A More Brain-Like Way to Learn</h2>
-          <p className="m3-section-subtitle">
-            In the brain, nearby neurons update their connection based on timing —
-            not a global error signal. This simulation shows what that looks like.
-          </p>
+          <p className="m3-eyebrow">{t('module3.neuro.eyebrow')}</p>
+          <h2>{t('module3.neuro.title')}</h2>
+          <p className="m3-section-subtitle">{t('module3.neuro.subtitle')}</p>
         </div>
 
         <div className="m3-brain-feedback__compare">
           <div className="m3-brain-feedback__compare-card">
-            <p className="m3-brain-feedback__mini-label">AI model (backprop)</p>
-            <strong>Error signal sent backward</strong>
-            <span>Global. Requires knowing the correct answer.</span>
+            <p className="m3-brain-feedback__mini-label">{t('module3.neuro.aiModel')}</p>
+            <strong>{t('module3.neuro.errorBackward')}</strong>
+            <span>{t('module3.neuro.global')}</span>
           </div>
           <div className="m3-brain-feedback__compare-card">
-            <p className="m3-brain-feedback__mini-label">Brain-inspired model</p>
-            <strong>Local spike timing between neighbors</strong>
-            <span>No teacher. Neurons update from their own activity.</span>
+            <p className="m3-brain-feedback__mini-label">{t('module3.neuro.brainModel')}</p>
+            <strong>{t('module3.neuro.localTiming')}</strong>
+            <span>{t('module3.neuro.noTeacher')}</span>
           </div>
         </div>
 
@@ -271,13 +268,13 @@ function BrainConnection() {
           <div className="m3-brain-feedback__shell">
             <div className="m3-brain-feedback__shell-bar">
               <span /><span /><span />
-              <p>NeuroCorrelation 3D simulation</p>
+              <p>{t('module3.neuro.simulationTitle')}</p>
             </div>
             <NeuroCorrelationPreview />
           </div>
           <p className="m3-source-note">
-            Simulation by <a href={NEUROCORRELATION_REPO_URL} target="_blank" rel="noreferrer">Axel Wickman</a> —
-            <a href={NEUROCORRELATION_ARTICLE_URL} target="_blank" rel="noreferrer"> full article</a>
+            {t('module3.neuro.simulationBy')} <a href={NEUROCORRELATION_REPO_URL} target="_blank" rel="noreferrer">Axel Wickman</a> —
+            <a href={NEUROCORRELATION_ARTICLE_URL} target="_blank" rel="noreferrer"> {t('module3.neuro.fullArticleLower')}</a>
           </p>
         </div>
 

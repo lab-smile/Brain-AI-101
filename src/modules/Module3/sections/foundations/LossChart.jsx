@@ -1,10 +1,12 @@
 import React from 'react'
+import { useT } from '../../../../i18n/useT'
 
 const CHART_W = 480
 const CHART_H = 300
 const PAD = { top: 24, right: 20, bottom: 44, left: 48 }
 
 function LossChart({ trainingHistory, roundIndex }) {
+  const t = useT()
   const visibleSteps = trainingHistory.filter((s) => s.round <= roundIndex)
 
   const maxError = Math.max(...trainingHistory.map((s) => s.error), 0.01)
@@ -31,7 +33,7 @@ function LossChart({ trainingHistory, roundIndex }) {
       <svg
         viewBox={`0 0 ${CHART_W} ${CHART_H}`}
         className="m3-loss-chart-svg"
-        aria-label="Loss curve chart"
+        aria-label={t('module3.training.chartAlt')}
       >
         {/* Y axis */}
         <line

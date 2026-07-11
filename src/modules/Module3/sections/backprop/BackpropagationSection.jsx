@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useT } from '../../../../i18n/useT'
 
 const INPUT_NODES = [
   { id: 'i1', x: 110, y: 92, label: 'x1' },
@@ -175,6 +176,7 @@ const STEPS = [
 const PHASE_ORDER = ['idle', 'forward', 'error', 'backward', 'update']
 
 function BackpropagationSection() {
+  const t = useT()
   const [forwardRun, setForwardRun] = useState(0)
   const [errorShown, setErrorShown] = useState(false)
   const [backwardRun, setBackwardRun] = useState(0)
@@ -271,9 +273,9 @@ function BackpropagationSection() {
     <section className="m3-section">
       <div className="m3-section-card m3-section-card--feature m3-backprop-card">
         <div className="m3-section-heading">
-          <p className="m3-eyebrow">C. BACKPROPAGATION</p>
-          <h2>Which Weight Gets the Blame?</h2>
-          <p className="m3-section-intro">The model made a mistake. Which weight was responsible?</p>
+          <p className="m3-eyebrow">{t('module3.backprop.eyebrow')}</p>
+          <h2>{t('module3.backprop.title')}</h2>
+          <p className="m3-section-intro">{t('module3.backprop.intro')}</p>
         </div>
 
         <div className="m3-backprop-stepper">
@@ -303,8 +305,8 @@ function BackpropagationSection() {
                   <span className="m3-stepper-step__num">
                     {isVisited && !isActive ? '✓' : i + 1}
                   </span>
-                  <span className="m3-stepper-step__label">{step.label}</span>
-                  <span className="m3-stepper-step__sub">{step.sublabel}</span>
+                  <span className="m3-stepper-step__label">{t(`module3.backprop.step.${step.id}`)}</span>
+                  <span className="m3-stepper-step__sub">{t(`module3.backprop.${step.id}Sub`)}</span>
                 </button>
               )
             })}
@@ -322,13 +324,13 @@ function BackpropagationSection() {
                 }
               >
                 {phase === 'idle'
-                  ? 'Start — Make a Prediction'
-                  : `Next — ${STEPS[(currentPhaseIndex)]?.label ?? 'Continue'}`
+                  ? t('module3.backprop.start')
+                  : t('module3.backprop.next', { step: currentPhaseIndex >= 0 ? t(`module3.backprop.step.${STEPS[currentPhaseIndex]?.id ?? 'forward'}`) : t('ui.continue') })
                 }
               </button>
             ) : (
               <div className="m3-stepper-complete">
-                All four steps complete — the model improved.
+                {t('module3.backprop.complete')}
               </div>
             )}
             <button className="m3-btn m3-stepper-reset" onClick={reset}>
@@ -340,19 +342,19 @@ function BackpropagationSection() {
         <div className="m3-backprop-layout">
           <div className="m3-backprop-network">
             <div className="m3-backprop-phase-card">
-              <p className="m3-backprop-label">Current step</p>
+              <p className="m3-backprop-label">{t('module3.backprop.currentStep')}</p>
               <h3>
                 {phase === 'idle'
-                  ? 'Ready to start'
-                  : STEPS.find((s) => s.id === phase)?.label ?? phase}
+                  ? t('module3.backprop.ready')
+                  : t(`module3.backprop.step.${STEPS.find((s) => s.id === phase)?.id ?? 'forward'}`)}
               </h3>
-              <p>{PHASE_COPY[phase]}</p>
+              <p>{t(`module3.backprop.phase.${phase}`)}</p>
               {phase !== 'idle' && (
                 <div className="m3-backprop-phase-history">
                   {STEPS.filter((s) => visitedPhases.has(s.id) && s.id !== phase).map((s) => (
                     <div key={s.id} className="m3-backprop-phase-history__item">
                       <span className="m3-backprop-phase-history__check">✓</span>
-                      <span>{s.label}</span>
+                      <span>{t(`module3.backprop.step.${s.id}`)}</span>
                     </div>
                   ))}
                 </div>
@@ -361,20 +363,20 @@ function BackpropagationSection() {
 
             <div className="m3-backprop-stats">
               <div className={`m3-backprop-stat${phase === 'forward' || weightsUpdated ? ' is-active' : ''}`}>
-                <span>Prediction</span>
+                <span>{t('module3.backprop.prediction')}</span>
                 <strong>{prediction}</strong>
               </div>
               <div className={`m3-backprop-stat${phase === 'error' || phase === 'backward' || phase === 'update' ? ' is-active' : ''}`}>
-                <span>Target</span>
+                <span>{t('module3.backprop.target')}</span>
                 <strong>{target}</strong>
               </div>
               <div className={`m3-backprop-stat${phase === 'error' || phase === 'backward' || phase === 'update' ? ' is-active m3-backprop-stat--danger' : ''}`}>
-                <span>Error</span>
+                <span>{t('module3.backprop.error')}</span>
                 <strong>{error}</strong>
               </div>
             </div>
 
-            <svg viewBox="0 0 720 360" className={`m3-svg-block m3-backprop-network-board ${phaseClassName}`} aria-label="Simple neural network for backpropagation">
+            <svg viewBox="0 0 720 360" className={`m3-svg-block m3-backprop-network-board ${phaseClassName}`} aria-label={t('module3.backprop.networkAlt')}>
               <defs>
                 <filter id="m3BackpropParticleGlow" x="-120%" y="-120%" width="340%" height="340%">
                   <feGaussianBlur stdDeviation="7" result="glow" />
@@ -387,9 +389,9 @@ function BackpropagationSection() {
 
               <rect x="20" y="20" width="680" height="320" rx="22" fill="#f8fafc" stroke="#e2e8f0" />
 
-              <text x="110" y="56" textAnchor="middle" fontSize="12" fill="#64748b" fontWeight="700">Input Features</text>
-              <text x="360" y="56" textAnchor="middle" fontSize="12" fill="#64748b" fontWeight="700">Middle Layer</text>
-              <text x="620" y="56" textAnchor="middle" fontSize="12" fill="#64748b" fontWeight="700">Prediction</text>
+              <text x="110" y="56" textAnchor="middle" fontSize="12" fill="#64748b" fontWeight="700">{t('module3.backprop.inputFeatures')}</text>
+              <text x="360" y="56" textAnchor="middle" fontSize="12" fill="#64748b" fontWeight="700">{t('module3.backprop.middleLayer')}</text>
+              <text x="620" y="56" textAnchor="middle" fontSize="12" fill="#64748b" fontWeight="700">{t('module3.backprop.prediction')}</text>
 
               <g className={`m3-backprop-links m3-backprop-links--base ${phaseClassName}`.trim()}>
                 {CONNECTIONS.map((connection) => {
@@ -491,7 +493,7 @@ function BackpropagationSection() {
                     d={`M ${ERROR_CHIP.width - 2} ${ERROR_CHIP.height * 0.58} C ${ERROR_CHIP.width + 12} ${ERROR_CHIP.height * 0.52}, ${errorChipPointerEndX - errorChipX - 28} ${errorChipPointerEndY - errorChipY + 6}, ${errorChipPointerEndX - errorChipX} ${errorChipPointerEndY - errorChipY}`}
                   />
                   <rect x="0" y="0" width={ERROR_CHIP.width} height={ERROR_CHIP.height} rx={ERROR_CHIP.radius} />
-                  <text x={ERROR_CHIP.width / 2} y="25" textAnchor="middle">Error {error}</text>
+                  <text x={ERROR_CHIP.width / 2} y="25" textAnchor="middle">{t('module3.backprop.error')} {error}</text>
                 </g>
               ) : null}
 
@@ -520,19 +522,17 @@ function BackpropagationSection() {
 
           <div className="m3-backprop-sidebar">
             <p>
-              When the model is wrong, backpropagation traces the error backward through
-              the network to find which connections caused the mistake — and adjusts them.
-              Not every weight is equally responsible. The steps below show how that works.
+              {t('module3.backprop.sidebar')}
             </p>
 
             <div className="m3-backprop-weight-panel">
               <div className="m3-backprop-weight-panel__header">
                 <p className="m3-backprop-label">
                   {weightsUpdated
-                    ? 'Weights updated'
+                    ? t('module3.backprop.weightsUpdated')
                     : phase === 'backward'
-                      ? 'Connections that will change'
-                      : 'Weight changes'}
+                      ? t('module3.backprop.connectionsChange')
+                      : t('module3.backprop.weightChanges')}
                 </p>
               </div>
               <div className="m3-backprop-weight-panel__list">
@@ -544,15 +544,15 @@ function BackpropagationSection() {
 
                   return (
                     <div key={item.id} className={`m3-backprop-weight-row${changed && showChange ? ' is-change' : ''}${weightsUpdated && changed ? ' is-updated' : ''}`}>
-                      <span>{item.label}</span>
+                      <span>{t(`module3.backprop.detail.${item.id}`)}</span>
                       <strong>{before.toFixed(1)} → {after.toFixed(1)}</strong>
                       {weightsUpdated && changed
                         ? <em className="is-updated-tag">↑ +{(after - before).toFixed(1)}</em>
                         : changed && showChange
-                          ? <em className="is-change-tag">Will change</em>
+                          ? <em className="is-change-tag">{t('module3.backprop.willChange')}</em>
                           : changed
                             ? <em className="is-nochange-tag">—</em>
-                            : <em className="is-nochange-tag">No change</em>
+                            : <em className="is-nochange-tag">{t('module3.backprop.noChange')}</em>
                       }
                     </div>
                   )
@@ -563,8 +563,7 @@ function BackpropagationSection() {
         </div>
 
         <p className="m3-takeaway m3-section-takeaway">
-          Backpropagation does not guess which weights to change.
-          It calculates exactly how much each weight contributed to the mistake.
+          {t('module3.backprop.takeaway')}
         </p>
       </div>
     </section>

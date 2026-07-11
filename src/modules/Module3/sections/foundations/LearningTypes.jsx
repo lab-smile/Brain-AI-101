@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useT } from '../../../../i18n/useT'
 
 const learningGames = [
   {
@@ -37,20 +38,17 @@ const learningGames = [
 ]
 
 export default function LearningTypes({ onJumpToSectionC }) {
+  const t = useT()
   const [selectedGame, setSelectedGame] = useState('supervised')
 
   return (
     <section className="m3-section">
       <div className="m3-section-card m3-section-card--feature m3-feedback-games">
         <div className="m3-section-heading">
-          <p className="m3-eyebrow">B. THREE FEEDBACK GAMES</p>
-          <h2>What kind of clue does the model get?</h2>
-          <p className="m3-section-subtitle">
-            A model can learn from different kinds of feedback. Select each one and notice what kind of clue the model receives.
-          </p>
-          <p className="m3-module-callback">
-            These are the same weights from Module 2 — learning is how they get adjusted.
-          </p>
+          <p className="m3-eyebrow">{t('module3.feedback.eyebrow')}</p>
+          <h2>{t('module3.feedback.title')}</h2>
+          <p className="m3-section-subtitle">{t('module3.feedback.subtitle')}</p>
+          <p className="m3-module-callback">{t('module3.feedback.callback')}</p>
         </div>
 
         <div className="m3-feedback-games__grid">
@@ -68,23 +66,23 @@ export default function LearningTypes({ onJumpToSectionC }) {
                 {/* 1. Marker badge + label */}
                 <div className="m3-feedback-game__top">
                   <span className="m3-feedback-game__marker" aria-hidden="true">{game.marker}</span>
-                  <span className="m3-feedback-game__label">{game.label}</span>
+                  <span className="m3-feedback-game__label">{t(`module3.feedback.${game.id}.label`)}</span>
                 </div>
 
                 {/* 2. Title */}
                 <div className="m3-feedback-game__copy">
-                  <h3>{game.title}</h3>
+                  <h3>{t(`module3.feedback.${game.id}.title`)}</h3>
 
                   {/* 3. Human comparison line */}
-                  <p className="m3-human-line">{game.humanLine}</p>
+                  <p className="m3-human-line">{t(`module3.feedback.${game.id}.human`)}</p>
 
                   {/* 4. Mechanism */}
-                  <p>{game.mechanism}</p>
+                  <p>{t(`module3.feedback.${game.id}.mechanism`)}</p>
                 </div>
 
                 {/* 5. Flow chips */}
-                <div className="m3-feedback-game__flow" aria-label={`${game.title} flow`}>
-                  {game.flowSteps.map((step, index) => (
+                <div className="m3-feedback-game__flow" aria-label={`${t(`module3.feedback.${game.id}.title`)} flow`}>
+                  {t(`module3.feedback.${game.id}.flow`).split('|').map((step, index) => (
                     <div key={step} className="m3-feedback-game__flow-item">
                       <span className="m3-feedback-game__chip">{step}</span>
                       {index < game.flowSteps.length - 1
@@ -100,15 +98,15 @@ export default function LearningTypes({ onJumpToSectionC }) {
                     <div className="anim-sup__digit">4</div>
                     <div className="anim-sup__arrow">→</div>
                     <div className="anim-sup__guess">
-                      <span className="anim-sup__guess-label">model guess</span>
+                      <span className="anim-sup__guess-label">{t('module3.feedback.modelGuess')}</span>
                       <span className="anim-sup__guess-val">9</span>
                     </div>
                     <div className="anim-sup__correct">
-                      <span className="anim-sup__guess-label">correct</span>
+                      <span className="anim-sup__guess-label">{t('module3.feedback.correct')}</span>
                       <span className="anim-sup__correct-val">4</span>
                     </div>
-                    <div className="anim-sup__feedback anim-sup__feedback--wrong">✗ wrong</div>
-                    <div className="anim-sup__feedback anim-sup__feedback--right">✓ correct: 4</div>
+                    <div className="anim-sup__feedback anim-sup__feedback--wrong">{t('module3.feedback.wrong')}</div>
+                    <div className="anim-sup__feedback anim-sup__feedback--right">{t('module3.feedback.correctResult')}</div>
                   </div>
                 )}
 
@@ -148,9 +146,9 @@ export default function LearningTypes({ onJumpToSectionC }) {
 
                 {/* 7. Example area */}
                 <div className={`m3-feedback-game__example${isActive ? ' is-visible' : ''}`}>
-                  <p className="m3-feedback-game__example-label">Example</p>
+                  <p className="m3-feedback-game__example-label">{t('module3.feedback.example')}</p>
                   <div className="m3-feedback-game__example-list">
-                    {game.exampleChips.map((chip) => (
+                    {t(`module3.feedback.${game.id}.examples`).split('|').map((chip) => (
                       <span key={chip} className="m3-feedback-game__example-chip">{chip}</span>
                     ))}
                   </div>
@@ -162,10 +160,10 @@ export default function LearningTypes({ onJumpToSectionC }) {
 
         <div className="m3-learning-type-bridge m3-learning-type-bridge--compact">
           <p className="m3-bridge-main m3-section-takeaway">
-            All three use feedback — they differ in <strong>what kind</strong>.
+            {t('module3.feedback.bridge')}
           </p>
           <p className="m3-bridge-sub">
-            The rest of this module follows supervised learning: the error signal is the most direct path through a network.
+            {t('module3.feedback.bridgeSub')}
           </p>
         </div>
       </div>

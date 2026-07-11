@@ -85,13 +85,14 @@ export default function EvaluationResults({
             : sourceQuestion?.module === 'module2'
               ? t('nav.path.module2')
               : t('nav.path.module3')
+          const questionKey = `postEval.${item.id}`
 
           return (
             <article key={item.id} className={`ce-result-item${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
               <div className="ce-result-head">
                 <div>
                   <span className="ce-result-kicker">{t('postEval.results.question', { number: index + 1 })}</span>
-                  <h3>{item.question}</h3>
+                  <h3>{t(`${questionKey}.question`)}</h3>
                 </div>
                 <span className={`ce-result-badge${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
                   {item.isCorrect ? t('postEval.results.correct') : t('postEval.results.incorrect')}
@@ -99,7 +100,7 @@ export default function EvaluationResults({
               </div>
 
               {sourceQuestion && (
-                <CourseEvaluationQuestionCallback module={moduleLabel} sectionTitle={sourceQuestion.sectionTitle} />
+                <CourseEvaluationQuestionCallback module={moduleLabel} sectionTitle={t(`${questionKey}.section`)} />
               )}
 
               <p className="ce-result-meta">
@@ -117,7 +118,7 @@ export default function EvaluationResults({
                 />
               )}
 
-              <p className="ce-result-explanation">{item.explanation}</p>
+              <p className="ce-result-explanation">{t(`${questionKey}.explanation`)}</p>
             </article>
           )
         })}

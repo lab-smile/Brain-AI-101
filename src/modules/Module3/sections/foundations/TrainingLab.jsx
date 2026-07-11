@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import LossChart from './LossChart'
+import { useT } from '../../../../i18n/useT'
 
 const trainingRounds = [
   {
@@ -75,6 +76,7 @@ const trainingRounds = [
 ]
 
 function TrainingLab() {
+  const t = useT()
   const [roundIndex, setRoundIndex] = useState(0)
   const current = trainingRounds[roundIndex]
   const isComplete = roundIndex === trainingRounds.length - 1
@@ -96,25 +98,23 @@ function TrainingLab() {
 
         {/* Loss curve — dominant left panel */}
         <div className="m3-training-unified__curve">
-          <p className="m3-training-card-label">Error by round</p>
-          <p className="m3-training-unified__curve-hint">
-            Each dot is one training round. Watch the line fall.
-          </p>
+          <p className="m3-training-card-label">{t('module3.training.errorByRound')}</p>
+          <p className="m3-training-unified__curve-hint">{t('module3.training.curveHint')}</p>
           <LossChart trainingHistory={trainingRounds} roundIndex={roundIndex} />
         </div>
 
         {/* Weight tracker — right panel */}
         <div className="m3-training-unified__weights">
-          <p className="m3-training-card-label">Weight changing most</p>
+          <p className="m3-training-card-label">{t('module3.training.weightMost')}</p>
           <div className="m3-training-unified__weight-feature">
-            <span className="m3-training-unified__weight-name">Closed loop</span>
+            <span className="m3-training-unified__weight-name">{t('module3.training.closedLoop')}</span>
             <div className="m3-training-unified__weight-row">
               <span className="m3-training-unified__weight-start">
-                Start: {trainingRounds[0].weights[1].value.toFixed(2)}
+                {t('module3.training.start')} {trainingRounds[0].weights[1].value.toFixed(2)}
               </span>
               <span className="m3-training-unified__weight-arrow">→</span>
               <span className="m3-training-unified__weight-now">
-                Now: {current.weights[1].value.toFixed(2)}
+                {t('module3.training.now')} {current.weights[1].value.toFixed(2)}
               </span>
             </div>
             <div className="m3-training-unified__weight-bar-shell">
@@ -125,8 +125,12 @@ function TrainingLab() {
             </div>
             <span className="m3-training-unified__weight-delta">
               {current.round === 0
-                ? 'No change yet'
-                : `+${(current.weights[1].value - trainingRounds[0].weights[1].value).toFixed(2)} after ${current.round} round${current.round === 1 ? '' : 's'}`
+                ? t('module3.training.noChange')
+                : t('module3.training.afterRounds', {
+                  delta: (current.weights[1].value - trainingRounds[0].weights[1].value).toFixed(2),
+                  round: current.round,
+                  plural: current.round === 1 ? '' : 's',
+                })
               }
             </span>
           </div>
@@ -134,15 +138,15 @@ function TrainingLab() {
           {/* Status tiles — compact */}
           <div className="m3-training-unified__tiles">
             <div className="m3-training-unified__tile">
-              <span>Prediction</span>
+              <span>{t('module3.training.prediction')}</span>
               <strong>{current.prediction}</strong>
             </div>
             <div className="m3-training-unified__tile">
-              <span>Target</span>
+              <span>{t('module3.training.target')}</span>
               <strong>{current.target}</strong>
             </div>
             <div className="m3-training-unified__tile m3-training-unified__tile--error">
-              <span>Error</span>
+              <span>{t('module3.training.error')}</span>
               <strong>{current.error.toFixed(2)}</strong>
             </div>
           </div>
@@ -152,7 +156,7 @@ function TrainingLab() {
       {/* Bottom: controls */}
       <div className="m3-training-unified__controls">
         <div className="m3-training-unified__round-badge">
-          Round <strong>{current.round}</strong> of {trainingRounds.length - 1}
+          {t('module3.training.round')} <strong>{current.round}</strong> {t('module3.training.of')} {trainingRounds.length - 1}
         </div>
         <div className="m3-training-unified__actions">
           {!isComplete ? (
@@ -161,20 +165,19 @@ function TrainingLab() {
               className="m3-btn m3-btn--primary m3-training-unified__advance"
               onClick={trainOneRound}
             >
-              Train one round →
+              {t('module3.training.trainOne')}
             </button>
           ) : (
             <div className="m3-training-unified__complete">
-              ✓ Model converged — error reached {current.error.toFixed(2)}
+              {t('module3.training.complete', { error: current.error.toFixed(2) })}
             </div>
           )}
           <button type="button" className="m3-btn m3-stepper-reset" onClick={resetTraining}>
-            Reset
+            {t('module3.training.reset')}
           </button>
         </div>
         <p className="m3-training-unified__note">
-          One pass through the training data is called an epoch.
-          Most real models need hundreds.
+          {t('module3.training.epochNote')}
         </p>
       </div>
 
