@@ -110,9 +110,9 @@ function SpecialistsSection() {
 
         <div className="m2-selectivity-bridge">
           <p>
-            The same idea appears in artificial networks. Different weights make a neuron more sensitive to some input patterns than others. In the grid below, each artificial neuron has a different preference.
+            {t('module2.selectivity.bridge')}
           </p>
-          <strong>Try different patterns. Watch which neuron responds most strongly.</strong>
+          <strong>{t('module2.selectivity.tryPatterns')}</strong>
         </div>
 
         <div className="m2-center-controls" style={{ gap: '8px' }}>
@@ -123,7 +123,7 @@ function SpecialistsSection() {
               aria-expanded={showInsights}
               aria-controls="m2-why-panel"
             >
-              {showInsights ? 'Showing why' : 'Show why'}
+              {showInsights ? t('module2.selectivity.showingWhy') : t('module2.selectivity.showWhy')}
             </button>
           )}
         </div>
@@ -142,7 +142,7 @@ function SpecialistsSection() {
           </defs>
 
           <g>
-            <text x={GRID_X + CELL * 1.5} y={GRID_Y - 25} textAnchor="middle" fontSize="12" fontWeight="600" fill="#1E293B">Input Pattern</text>
+            <text x={GRID_X + CELL * 1.5} y={GRID_Y - 25} textAnchor="middle" fontSize="12" fontWeight="600" fill="#1E293B">{t('module2.selectivity.inputPattern')}</text>
             {grid.map((val, i) => {
               const row = Math.floor(i / 3), col = i % 3
               const x = GRID_X + col * CELL, y = GRID_Y + row * CELL
@@ -195,7 +195,7 @@ function SpecialistsSection() {
 
                 {showInsights && !isSilenced && (
                   <text x={nx} y={200 - NEURON_RADIUS - 14} textAnchor="middle" fontSize="10" fontWeight="500" fill={color} fontStyle="italic">
-                    responds to {revealedName.toLowerCase()}
+                    {t('module2.selectivity.respondsTo')} {revealedName.toLowerCase()}
                   </text>
                 )}
 
@@ -209,7 +209,7 @@ function SpecialistsSection() {
                   </text>
                 </g>
 
-                {isSilenced && <text x={nx} y={348} textAnchor="middle" fontSize="9" fontWeight="500" fill="#94A3B8">silenced</text>}
+                {isSilenced && <text x={nx} y={348} textAnchor="middle" fontSize="9" fontWeight="500" fill="#94A3B8">{t('module2.selectivity.silenced')}</text>}
               </g>
             )
           })}
@@ -218,13 +218,13 @@ function SpecialistsSection() {
         {showInsights && hasInteracted && (
           <div className="m2-why-panel" id="m2-why-panel">
             <div className="m2-why-panel__intro">
-              <h3>Why did this neuron respond?</h3>
-              <p>Each neuron has a preferred pattern. It responds more strongly when the input matches that pattern.</p>
+              <h3>{t('module2.selectivity.whyTitle')}</h3>
+              <p>{t('module2.selectivity.whyBody')}</p>
             </div>
 
             <div className="m2-why-comparison" aria-label="Input pattern compared with each neuron's preferred pattern">
               <div className="m2-why-grid-block">
-                <span>Input pattern</span>
+                <span>{t('module2.selectivity.inputPattern')}</span>
                 <div className="m2-why-mini-grid" aria-label="Current input pattern">
                   {grid.map((value, index) => (
                     <span key={index} className={value ? 'is-active' : ''}>{value}</span>
@@ -236,7 +236,7 @@ function SpecialistsSection() {
                 const isBest = key === dominantNeuron
                 return (
                   <div className={`m2-why-grid-block${isBest ? ' is-best' : ''}`} key={key}>
-                    <span>{symbol} preferred pattern</span>
+                    <span>{symbol} {t('module2.selectivity.inputPattern')}</span>
                     <div className="m2-why-mini-grid" aria-label={`${symbol} preferred ${revealedName.toLowerCase()} pattern`}>
                       {preferredPattern.map((value, index) => (
                         <span
@@ -251,8 +251,8 @@ function SpecialistsSection() {
                         </span>
                       ))}
                     </div>
-                    <strong>{isBest ? 'Best match' : `${matchScore}% match`}</strong>
-                    <em>{isSilenced ? 'Silenced' : getResponseLabel(output)}</em>
+                    <strong>{isBest ? t('module2.selectivity.bestMatch') : t('module2.selectivity.match', { score: matchScore })}</strong>
+                    <em>{isSilenced ? t('module2.selectivity.silenced') : getResponseLabel(output)}</em>
                   </div>
                 )
               })}
@@ -261,16 +261,16 @@ function SpecialistsSection() {
             <p className="m2-why-panel__result">
               {dominantOutput
                 ? `${dominantOutput.symbol} responded most strongly because the input pattern matched its preferred ${dominantOutput.revealedName.toLowerCase()} pattern best.`
-                : 'No neuron has a strong match yet. Try a pattern preset or turn on cells in the input grid.'}
+                : t('module2.selectivity.noMatch')}
             </p>
             <p className="m2-why-panel__bridge">
-              This is similar to how a CNN layer uses filters. A filter checks for a feature, such as an edge or angle. When the feature matches the input, the response becomes stronger.
+              {t('module2.selectivity.cnnBridge')}
             </p>
           </div>
         )}
 
         <div className="m2-preset-row">
-          <span className="m2-preset-label">Patterns:</span>
+          <span className="m2-preset-label">{t('module2.selectivity.patterns')}</span>
           {Object.keys(GRID_PRESETS).map(name => (
             <button
               key={name}
@@ -283,13 +283,13 @@ function SpecialistsSection() {
         </div>
 
         <div className="m2-observation">
-          <p>Same input grid. Different weights. Different preference.</p>
+          <p>{t('module2.selectivity.observation')}</p>
         </div>
 
         <p className="m2-hint">
           {hasInteracted
-            ? 'Click a neuron to silence or restore it. Try another pattern to compare the response strengths.'
-            : 'Click cells or use pattern presets below.'}
+            ? t('module2.selectivity.hintActive')
+            : t('module2.selectivity.hintStart')}
         </p>
       </div>
     </section>

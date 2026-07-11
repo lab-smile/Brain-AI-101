@@ -1,18 +1,20 @@
 import hubelWieselImage from '../../../../assets/module2/selectivity/hubel-wiesel-selectivity.png'
+import { useT } from '../../../../i18n/useT'
 
 export default function HubelWieselStory() {
+  const t = useT()
   return (
     <article className="m2-hw-card">
       <div className="m2-hw-copy">
-        <h3>Hubel & Wiesel's Cat Experiment</h3>
+        <h3>{t('module2.selectivity.experimentTitle')}</h3>
         <p>
-          David Hubel and Torsten Wiesel recorded from individual neurons in a cat's visual cortex while showing simple patterns of light, including lines or bars at different angles. They found that some neurons did not respond equally to every line. A neuron could fire most strongly when the line appeared at a preferred angle.
+          {t('module2.selectivity.experimentBody1')}
         </p>
         <p>
-          That is selectivity: a neuron can respond more strongly to one kind of visual feature than another.
+          {t('module2.selectivity.experimentBody2')}
         </p>
         <p className="m2-source-note">
-          Reference:{' '}
+          {t('module2.selectivity.reference')}{' '}
           <a
             href="https://doi.org/10.1113/jphysiol.1959.sp006308"
             target="_blank"
@@ -26,11 +28,11 @@ export default function HubelWieselStory() {
       <figure className="m2-hw-figure">
         <img
           src={hubelWieselImage}
-          alt="Diagram of a cat visual cortex experiment showing a light bar stimulus, visual cortex recording, and stronger response to one preferred line angle."
+          alt={t('module2.selectivity.figureAlt')}
           loading="eager"
         />
         <figcaption>
-          One visual cortex neuron can respond strongly to one edge direction and weakly to others.
+          {t('module2.selectivity.figureCaption')}
           {' '}Source:{' '}
           <a href="https://doi.org/10.3390/brainsci12040470" target="_blank" rel="noreferrer">
             Li, Todo, and Tang (Brain Sciences, 2022)

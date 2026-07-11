@@ -7,11 +7,11 @@ function PredictionSummary({ prediction, target, status, improved = false }) {
   return (
     <div className={`m3-sa-prediction${improved ? ' m3-sa-prediction--improved' : ''}`}>
       <div>
-        <span>Prediction</span>
+        <span>{useT()('module3.prediction')}</span>
         <strong>{prediction}</strong>
       </div>
       <div>
-        <span>Target</span>
+        <span>{useT()('module3.target')}</span>
         <strong>{target}</strong>
       </div>
       <p>{status}</p>
@@ -33,59 +33,59 @@ function LearningProblem() {
         <div className="m3-sa-layout">
           <article className="m3-sa-panel m3-sa-panel--input">
             <div className="m3-sa-panel-head">
-              <h3>Input digit</h3>
-              <p>The model looks at parts of the shape.</p>
+              <h3>{t('module3.learningProblem.inputTitle')}</h3>
+              <p>{t('module3.learningProblem.inputBody')}</p>
             </div>
             <div className="m3-sa-digit-frame">
               <img
                 src={DIGIT_FEATURE_IMAGE}
-                alt="Handwritten digit 4 with an ambiguous shape that could be mistaken for a 9"
+                alt={t('module3.learningProblem.imageAlt')}
                 className="m3-sa-digit-image"
               />
             </div>
-            <p className="m3-sa-note">The model checks different parts of the shape.</p>
+            <p className="m3-sa-note">{t('module3.learningProblem.inputNote')}</p>
           </article>
 
           <article className="m3-sa-panel m3-sa-panel--before">
             <div className="m3-sa-panel-head">
-              <h3>Before learning</h3>
-              <p>The model makes a wrong prediction.</p>
+              <h3>{t('module3.learningProblem.beforeTitle')}</h3>
+              <p>{t('module3.learningProblem.wrongBody')}</p>
             </div>
-            <PredictionSummary prediction="9" target="4" status="Error detected" />
+            <PredictionSummary prediction="9" target="4" status={t('module3.learningProblem.error')} />
             <p className="m3-sa-note">
-              The top of this stroke looks almost closed, so the model reads it as a loop and guesses 9.
+              {t('module3.learningProblem.beforeNote1')}
             </p>
             <p className="m3-sa-note">
-              The model overweights the near-closed top and misreads the digit.
+              {t('module3.learningProblem.beforeNote2')}
             </p>
           </article>
 
           <div className="m3-sa-connector" aria-hidden="true">
-            <span>Feedback updates weights</span>
+            <span>{t('module3.learningProblem.feedback')}</span>
           </div>
 
           <article className="m3-sa-panel m3-sa-panel--after">
             <div className="m3-sa-panel-head">
-              <h3>After learning</h3>
-              <p>The model makes the correct prediction.</p>
+              <h3>{t('module3.learningProblem.afterTitle')}</h3>
+              <p>{t('module3.learningProblem.correctBody')}</p>
             </div>
             <PredictionSummary
               prediction="4"
               target="4"
-              status="Prediction improved"
+              status={t('module3.learningProblem.improved')}
               improved
             />
             <p className="m3-sa-note">
-              The model now weighs the open gap at the top more heavily, and correctly reads this as 4.
+              {t('module3.learningProblem.afterNote1')}
             </p>
             <p className="m3-sa-note">
-              The model correctly reads the open top as a 4.
+              {t('module3.learningProblem.afterNote2')}
             </p>
           </article>
         </div>
 
         <p className="m3-section-takeaway m3-sa-takeaway">
-          The model learns by comparing its prediction with the target and adjusting which features matter most.
+          {t('module3.learningProblem.takeaway')}
         </p>
       </div>
     </section>

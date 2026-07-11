@@ -20,6 +20,7 @@ import {
   applyConvolutionPerChannel,
   toGrayscale,
 } from '../../utils/imageProcessing'
+import { useT } from '../../../../i18n/useT'
 
 const SVG_W = 1260
 const SVG_H = 500
@@ -172,6 +173,7 @@ function createEdgeImage(sourceImage, filterType) {
 }
 
 function EdgeDetectionCards({ activeEdgePreset }) {
+  const t = useT()
   const imageRef = useRef(null)
   const [isReady, setIsReady] = useState(false)
   const [edgeImages, setEdgeImages] = useState({})
@@ -206,13 +208,13 @@ function EdgeDetectionCards({ activeEdgePreset }) {
           <img
             ref={imageRef}
             src={butterflyImage}
-            alt="Original color butterfly used for edge detection."
+            alt={t('module2.cnn.originalButterflyAlt')}
             onLoad={() => setIsReady(true)}
             style={edgeVisualStyle}
           />
         </div>
         <figcaption style={{ color: '#e2e8f0', fontSize: 14, fontWeight: 700 }}>
-          Original
+          {t('module2.cnn.originalLabel')}
         </figcaption>
       </figure>
 
@@ -226,7 +228,7 @@ function EdgeDetectionCards({ activeEdgePreset }) {
             />
           </div>
           <figcaption style={{ color: '#e2e8f0', fontSize: 14, fontWeight: 700, lineHeight: 1.5 }}>
-            {activeFilter.caption}
+            {t(`module2.cnn.edge.${activeEdgePreset}`)}
           </figcaption>
         </figure>
       )}
@@ -235,6 +237,7 @@ function EdgeDetectionCards({ activeEdgePreset }) {
 }
 
 function ScanningSection() {
+  const t = useT()
   const [convImage, setConvImage] = useState([...SAMPLE_IMAGE])
   const [kernel, setKernel] = useState([...DEFAULT_KERNEL])
   const [receptiveFieldPos, setReceptiveFieldPos] = useState({ row: 0, col: 0 })
@@ -341,37 +344,32 @@ function ScanningSection() {
     <section className="m2-section">
       <div className="m2-section-card m2-cnn-card">
         <div className="m2-section-heading m2-canvas-heading">
-          <p className="m2-eyebrow">B. CNNs</p>
-          <h2>Seeing in Patches</h2>
+          <p className="m2-eyebrow">{t('module2.cnn.eyebrow')}</p>
+          <h2>{t('module2.cnn.title')}</h2>
           <p className="m2-section-subtitle">
-            A CNN looks at small parts of an image one step at a time. It uses a filter, a small
-            pattern detector, to check each patch.
+            {t('module2.cnn.subtitle')}
           </p>
         </div>
 
         <div className="m2-cnn-copy-grid">
           <div className="m2-cnn-copy-card">
-            <strong>Padding</strong>
-            <p>
-              Start with a 3x3 image. Add a padding border around it, making it 5x5. Padding lets
-              the filter check the edge pixels too. The output stays 3x3, matching the original
-              image.
-            </p>
+            <strong>{t('module2.cnn.padding')}</strong>
+            <p>{t('module2.cnn.paddingBody')}</p>
           </div>
           <div className="m2-cnn-copy-card">
-            <strong>Stride</strong>
-            <p>Here, the filter moves one step at a time. That step size is called stride.</p>
+            <strong>{t('module2.cnn.stride')}</strong>
+            <p>{t('module2.cnn.strideBody')}</p>
           </div>
           <div className="m2-cnn-copy-card">
-            <strong>Kernel</strong>
-            <p>In CNNs, this filter is also called a kernel.</p>
+            <strong>{t('module2.cnn.kernel')}</strong>
+            <p>{t('module2.cnn.kernelBody')}</p>
           </div>
         </div>
 
         <div className="m2-cnn-legend">
-          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--image">Original 3x3</span>
-          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--padding">Padding</span>
-          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--active">Current scan window</span>
+          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--image">{t('module2.cnn.original')}</span>
+          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--padding">{t('module2.cnn.padding')}</span>
+          <span className="m2-cnn-legend-chip m2-cnn-legend-chip--active">{t('module2.cnn.currentWindow')}</span>
         </div>
 
         <svg
@@ -481,8 +479,8 @@ function ScanningSection() {
               strokeWidth="4"
             />
             <text x={paddedCenterX} y={paddedNoteY} className="m2-cnn-svg-note" textAnchor="middle">
-              <tspan x={paddedCenterX} dy="0">Purple cells are padding.</tspan>
-              <tspan x={paddedCenterX} dy="15">The filter scans this 5x5 view.</tspan>
+              <tspan x={paddedCenterX} dy="0">{t('module2.cnn.paddingNoteOne')}</tspan>
+              <tspan x={paddedCenterX} dy="15">{t('module2.cnn.paddingNoteTwo')}</tspan>
             </text>
           </g>
 
@@ -494,7 +492,7 @@ function ScanningSection() {
             markerEnd="url(#m2-cnn-arrowhead)"
           />
           <text x={sourceToPaddedMidX} y={baselineY + 80} className="m2-cnn-svg-step" textAnchor="middle">
-            add Padding
+            {t('module2.cnn.addPadding')}
           </text>
 
           <path
@@ -505,12 +503,12 @@ function ScanningSection() {
             markerEnd="url(#m2-cnn-arrowhead)"
           />
           <text x={paddedToKernelMidX} y={baselineY + 80} className="m2-cnn-svg-step" textAnchor="middle">
-            scan with filter
+            {t('module2.cnn.scanWithFilter')}
           </text>
 
           <g>
             <text x={kernelX + kernelCell * 1.5} y={74} className="m2-cnn-svg-label" textAnchor="middle">
-              Filter 3x3
+              {t('module2.cnn.filter')}
             </text>
             {kernel.map((weight, i) => {
               const row = Math.floor(i / KERNEL_SIZE)
@@ -558,7 +556,7 @@ function ScanningSection() {
               )
             })}
             <text x={kernelX + kernelCell * 1.5} y={kernelNoteY} className="m2-cnn-svg-note" textAnchor="middle">
-              Same filter, reused at every patch.
+              {t('module2.cnn.sameFilter')}
             </text>
           </g>
 
@@ -575,12 +573,12 @@ function ScanningSection() {
             className="m2-cnn-svg-step"
             textAnchor="middle"
           >
-            {`stride ${STRIDE}`}
+            {`${t('module2.cnn.stride')} ${STRIDE}`}
           </text>
 
           <g>
             <text x={outputX + outputCell * 1.5} y={86} className="m2-cnn-svg-label" textAnchor="middle">
-              Output 3x3
+              {t('module2.cnn.output')}
             </text>
             {[0, 1, 2].map(row =>
               [0, 1, 2].map(col => {
@@ -618,30 +616,29 @@ function ScanningSection() {
               })
             )}
             <text x={outputX + outputCell * 1.5} y={outputNoteY} className="m2-cnn-svg-note" textAnchor="middle">
-              <tspan x={outputX + outputCell * 1.5} dy="0">Click a square to move</tspan>
-              <tspan x={outputX + outputCell * 1.5} dy="15">the filter one step.</tspan>
+              <tspan x={outputX + outputCell * 1.5} dy="0">{t('module2.cnn.moveHint')}</tspan>
             </text>
           </g>
         </svg>
 
         <div className="m2-preset-row">
-          <span className="m2-preset-label">Filter presets:</span>
+          <span className="m2-preset-label">{t('module2.cnn.filterPresets')}</span>
           {Object.keys(KERNEL_PRESETS).map(name => (
             <button key={name} className="m2-preset-btn" onClick={() => loadKernelPreset(name)}>
               {name.replace(/([A-Z])/g, ' $1').trim()}
             </button>
           ))}
-          <button className="m2-preset-btn" onClick={resetConvolution}>Reset Map</button>
+          <button className="m2-preset-btn" onClick={resetConvolution}>{t('module2.cnn.resetMap')}</button>
         </div>
 
         <div className="m2-observation m2-observation--purple">
-          <p><strong>Padding lets the filter check the edges without shrinking the output.</strong></p>
+          <p><strong>{t('module2.cnn.paddingObservation')}</strong></p>
         </div>
 
         <p className="m2-hint">
           {scannedCount >= OUTPUT_SIZE * OUTPUT_SIZE
-            ? 'You have scanned every patch. Try a different filter preset.'
-            : 'The output stays 3x3 because the padded 5x5 image lines up with the original 3x3 scan positions.'}
+            ? t('module2.cnn.scannedAll')
+            : t('module2.cnn.outputExplanation')}
         </p>
 
         <div className="m2-cnn-score-panel">
@@ -650,25 +647,22 @@ function ScanningSection() {
             className="m2-cnn-score-toggle"
             onClick={() => setShowScoreBreakdown(prev => !prev)}
           >
-            {showScoreBreakdown ? 'Hide score details' : 'How the score is made'}
+            {showScoreBreakdown ? t('module2.cnn.hideScoreDetails') : t('module2.cnn.scoreDetails')}
           </button>
 
           {showScoreBreakdown && (
             <div className="m2-cnn-score-breakdown">
               <div className="m2-cnn-score-copy">
-                <h3>Current patch score</h3>
+                <h3>{t('module2.cnn.currentPatchScore')}</h3>
+                <p>{t('module2.cnn.scoreBody')}</p>
                 <p>
-                  This output square uses one 3x3 patch from the padded image and one 3x3 filter.
-                  Matching parts push the score up. Non-matching parts push it down.
-                </p>
-                <p>
-                  Current scan position: row {receptiveFieldPos.row + 1}, column {receptiveFieldPos.col + 1}. Current score: <strong>{convSum}</strong>.
+                  {t('module2.cnn.scanPosition', { row: receptiveFieldPos.row + 1, col: receptiveFieldPos.col + 1 })} <strong>{convSum}</strong>.
                 </p>
               </div>
 
               <div className="m2-cnn-score-grid-wrap">
                 <div>
-                  <span className="m2-cnn-score-label">Patch</span>
+                  <span className="m2-cnn-score-label">{t('module2.cnn.patch')}</span>
                   <div className="m2-cnn-score-grid">
                     {currentField.map((value, index) => {
                       const tone = getCellTone(value)
@@ -682,7 +676,7 @@ function ScanningSection() {
                 </div>
 
                 <div>
-                  <span className="m2-cnn-score-label">Filter</span>
+                  <span className="m2-cnn-score-label">{t('module2.cnn.filter')}</span>
                   <div className="m2-cnn-score-grid">
                     {kernel.map((value, index) => (
                       <span key={`filter-${index}`} className="m2-cnn-score-grid--filter">
@@ -693,7 +687,7 @@ function ScanningSection() {
                 </div>
 
                 <div>
-                  <span className="m2-cnn-score-label">Score pieces</span>
+                  <span className="m2-cnn-score-label">{t('module2.cnn.scorePieces')}</span>
                   <div className="m2-cnn-score-grid">
                     {scoreParts.map(({ product }, index) => (
                       <span
@@ -711,7 +705,7 @@ function ScanningSection() {
         </div>
 
         <p className="m2-section-subtitle" style={{ marginTop: 28 }}>
-          Same idea, now on a real image.
+          {t('module2.cnn.realImage')}
         </p>
         <EdgeDetectionCards activeEdgePreset={activeEdgePreset} />
       </div>
