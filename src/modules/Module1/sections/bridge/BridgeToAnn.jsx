@@ -1,79 +1,73 @@
 import { useState } from 'react'
 import AnnDiagram from '../../../../components/diagrams/AnnDiagram'
 import biologicalNeuronBridgeImage from '../../../../assets/ChatGPT Image Apr 24, 2026, 01_40_31 PM.png'
+import { useT } from '../../../../i18n/useT'
 import ConnectedNetworkSection from './ConnectedNetworkSection'
 
-const MAPPING_STEPS = [
-  {
-    id: 'inputs',
-    buttonLabel: 'Receives signals',
-    highlightLabel: 'Signal in',
-    bioTitle: 'Input branches',
-    bioText: 'A biological neuron gathers incoming messages through its branching input region.',
-    annTitle: 'Inputs',
-    annText: 'An artificial neuron starts with input values that carry information into the model.',
-    mappingText: 'Input branches (dendrites) map to the model inputs.',
-    takeaway: 'Both systems begin by collecting incoming signals before anything is decided.',
-  },
-  {
-    id: 'combine',
-    buttonLabel: 'Adds them up',
-    highlightLabel: 'Combine',
-    bioTitle: 'Cell body',
-    bioText: 'The cell body combines those signals and checks whether the total is strong enough.',
-    annTitle: 'Processing rule',
-    annText: 'The model combines its inputs, then runs an activation function — a math rule that decides what passes through and what gets blocked.',
-    mappingText: 'The soma or cell body maps to signal processing, and the firing threshold maps to an activation function — the general term for that pass/block rule.',
-    takeaway: 'This is the moment where both systems decide whether the evidence is strong enough to respond.',
-  },
-  {
-    id: 'output',
-    buttonLabel: 'Sends one output',
-    highlightLabel: 'Signal out',
-    bioTitle: 'Output path',
-    bioText: 'Once the neuron fires, one signal travels down the long output pathway.',
-    annTitle: 'Output signal',
-    annText: 'After the unit responds, one output value moves forward to the next part of the network.',
-    mappingText: 'The axon maps to the model output signal.',
-    takeaway: 'A long biological pathway becomes one outgoing value in the simplified model.',
-  },
-  {
-    id: 'connection',
-    buttonLabel: 'Passes it on',
-    highlightLabel: 'Next link',
-    bioTitle: 'Handoff point',
-    bioText: 'At the far end, the signal reaches the next cell through the terminal connection.',
-    annTitle: 'Weighted link',
-    annText: 'In AI, the outgoing connection carries a weight that changes how strongly the next unit is affected.',
-    mappingText: 'The synapse or terminal connection maps to a weighted connection in the model.',
-    takeaway: 'Biology passes signals across synapses, while AI passes values across weighted links.',
-  },
-]
-
 function BridgeToAnn() {
-  const [activeStepId, setActiveStepId] = useState(MAPPING_STEPS[0].id)
-  const activeStep = MAPPING_STEPS.find((step) => step.id === activeStepId) ?? MAPPING_STEPS[0]
+  const t = useT()
+  const mappingSteps = [
+    {
+      id: 'inputs',
+      buttonLabel: t('module1.bridge.mapping.inputs.button'),
+      highlightLabel: t('module1.bridge.mapping.inputs.highlight'),
+      bioTitle: t('module1.bridge.mapping.inputs.bioTitle'),
+      bioText: t('module1.bridge.mapping.inputs.bioText'),
+      annTitle: t('module1.bridge.mapping.inputs.annTitle'),
+      annText: t('module1.bridge.mapping.inputs.annText'),
+      takeaway: t('module1.bridge.mapping.inputs.takeaway'),
+    },
+    {
+      id: 'combine',
+      buttonLabel: t('module1.bridge.mapping.combine.button'),
+      highlightLabel: t('module1.bridge.mapping.combine.highlight'),
+      bioTitle: t('module1.bridge.mapping.combine.bioTitle'),
+      bioText: t('module1.bridge.mapping.combine.bioText'),
+      annTitle: t('module1.bridge.mapping.combine.annTitle'),
+      annText: t('module1.bridge.mapping.combine.annText'),
+      takeaway: t('module1.bridge.mapping.combine.takeaway'),
+    },
+    {
+      id: 'output',
+      buttonLabel: t('module1.bridge.mapping.output.button'),
+      highlightLabel: t('module1.bridge.mapping.output.highlight'),
+      bioTitle: t('module1.bridge.mapping.output.bioTitle'),
+      bioText: t('module1.bridge.mapping.output.bioText'),
+      annTitle: t('module1.bridge.mapping.output.annTitle'),
+      annText: t('module1.bridge.mapping.output.annText'),
+      takeaway: t('module1.bridge.mapping.output.takeaway'),
+    },
+    {
+      id: 'connection',
+      buttonLabel: t('module1.bridge.mapping.connection.button'),
+      highlightLabel: t('module1.bridge.mapping.connection.highlight'),
+      bioTitle: t('module1.bridge.mapping.connection.bioTitle'),
+      bioText: t('module1.bridge.mapping.connection.bioText'),
+      annTitle: t('module1.bridge.mapping.connection.annTitle'),
+      annText: t('module1.bridge.mapping.connection.annText'),
+      takeaway: t('module1.bridge.mapping.connection.takeaway'),
+    },
+  ]
+  const [activeStepId, setActiveStepId] = useState(mappingSteps[0].id)
+  const activeStep = mappingSteps.find((step) => step.id === activeStepId) ?? mappingSteps[0]
 
   return (
     <section className="module1-section module1-bridge-section">
       <div className="module1-section-heading module1-bridge-heading">
-        <p className="module1-eyebrow">D. Bridge</p>
-        <h2>From a biological neuron to a simpler model</h2>
-        <p>
-          We are not copying biology part-for-part. We are keeping one useful idea: signals come in, they combine, and
-          the unit responds if the total evidence is strong enough.
-        </p>
+        <p className="module1-eyebrow">{t('module1.bridge.eyebrow')}</p>
+        <h2>{t('module1.bridge.title')}</h2>
+        <p>{t('module1.bridge.body')}</p>
       </div>
 
       <section className="module1-bridge-mapping-panel module1-panel module1-soft-panel">
         <div className="module1-bridge-mapping-header">
           <div>
-            <p className="module1-bridge-footer-title">Step through the mapping</p>
+            <p className="module1-bridge-footer-title">{t('module1.bridge.mapping.title')}</p>
           </div>
         </div>
 
-        <div className="bridge-mapping-list" aria-label="Biological neuron to artificial neuron mapping steps">
-          {MAPPING_STEPS.map((step, index) => (
+        <div className="bridge-mapping-list" aria-label={t('module1.bridge.mapping.aria')}>
+          {mappingSteps.map((step, index) => (
             <button
               key={step.id}
               type="button"
@@ -92,12 +86,10 @@ function BridgeToAnn() {
         <div className="bridge-panel bridge-panel-bio module1-panel module1-soft-panel">
           <div className="module1-bridge-panel-header">
             <div>
-              <h3 className="module1-panel-title module1-panel-title-large">Biological neuron</h3>
-              <p className="module1-card-muted">
-                A living cell whose parts gather, combine, and pass signals onward.
-              </p>
+              <h3 className="module1-panel-title module1-panel-title-large">{t('module1.bridge.bio.title')}</h3>
+              <p className="module1-card-muted">{t('module1.bridge.bio.body')}</p>
             </div>
-            <span className="module1-bridge-current-label">Real system</span>
+            <span className="module1-bridge-current-label">{t('module1.bridge.bio.badge')}</span>
           </div>
 
           <div className="bridge-visual bridge-visual-bio module1-bridge-shell module1-bridge-shell-bio">
@@ -105,10 +97,10 @@ function BridgeToAnn() {
               <img
                 className="module1-bridge-bio-image"
                 src={biologicalNeuronBridgeImage}
-                alt="Biological neuron with many incoming signals combining before outgoing signals continue."
+                alt={t('module1.bridge.bio.image.alt')}
               />
               <div className="module1-bridge-bio-scrim" aria-hidden="true" />
-              {MAPPING_STEPS.map((step) => (
+              {mappingSteps.map((step) => (
                 <div
                   key={step.id}
                   className={`module1-bridge-bio-focus module1-bridge-bio-focus--${step.id}${activeStep.id === step.id ? ' is-active' : ''}`}
@@ -119,24 +111,20 @@ function BridgeToAnn() {
               ))}
             </div>
           </div>
-
         </div>
 
         <div className="bridge-panel bridge-panel-ann module1-panel module1-soft-panel">
           <div className="module1-bridge-panel-header">
             <div>
-              <h3 className="module1-panel-title">Artificial neuron</h3>
-              <p className="module1-card-muted">
-                A simpler model that keeps the same basic idea: inputs come in, combine, and produce one output.
-              </p>
+              <h3 className="module1-panel-title">{t('module1.bridge.ann.title')}</h3>
+              <p className="module1-card-muted">{t('module1.bridge.ann.body')}</p>
             </div>
-            <span className="module1-bridge-current-label">Simplified model</span>
+            <span className="module1-bridge-current-label">{t('module1.bridge.ann.badge')}</span>
           </div>
 
           <div className="bridge-visual bridge-visual-ann module1-bridge-shell module1-bridge-shell-ann">
             <AnnDiagram variant="bridge" activeBridgePart={activeStep.id} />
           </div>
-
         </div>
       </section>
 
@@ -144,7 +132,10 @@ function BridgeToAnn() {
         <div className="module1-bridge-mapping-header">
           <div>
             <p className="module1-bridge-footer-title">
-              Step {MAPPING_STEPS.findIndex((step) => step.id === activeStep.id) + 1} of {MAPPING_STEPS.length}
+              {t('module1.bridge.stepPrefix', {
+                current: mappingSteps.findIndex((step) => step.id === activeStep.id) + 1,
+                total: mappingSteps.length,
+              })}
             </p>
             <h3 className="module1-panel-title">{activeStep.buttonLabel}</h3>
           </div>
@@ -152,13 +143,13 @@ function BridgeToAnn() {
 
         <div className="module1-mapping-list-bridge">
           <article className="module1-mapping-item">
-            <p className="module1-bridge-footer-title">Biological side</p>
+            <p className="module1-bridge-footer-title">{t('module1.bridge.side.bio')}</p>
             <h4>{activeStep.bioTitle}</h4>
             <p>{activeStep.bioText}</p>
           </article>
 
           <article className="module1-mapping-item">
-            <p className="module1-bridge-footer-title">Artificial side</p>
+            <p className="module1-bridge-footer-title">{t('module1.bridge.side.ann')}</p>
             <h4>{activeStep.annTitle}</h4>
             <p>{activeStep.annText}</p>
           </article>

@@ -1,20 +1,25 @@
 import { motion } from 'framer-motion'
+import { useT } from '../../../../i18n/useT'
 import HearingAttentionScene from './HearingAttentionScene'
 
 function Module1Intro({ onStart }) {
+  const t = useT()
+
   return (
     <section className="module1-intro-hero">
       <div className="module1-intro-hero-inner">
-        <p className="module1-intro-kicker">Module 1</p>
+        <p className="module1-intro-kicker">{t('module1.intro.kicker')}</p>
         <h2 className="module1-intro-headline">
-          How the Brain Notices
+          {t('module1.intro.headline.line1')}
           <br />
-          <span className="module1-intro-headline-accent">What Matters</span>
+          <span className="module1-intro-headline-accent">{t('module1.intro.headline.line2')}</span>
         </h2>
         <p className="module1-intro-desc">
-          In a noisy room, your brain does not treat every sound the same.
-          Most fade into the background, but a meaningful sound like your
-          name can stand out right away. Why does that signal win?
+          {t('module1.intro.desc.line1')}
+          {' '}
+          {t('module1.intro.desc.line2')}
+          {' '}
+          {t('module1.intro.desc.line3')}
         </p>
       </div>
 
@@ -27,15 +32,15 @@ function Module1Intro({ onStart }) {
           transition={{ duration: 0.3 }}
         >
           <div className="module1-intro-scene-copy">
-            <p className="module1-eyebrow module1-eyebrow-tight">Selective attention</p>
+            <p className="module1-eyebrow module1-eyebrow-tight">{t('module1.intro.scene.eyebrow')}</p>
             <p className="module1-card-muted module1-text-reset">
-              Hearing your name in a noisy room
+              {t('module1.intro.scene.copy')}
             </p>
           </div>
           <HearingAttentionScene />
           <div className="module1-intro-scene-actions">
             <button className="module1-intro-cta" onClick={onStart}>
-              Explore neuron parts
+              {t('module1.intro.cta')}
               <svg
                 width="16"
                 height="16"

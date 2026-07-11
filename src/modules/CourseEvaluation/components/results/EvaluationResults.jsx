@@ -1,6 +1,7 @@
 import CourseEvaluationQuestionCallback from '../knowledge/CourseEvaluationQuestionCallback'
 import CourseEvaluationCnnVisual from '../knowledge/CourseEvaluationCnnVisual'
 import { knowledgeQuestions } from '../../data/courseEvaluationData'
+import { useT } from '../../../../i18n/useT'
 
 export default function EvaluationResults({
   headingRef,
@@ -12,48 +13,48 @@ export default function EvaluationResults({
   onContinue,
   submissionStatus = 'idle',
 }) {
+  const t = useT()
   const breakdownItems = Object.values(results.moduleBreakdown)
   const uploadStatus = attempt.remoteSubmissionStatus || 'idle'
   const showRetry = attempt.completedAt && uploadStatus !== 'synced'
   const uploadStatusLabel = uploadStatus === 'synced'
-    ? 'Stored in database'
+    ? t('postEval.results.storedDb')
     : uploadStatus === 'syncing'
-      ? 'Saving to database...'
+      ? t('postEval.results.savingDb')
       : uploadStatus === 'failed'
-        ? 'Saved locally, sync needs retry'
-        : 'Saved locally'
+        ? t('postEval.results.savedLocalRetry')
+        : t('postEval.results.savedLocal')
 
   return (
     <section className="ce-panel ce-results-panel" aria-labelledby="results-heading">
       <div className="ce-panel-head">
-        <h2 id="results-heading" ref={headingRef} tabIndex={-1}>Your Results</h2>
-        <p>Review your score and continue to the completion page.</p>
+        <h2 id="results-heading" ref={headingRef} tabIndex={-1}>{t('postEval.results.title')}</h2>
+        <p>{t('postEval.results.helper')}</p>
       </div>
 
       <div className="ce-results-summary">
         <div className="ce-score-card">
-          <span className="ce-score-label">Concept check score</span>
+          <span className="ce-score-label">{t('postEval.results.scoreLabel')}</span>
           <strong>{results.score} / {results.maxScore}</strong>
-          <p>{results.passed ? 'Nice work. You cleared the current passing mark.' : 'You can review the explanations below and retake the concept check if you want another try.'}</p>
+          <p>{results.passed ? t('postEval.results.scorePass') : t('postEval.results.scoreRetry')}</p>
         </div>
 
         <div className="ce-save-card">
-          <span className="ce-score-label">Saved status</span>
-          <strong>{attempt.completedAt ? uploadStatusLabel : 'In progress'}</strong>
+          <span className="ce-score-label">{t('postEval.results.savedStatus')}</span>
+          <strong>{attempt.completedAt ? uploadStatusLabel : t('postEval.results.inProgress')}</strong>
           {submissionStatus === 'success' && (
             <p className="eval-results__storage-note eval-results__storage-note--success">
-              Your responses are saved in this browser and submitted to the study database.
+              {t('postEval.results.savedSuccess')}
             </p>
           )}
           {submissionStatus === 'error' && (
             <p className="eval-results__storage-note eval-results__storage-note--error">
-              Your responses are saved in this browser. The database submission did not go through —
-              your facilitator can collect results manually.
+              {t('postEval.results.savedError')}
             </p>
           )}
           {(submissionStatus === 'idle' || submissionStatus === 'submitting') && (
             <p className="eval-results__storage-note eval-results__storage-note--pending">
-              Your responses are saved in this browser.
+              {t('postEval.results.savedPending')}
             </p>
           )}
           {attempt.remoteSubmissionError && (
@@ -64,7 +65,7 @@ export default function EvaluationResults({
 
       {breakdownItems.length > 0 && (
         <div className="ce-breakdown">
-          <h3>Module breakdown</h3>
+          <h3>{t('postEval.results.moduleBreakdown')}</h3>
           <div className="ce-breakdown-grid">
             {breakdownItems.map((item) => (
               <div key={item.module} className="ce-breakdown-card">
@@ -77,57 +78,55 @@ export default function EvaluationResults({
       )}
 
       <div className="ce-results-list" aria-live="polite">
-        {results.questionResults.map((item, index) => (
-          (() => {
-            const sourceQuestion = knowledgeQuestions.find((question) => question.id === item.id)
-            const moduleLabel = sourceQuestion?.module === 'module1'
-              ? 'Module 1'
-              : sourceQuestion?.module === 'module2'
-                ? 'Module 2'
-                : 'Module 3'
+        {results.questionResults.map((item, index) => {
+          const sourceQuestion = knowledgeQuestions.find((question) => question.id === item.id)
+          const moduleLabel = sourceQuestion?.module === 'module1'
+            ? t('nav.path.module1')
+            : sourceQuestion?.module === 'module2'
+              ? t('nav.path.module2')
+              : t('nav.path.module3')
 
-            return (
-              <article key={item.id} className={`ce-result-item${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
-                <div className="ce-result-head">
-                  <div>
-                    <span className="ce-result-kicker">Question {index + 1}</span>
-                    <h3>{item.question}</h3>
-                  </div>
-                  <span className={`ce-result-badge${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
-                    {item.isCorrect ? 'Correct' : 'Incorrect'}
-                  </span>
+          return (
+            <article key={item.id} className={`ce-result-item${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
+              <div className="ce-result-head">
+                <div>
+                  <span className="ce-result-kicker">{t('postEval.results.question', { number: index + 1 })}</span>
+                  <h3>{item.question}</h3>
                 </div>
+                <span className={`ce-result-badge${item.isCorrect ? ' is-correct' : ' is-incorrect'}`}>
+                  {item.isCorrect ? t('postEval.results.correct') : t('postEval.results.incorrect')}
+                </span>
+              </div>
 
-                {sourceQuestion && (
-                  <CourseEvaluationQuestionCallback module={moduleLabel} sectionTitle={sourceQuestion.sectionTitle} />
-                )}
+              {sourceQuestion && (
+                <CourseEvaluationQuestionCallback module={moduleLabel} sectionTitle={sourceQuestion.sectionTitle} />
+              )}
 
-                <p className="ce-result-meta">
-                  Your answer: <strong>{item.selectedAnswer || 'No answer'}</strong>
-                  {' '}| Correct answer: <strong>{item.correctAnswer}</strong>
-                </p>
+              <p className="ce-result-meta">
+                {t('postEval.results.yourAnswer')}: <strong>{item.selectedAnswer || t('postEval.results.noAnswer')}</strong>
+                {' '}| {t('postEval.results.correctAnswer')}: <strong>{item.correctAnswer}</strong>
+              </p>
 
-                {sourceQuestion?.visualType && (
-                  <CourseEvaluationCnnVisual
-                    visualType={sourceQuestion.visualType}
-                    visualData={sourceQuestion.visualData}
-                    revealAnswer
-                    selectedAnswer={item.selectedAnswer}
-                    correctAnswer={item.correctAnswer}
-                  />
-                )}
+              {sourceQuestion?.visualType && (
+                <CourseEvaluationCnnVisual
+                  visualType={sourceQuestion.visualType}
+                  visualData={sourceQuestion.visualData}
+                  revealAnswer
+                  selectedAnswer={item.selectedAnswer}
+                  correctAnswer={item.correctAnswer}
+                />
+              )}
 
-                <p className="ce-result-explanation">{item.explanation}</p>
-              </article>
-            )
-          })()
-        ))}
+              <p className="ce-result-explanation">{item.explanation}</p>
+            </article>
+          )
+        })}
       </div>
 
       <div className="ce-actions">
         <div className="ce-actions-group">
           <button type="button" className="shared-btn shared-btn-secondary" onClick={onRetake}>
-            Retake Concept Check
+            {t('postEval.results.retake')}
           </button>
           {showRetry && (
             <button
@@ -136,12 +135,12 @@ export default function EvaluationResults({
               onClick={onRetryUpload}
               disabled={isRetryingUpload || uploadStatus === 'syncing'}
             >
-              {isRetryingUpload || uploadStatus === 'syncing' ? 'Retrying Sync...' : 'Retry Save'}
+              {isRetryingUpload || uploadStatus === 'syncing' ? t('postEval.results.retrying') : t('postEval.results.retrySave')}
             </button>
           )}
         </div>
         <button type="button" className="shared-btn shared-btn-primary" onClick={onContinue}>
-          Continue to Completion Page
+          {t('postEval.results.continueCompletion')}
         </button>
       </div>
     </section>

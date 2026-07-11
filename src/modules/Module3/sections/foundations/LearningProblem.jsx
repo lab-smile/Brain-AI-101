@@ -1,4 +1,5 @@
 import digitFeatureImage from '../../../../assets/module3/digit/digit-4-ambiguous-9.png'
+import { useT } from '../../../../i18n/useT'
 
 const DIGIT_FEATURE_IMAGE = digitFeatureImage
 
@@ -19,15 +20,14 @@ function PredictionSummary({ prediction, target, status, improved = false }) {
 }
 
 function LearningProblem() {
+  const t = useT()
   return (
     <section className="m3-section m3-section--centered">
       <div className="m3-section-card m3-section-card--feature m3-learning-problem-card m3-sa-card">
         <div className="m3-section-heading">
-          <p className="m3-eyebrow">A. LEARNING MEANS CHANGING</p>
-          <h2>Can the model correct itself?</h2>
-          <p className="m3-section-subtitle">
-            A model learns when feedback changes which features matter most.
-          </p>
+          <p className="m3-eyebrow">{t('module3.learningProblem.eyebrow')}</p>
+          <h2>{t('module3.learningProblem.title')}</h2>
+          <p className="m3-section-subtitle">{t('module3.learningProblem.subtitle')}</p>
         </div>
 
         <div className="m3-sa-layout">

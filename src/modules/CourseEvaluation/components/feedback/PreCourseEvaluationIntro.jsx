@@ -1,20 +1,21 @@
+import { useT } from '../../../../i18n/useT'
+
 const STEP_LABELS = [
-  'Pre-Course Evaluation',
-  'Module 1',
+  'preEval.step.eval',
+  'preEval.step.module1',
 ]
 
 export default function PreCourseEvaluationIntro({ started }) {
+  const t = useT()
   return (
     <header className="ce-hero">
       <div className="ce-hero-copy">
-        <span className="ce-eyebrow">Optional Step</span>
-        <h1>Pre-Course Evaluation</h1>
-        <p>
-          Before starting, answer a short questionnaire about what you already know. You can skip this step and return to the course.
-        </p>
+        <span className="ce-eyebrow">{t('preEval.optionalStep')}</span>
+        <h1>{t('preEval.title')}</h1>
+        <p>{t('preEval.intro')}</p>
       </div>
 
-      <div className="ce-progress-strip" aria-label="Pre-course progress">
+      <div className="ce-progress-strip" aria-label={t('preEval.progress')}>
         {STEP_LABELS.map((label, index) => {
           const isActive = index === 0
           const isComplete = started && index === 0
@@ -26,7 +27,7 @@ export default function PreCourseEvaluationIntro({ started }) {
               aria-current={isActive ? 'step' : undefined}
             >
               <span className="ce-progress-index">{index + 1}</span>
-              <span className="ce-progress-label">{label}</span>
+              <span className="ce-progress-label">{t(label)}</span>
             </div>
           )
         })}

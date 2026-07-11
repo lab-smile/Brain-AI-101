@@ -1,9 +1,11 @@
+import { useT } from '../../../../i18n/useT'
+
 const SCALE_OPTIONS = [
-  { value: 1, label: 'Strongly disagree' },
-  { value: 2, label: 'Disagree' },
-  { value: 3, label: 'Not sure' },
-  { value: 4, label: 'Agree' },
-  { value: 5, label: 'Strongly agree' },
+  { value: 1, key: 'survey.scale.1' },
+  { value: 2, key: 'survey.scale.2' },
+  { value: 3, key: 'survey.scale.3' },
+  { value: 4, key: 'survey.scale.4' },
+  { value: 5, key: 'survey.scale.5' },
 ]
 
 export default function LikertFeedbackSection({
@@ -21,6 +23,7 @@ export default function LikertFeedbackSection({
   onSecondaryAction,
   isBusy = false,
 }) {
+  const t = useT()
   return (
     <section className="ce-panel" aria-labelledby={sectionId}>
       <div className="ce-panel-head">
@@ -31,7 +34,7 @@ export default function LikertFeedbackSection({
       <div className="ce-scale-legend" aria-label="Likert scale labels">
         {SCALE_OPTIONS.map((option) => (
           <span key={option.value}>
-            <strong>{option.value}</strong> {option.label}
+            <strong>{option.value}</strong> {t(option.key)}
           </span>
         ))}
       </div>
@@ -56,10 +59,10 @@ export default function LikertFeedbackSection({
                       value={option.value}
                       checked={checked}
                       onChange={() => onChange(question.id, option.value)}
-                      aria-label={`${question.prompt} ${option.value} ${option.label}`}
+                      aria-label={`${question.prompt} ${option.value} ${t(option.key)}`}
                     />
                     <span className="ce-scale-value">{option.value}</span>
-                    <span className="ce-scale-copy">{option.label}</span>
+                    <span className="ce-scale-copy">{t(option.key)}</span>
                   </label>
                 )
               })}

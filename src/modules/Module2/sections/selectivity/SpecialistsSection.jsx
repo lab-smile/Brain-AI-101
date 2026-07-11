@@ -5,6 +5,7 @@ import {
   NEURON_CONFIGS, THRESHOLD, RELU_SCALE, GRID_PRESETS,
   computeWeightedSum, computeActivation
 } from '../../module2Config'
+import { useT } from '../../../../i18n/useT'
 
 const NEURON_RADIUS = 50
 const SVG_W = 800
@@ -35,6 +36,7 @@ function getResponseLabel(output) {
 }
 
 function SpecialistsSection() {
+  const t = useT()
   const [grid, setGrid] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0])
   const [currentPreset, setCurrentPreset] = useState(null)
   const [hasInteracted, setHasInteracted] = useState(false)
@@ -99,9 +101,9 @@ function SpecialistsSection() {
     <section className="m2-section">
       <div className="m2-section-card m2-selectivity-canvas">
         <div className="m2-section-heading m2-canvas-heading">
-        <p className="m2-eyebrow">A. Neural Selectivity</p>
-        <h2>Some Neurons Prefer Certain Patterns</h2>
-        <p className="m2-section-subtitle">Not every neuron responds to the same visual clue. Some respond more strongly to a vertical edge. Others respond to a horizontal edge or a diagonal edge.</p>
+        <p className="m2-eyebrow">{t('module2.selectivity.eyebrow')}</p>
+        <h2>{t('module2.selectivity.title')}</h2>
+        <p className="m2-section-subtitle">{t('module2.selectivity.subtitle')}</p>
       </div>
 
         <HubelWieselStory />

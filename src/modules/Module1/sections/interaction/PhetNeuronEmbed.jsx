@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useT } from '../../../../i18n/useT'
 
 const LIVE_NEURON_URL = 'https://phet.colorado.edu/sims/html/neuron/latest/neuron_en.html'
 const BASE_URL = import.meta.env.BASE_URL || '/'
@@ -18,6 +19,7 @@ export const PHET_NEURON_SIM_URL = import.meta.env.VITE_PHET_NEURON_URL || DEFAU
 export const PHET_NEURON_LOCAL_BUILD_URL = DEFAULT_LOCAL_URL
 
 function PhetNeuronEmbed({ iframeRef = null, onFrameLoad = null }) {
+  const t = useT()
   const [isLoading, setIsLoading] = useState(true)
 
   return (
@@ -25,7 +27,7 @@ function PhetNeuronEmbed({ iframeRef = null, onFrameLoad = null }) {
       {isLoading && (
         <div className="module1-phet-embed__loading">
           <span className="module1-phet-embed__loading-dot" aria-hidden="true" />
-          Loading the PhET neuron simulator…
+          {t('module1.phet.loading')}
         </div>
       )}
 
@@ -33,7 +35,7 @@ function PhetNeuronEmbed({ iframeRef = null, onFrameLoad = null }) {
         ref={iframeRef}
         className="module1-phet-embed__frame"
         src={PHET_NEURON_SIM_URL}
-        title="PhET Neuron simulation"
+        title={t('module1.phet.iframe.title')}
         loading="eager"
         allow="fullscreen"
         onLoad={() => {

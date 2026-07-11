@@ -5,9 +5,9 @@ import { clampSomaInput, decaySomaInput, DECAY_INTERVAL_MS } from '../logic/neur
 export const THRESHOLD = 70
 export const MAX_INPUT = 100
 export const EXAMPLE_SIGNALS = [
-  { label: '"Alex"', value: 'Alex' },
-  { label: '"Everyone listen"', value: 'Everyone listen' },
-  { label: '"Page turning"', value: 'Page turning' },
+  { key: 'module1.sound.examples.alex', value: 'Alex' },
+  { key: 'module1.sound.examples.everyone', value: 'Everyone listen' },
+  { key: 'module1.sound.examples.page', value: 'Page turning' },
 ]
 
 const SIGNAL_ID_PREFIX = 'sound-neuron-signal'

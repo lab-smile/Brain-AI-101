@@ -10,16 +10,17 @@ import SpecialistsSection from './sections/selectivity/SpecialistsSection'
 import ScanningSection from './sections/cnn/ScanningSection'
 import CnnExplainerSection from './sections/cnn/CnnExplainerSection'
 import './module2.css'
+import { useT } from '../../i18n/useT'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const SECTIONS = [
-  { label: 'Neural Selectivity' },
-  { label: 'CNNs' },
-  { label: 'CNN Explainer' },
-]
-
 function Module2({ onBack, onContinue, onNavigate }) {
+  const t = useT()
+  const SECTIONS = [
+    { label: t('module2.nav.selectivity') },
+    { label: t('module2.nav.cnns') },
+    { label: t('module2.nav.explainer') },
+  ]
   const dispatch = useAppDispatch()
   const savedProgress = useAppSelector(selectModuleSectionProgress('module2'))
   const handleProgressChange = useCallback(({ activeIndex: nextActiveIndex, visitedIndices: nextVisitedIndices }) => {
@@ -85,10 +86,10 @@ function Module2({ onBack, onContinue, onNavigate }) {
 
         <section className="m2-section m2-continue-section">
           <div className="m2-continue-card" onClick={onContinue} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onContinue?.()}>
-            <p className="m2-eyebrow">Up Next</p>
-            <h2>Module 3: Learning to Learn</h2>
-            <p className="m2-section-subtitle">How do networks learn their own weights? Discover training, loss, and the brain's version of gradient descent.</p>
-            <span className="m2-continue-btn">Continue</span>
+            <p className="m2-eyebrow">{t('module2.upNext')}</p>
+            <h2>{t('module2.nextTitle')}</h2>
+            <p className="m2-section-subtitle">{t('module2.nextBody')}</p>
+            <span className="m2-continue-btn">{t('ui.continue')}</span>
           </div>
         </section>
       </main>

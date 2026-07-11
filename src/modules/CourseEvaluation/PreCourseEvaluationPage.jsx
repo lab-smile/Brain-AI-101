@@ -22,12 +22,14 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useSubmitEvaluation } from '../../hooks/useSubmitEvaluation'
 import './courseEvaluation.css'
+import { useT } from '../../i18n/useT'
 
 function hasSavedResponses(attempt) {
   return Object.keys(attempt?.likertResponses || {}).length > 0 || Boolean(attempt?.openResponse)
 }
 
 export default function PreCourseEvaluationPage({ onBack, onContinue }) {
+  const t = useT()
   const dispatch = useAppDispatch()
   const { submit: submitEvaluation, isSubmitting } = useSubmitEvaluation()
   const preCourseState = useAppSelector(selectPreCourseEvaluationState)
@@ -118,7 +120,7 @@ export default function PreCourseEvaluationPage({ onBack, onContinue }) {
 
   const handleSubmit = async () => {
     if (!areLikertQuestionsComplete(preCourseLikertQuestions, likertResponses)) {
-      setErrorMessage('Please answer all rating questions or choose Skip for Now.')
+      setErrorMessage(t('preEval.errorIncomplete'))
       return
     }
 
@@ -154,7 +156,7 @@ export default function PreCourseEvaluationPage({ onBack, onContinue }) {
       <div className="ce-shell">
         <div className="ce-topbar">
           <button type="button" className="shared-btn shared-btn-ghost" onClick={onBack}>
-            Back to Home
+            {t('preEval.backHome')}
           </button>
         </div>
 
@@ -163,21 +165,17 @@ export default function PreCourseEvaluationPage({ onBack, onContinue }) {
         {!hasStarted ? (
           <section className="ce-panel" aria-labelledby="pre-course-begin-heading">
             <div className="ce-panel-head">
-              <h2 id="pre-course-begin-heading">Before You Begin</h2>
-              <p>
-                This step is optional.
-              </p>
-              <p>
-                Rate how strongly you agree with each statement. This helps compare what learners know before and after the course.
-              </p>
+              <h2 id="pre-course-begin-heading">{t('preEval.beforeBegin')}</h2>
+              <p>{t('preEval.optional')}</p>
+              <p>{t('preEval.helper')}</p>
             </div>
 
             <div className="ce-actions">
               <button type="button" className="shared-btn shared-btn-secondary" onClick={handleSkip} disabled={isSubmitting}>
-                {isSubmitting ? 'Saving...' : 'Skip for Now'}
+                {isSubmitting ? t('preEval.saving') : t('preEval.skip')}
               </button>
               <button type="button" className="shared-btn shared-btn-primary" onClick={handleStart} disabled={isSubmitting}>
-                Start Evaluation
+                {t('preEval.start')}
               </button>
             </div>
           </section>
@@ -185,15 +183,15 @@ export default function PreCourseEvaluationPage({ onBack, onContinue }) {
           <LikertFeedbackSection
             sectionId="pre-course-likert-heading"
             headingRef={headingRef}
-            title="Before You Begin"
-            helperText="Rate how strongly you agree with each statement. This helps compare what learners know before and after the course."
+            title={t('preEval.beforeBegin')}
+            helperText={t('preEval.helper')}
             questions={preCourseLikertQuestions}
             responses={attempt.likertResponses}
             onChange={handleLikertChange}
             errorMessage={errorMessage}
             onNext={handleSubmit}
-            primaryActionLabel={isSubmitting ? 'Saving...' : 'Submit and Start Module 1'}
-            secondaryActionLabel="Skip for Now"
+            primaryActionLabel={isSubmitting ? t('preEval.saving') : t('preEval.submitStartModule1')}
+            secondaryActionLabel={t('preEval.skip')}
             onSecondaryAction={handleSkip}
             isBusy={isSubmitting}
           />

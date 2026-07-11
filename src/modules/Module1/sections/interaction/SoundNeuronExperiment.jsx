@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useT } from '../../../../i18n/useT'
 import FloatingSignal from './FloatingSignal'
 import NeuronResponsePanel from './NeuronResponsePanel'
 import PhetNeuronPanel from './PhetNeuronPanel'
@@ -8,6 +9,7 @@ import useSoundNeuronExperiment, { EXAMPLE_SIGNALS, MAX_INPUT, THRESHOLD } from 
 import './soundNeuronExperiment.css'
 
 function SoundNeuronExperiment() {
+  const t = useT()
   const {
     currentPhrase,
     somaInput,
@@ -29,10 +31,10 @@ function SoundNeuronExperiment() {
     <div className="module1-sound-neuron">
       <div className="module1-sound-neuron__shell">
         <div className="module1-sound-neuron__intro">
-          <p className="module1-eyebrow module1-eyebrow-tight">C. Sound Experiment</p>
-          <h2 className="module1-sound-neuron__title">When Does a Neuron Fire?</h2>
+          <p className="module1-eyebrow module1-eyebrow-tight">{t('module1.sound.eyebrow')}</p>
+          <h2 className="module1-sound-neuron__title">{t('module1.sound.title')}</h2>
           <p className="module1-card-muted module1-text-reset">
-            Sound signals travel to the ear, become neural input, and trigger a spike when the neuron is stimulated strongly enough.
+            {t('module1.sound.body')}
           </p>
         </div>
 
@@ -43,16 +45,16 @@ function SoundNeuronExperiment() {
               type="text"
               value={currentPhrase}
               onChange={(event) => setCurrentPhrase(event.target.value)}
-              placeholder="Type what Alex hears"
+              placeholder={t('module1.sound.input.placeholder')}
               autoComplete="off"
             />
             <button type="submit" className="module1-primary-button module1-sound-neuron__send-button">
-              Send sound
+              {t('module1.sound.input.send')}
             </button>
           </div>
         </form>
 
-        <div className="module1-sound-neuron__examples" aria-label="Example phrases">
+        <div className="module1-sound-neuron__examples" aria-label={t('module1.sound.examples.aria')}>
           {EXAMPLE_SIGNALS.map((example) => (
             <button
               key={example.value}
@@ -60,7 +62,7 @@ function SoundNeuronExperiment() {
               className="module1-sound-neuron__example-chip"
               onClick={() => submitExamplePhrase(example.value)}
             >
-              {example.label}
+              {t(example.key)}
             </button>
           ))}
         </div>
@@ -87,14 +89,14 @@ function SoundNeuronExperiment() {
                 ))}
               </div>
             </div>
-            <div className="module1-sound-neuron__scene-hint">Signals move toward the soma.</div>
+            <div className="module1-sound-neuron__scene-hint">{t('module1.sound.scene.hint')}</div>
           </div>
 
           <div className="module1-sound-neuron__neuron-panel">
             <div className="module1-sound-neuron__panel-header">
               <div>
-                <h3 className="module1-sound-neuron__panel-title">Watch the neuron</h3>
-                <p className="module1-sound-neuron__panel-copy">Each sound adds input at the soma. When the total reaches threshold, the neuron fires automatically.</p>
+                <h3 className="module1-sound-neuron__panel-title">{t('module1.sound.panel.title')}</h3>
+                <p className="module1-sound-neuron__panel-copy">{t('module1.sound.panel.copy')}</p>
               </div>
             </div>
 
@@ -102,12 +104,12 @@ function SoundNeuronExperiment() {
 
             <div className="module1-sound-neuron__meter">
               <div className="module1-sound-neuron__meter-header">
-                <span className="module1-sound-neuron__meter-label">Soma input</span>
+                <span className="module1-sound-neuron__meter-label">{t('module1.sound.meter.label')}</span>
                 <strong>{somaInput} / {MAX_INPUT}</strong>
               </div>
               <div
                 className={`module1-sound-neuron__meter-track ${isFiring ? 'is-firing' : ''}`}
-                aria-label="Soma input meter"
+                aria-label={t('module1.sound.meter.aria')}
                 aria-valuemin={0}
                 aria-valuemax={MAX_INPUT}
                 aria-valuenow={somaInput}
@@ -115,13 +117,13 @@ function SoundNeuronExperiment() {
               >
                 <div className="module1-sound-neuron__meter-fill" style={{ width: `${somaFillPercent}%` }} />
                 <div className="module1-sound-neuron__meter-threshold" style={{ left: `${thresholdPercent}%` }}>
-                  <span>Threshold {THRESHOLD}</span>
+                  <span>{t('module1.sound.meter.threshold', { value: THRESHOLD })}</span>
                 </div>
               </div>
             </div>
             <PhetNeuronPanel
-              title="Watch the neuron"
-              helperText="Send a sound to build input, or use the manual controls to test the neuron directly."
+              title={t('module1.sound.panel.title')}
+              helperText={t('module1.sound.phet.helper')}
               showStatus={false}
               showPlayback={false}
               showAttribution
@@ -138,7 +140,7 @@ function SoundNeuronExperiment() {
             className="module1-secondary-button module1-anatomy-video-toggle"
             onClick={() => setShowFiringVideo((prev) => !prev)}
           >
-            {showFiringVideo ? 'Hide neuron firing example' : 'Show neuron firing example'}
+            {showFiringVideo ? t('module1.sound.video.hide') : t('module1.sound.video.show')}
           </button>
 
           {showFiringVideo && (
@@ -147,7 +149,7 @@ function SoundNeuronExperiment() {
                 <source src={neuronFiringVideo} type="video/mp4" />
               </video>
               <p className="module1-anatomy-video-credit">
-                Source: HHMI BioInteractive - Neuron Activity Click-and-Learn (
+                {t('module1.sound.video.source')} (
                 <a
                   href="https://media.hhmi.org/biointeractive/click/Neuron_Activity/01.html"
                   target="_blank"

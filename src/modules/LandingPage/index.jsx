@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useT } from '../../i18n/useT'
 import '../../styles/shared.css'
 import './landing.css'
 
@@ -24,19 +25,6 @@ const EDGE_PATTERN = [
   0.05, 0.05, 0.9, 0.05, 0.05,
 ]
 
-const ANATOMY_STEPS = [
-  { label: 'Dendrites receive', color: 'blue' },
-  { label: 'Soma integrates', color: 'green' },
-  { label: 'Threshold fires', color: 'amber' },
-  { label: 'Axon propagates', color: 'purple' },
-]
-
-const COURSE_MODULES = [
-  { key: 'module1', mod: 'Module 1', label: 'Meet the Neuron', time: '~22 min', color: '#2D7EFF' },
-  { key: 'module2', mod: 'Module 2', label: 'From Neurons to Patterns', time: '~18 min', color: '#7C3AED' },
-  { key: 'module3', mod: 'Module 3', label: 'Learning Through Feedback', time: '~26 min', color: '#10B981' },
-]
-
 function DotGrid({ resolved }) {
   const pattern = resolved ? EDGE_PATTERN : NOISE_PATTERN
 
@@ -58,9 +46,21 @@ function DotGrid({ resolved }) {
 }
 
 export default function LandingPage({ onStart, onNavigate }) {
+  const t = useT()
   const modulesRef = useRef(null)
   const patternRef = useRef(null)
   const [dotResolved, setDotResolved] = useState(false)
+  const anatomySteps = [
+    { label: t('landing.narrative.module1.anatomy.step1'), color: 'blue' },
+    { label: t('landing.narrative.module1.anatomy.step2'), color: 'green' },
+    { label: t('landing.narrative.module1.anatomy.step3'), color: 'amber' },
+    { label: t('landing.narrative.module1.anatomy.step4'), color: 'purple' },
+  ]
+  const courseModules = [
+    { key: 'module1', mod: t('landing.bento.schedule.module1.mod'), label: t('landing.bento.schedule.module1.label'), time: t('landing.bento.schedule.module1.time'), color: '#2D7EFF' },
+    { key: 'module2', mod: t('landing.bento.schedule.module2.mod'), label: t('landing.bento.schedule.module2.label'), time: t('landing.bento.schedule.module2.time'), color: '#7C3AED' },
+    { key: 'module3', mod: t('landing.bento.schedule.module3.mod'), label: t('landing.bento.schedule.module3.label'), time: t('landing.bento.schedule.module3.time'), color: '#10B981' },
+  ]
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -154,61 +154,61 @@ export default function LandingPage({ onStart, onNavigate }) {
           Brain &times; AI 101
         </h1>
 
-        <span className="lp-hero-tag lp-hero-tag--left">Brains and AI</span>
-        <span className="lp-hero-tag lp-hero-tag--right">Interactive Learning Platform</span>
+        <span className="lp-hero-tag lp-hero-tag--left">{t('landing.hero.tag.left')}</span>
+        <span className="lp-hero-tag lp-hero-tag--right">{t('landing.hero.tag.right')}</span>
 
         <div className="lp-hero-center">
           <img
             src={import.meta.env.BASE_URL + 'images/bust.png'}
-            alt="Human profile silhouette"
+            alt={t('landing.hero.image.alt')}
             className="lp-bust"
           />
         </div>
 
         <div className="lp-flank-left">
           <p className="lp-flank-label">
-            A hands-on journey from biological neurons to modern AI
+            {t('landing.hero.flank.label')}
           </p>
           <button className="lp-btn-text" onClick={scrollToModules}>
-            View the modules <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+            {t('landing.hero.viewModules')} <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
           </button>
         </div>
 
         <div className="lp-flank-right">
           <span className="lp-flank-stat">86B</span>
-          <p className="lp-flank-stat-label">neurons in the<br />human brain</p>
+          <p className="lp-flank-stat-label">{t('landing.hero.stat.label').split('\n')[0]}<br />{t('landing.hero.stat.label').split('\n')[1]}</p>
         </div>
 
         <div className="lp-hero-bottom">
           <div className="lp-hero-meta">
-            <span className="lp-meta-chip">1 hour</span>
-            <span className="lp-meta-chip">3 interactive labs</span>
-            <span className="lp-meta-chip">Three interactive modules</span>
+            <span className="lp-meta-chip">{t('landing.hero.meta.duration')}</span>
+            <span className="lp-meta-chip">{t('landing.hero.meta.labs')}</span>
+            <span className="lp-meta-chip">{t('landing.hero.meta.modules')}</span>
           </div>
           <button className="lp-btn-primary" onClick={onStart}>
-            Start the experience <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+            {t('landing.hero.start')} <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
           </button>
         </div>
 
         <div className="lp-scroll-hint">
           <span className="lp-scroll-line" />
-          <span className="lp-scroll-text">Scroll Down</span>
+          <span className="lp-scroll-text">{t('landing.hero.scroll')}</span>
         </div>
 
-        <h1 className="sr-only">Brain &times; AI 101 - interactive course</h1>
+        <h1 className="sr-only">{t('landing.hero.srTitle')}</h1>
       </section>
 
       <section className="lp-bento-dash" ref={modulesRef}>
         <div className="lp-bento-dash-grid">
           <div className="lp-bd-left">
             <div className="lp-bd-card lp-bd-course-info">
-              <p className="lp-bd-overline">Interactive Course</p>
-              <h2 className="lp-bd-headline">Three modules.<br />One learning path.</h2>
+              <p className="lp-bd-overline">{t('landing.bento.course.overline')}</p>
+              <h2 className="lp-bd-headline">{t('landing.bento.course.headline.line1')}<br />{t('landing.bento.course.headline.line2')}</h2>
               <p className="lp-bd-sub">
-                Start with biological neurons, move to artificial networks, then see how feedback helps systems learn.
+                {t('landing.bento.course.sub')}
               </p>
               <button className="lp-btn-primary lp-btn-primary--sm" onClick={scrollToModules}>
-                View the modules <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+                {t('landing.hero.viewModules')} <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
               </button>
             </div>
 
@@ -216,19 +216,19 @@ export default function LandingPage({ onStart, onNavigate }) {
               <div className="lp-bd-mod-tabs">
                 <button className="lp-bd-tab lp-bd-tab--active" onClick={() => handleNavigate('module1')}>
                   <span className="lp-bd-tab-dot lp-bd-tab-dot--blue" />
-                  Neurons
+                  {t('landing.bento.modules.tab.neurons')}
                 </button>
                 <button className="lp-bd-tab" onClick={() => handleNavigate('module2')}>
                   <span className="lp-bd-tab-dot lp-bd-tab-dot--purple" />
-                  Perception
+                  {t('landing.bento.modules.tab.perception')}
                 </button>
                 <button className="lp-bd-tab" onClick={() => handleNavigate('module3')}>
                   <span className="lp-bd-tab-dot lp-bd-tab-dot--green" />
-                  Learning
+                  {t('landing.bento.modules.tab.learning')}
                 </button>
               </div>
               <p className="lp-bd-mod-desc">
-                See how neurons handle signals, how networks detect patterns, and how feedback changes connections over time.
+                {t('landing.bento.modules.desc')}
               </p>
             </div>
           </div>
@@ -241,22 +241,22 @@ export default function LandingPage({ onStart, onNavigate }) {
                 </Suspense>
               </div>
               <div className="lp-bd-neuron-caption">
-                <p className="lp-bd-caption-text">See how a neuron works</p>
-                <p className="lp-bd-caption-sub">Interactive 3D neuron model</p>
+                <p className="lp-bd-caption-text">{t('landing.bento.neuron.caption')}</p>
+                <p className="lp-bd-caption-sub">{t('landing.bento.neuron.sub')}</p>
               </div>
             </div>
           </div>
 
           <div className="lp-bd-right">
             <div className="lp-bd-card lp-bd-stats-card">
-              <p className="lp-bd-overline">By the numbers</p>
+              <p className="lp-bd-overline">{t('landing.bento.stats.overline')}</p>
               <span className="lp-bd-big-stat">86B</span>
-              <p className="lp-bd-stat-label">neurons in the human brain</p>
+              <p className="lp-bd-stat-label">{t('landing.bento.stats.label')}</p>
               <div className="lp-bd-stat-bar-group">
                 {[
-                  { label: 'Neurons', pct: 85, color: '#2D7EFF' },
-                  { label: 'Synapses', pct: 100, color: '#7C3AED' },
-                  { label: 'Reflexes', pct: 40, color: '#10B981' },
+                  { label: t('landing.bento.stats.bar.neurons'), pct: 85, color: '#2D7EFF' },
+                  { label: t('landing.bento.stats.bar.synapses'), pct: 100, color: '#7C3AED' },
+                  { label: t('landing.bento.stats.bar.reflexes'), pct: 40, color: '#10B981' },
                 ].map((b) => (
                   <div key={b.label} className="lp-bd-bar-row">
                     <span className="lp-bd-bar-label">{b.label}</span>
@@ -269,8 +269,8 @@ export default function LandingPage({ onStart, onNavigate }) {
             </div>
 
             <div className="lp-bd-card lp-bd-schedule">
-              <p className="lp-bd-overline">Course modules</p>
-              {COURSE_MODULES.map((m) => (
+              <p className="lp-bd-overline">{t('landing.bento.schedule.overline')}</p>
+              {courseModules.map((m) => (
                 <button key={m.mod} className="lp-bd-sched-row" onClick={() => handleNavigate(m.key)}>
                   <span className="lp-bd-sched-dot" style={{ background: m.color }} />
                   <span className="lp-bd-sched-info">
@@ -286,10 +286,10 @@ export default function LandingPage({ onStart, onNavigate }) {
 
         <div className="lp-bd-bottom">
           <h2 className="lp-bd-bottom-headline">
-            Build the idea<br />step by <span className="lp-hero-accent">step</span>
+            {t('landing.bento.bottom.headline.line1')}<br />{t('landing.bento.bottom.headline.line2')}<span className="lp-hero-accent">{t('landing.bento.bottom.headline.accent')}</span>
           </h2>
           <button className="lp-btn-text" onClick={scrollToModules}>
-            See what each module covers
+            {t('landing.bento.bottom.cta')}
             <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
           </button>
         </div>
@@ -299,27 +299,27 @@ export default function LandingPage({ onStart, onNavigate }) {
         <div className="lp-narrative-inner">
           <div className="lp-nr-row">
             <div className="lp-nr-text">
-              <p className="lp-nr-label lp-section-label">Module 1 - Neuron fundamentals</p>
-              <h2 className="lp-nr-heading">Every thought starts<br />with a single cell</h2>
+              <p className="lp-nr-label lp-section-label">{t('landing.narrative.module1.label')}</p>
+              <h2 className="lp-nr-heading">{t('landing.narrative.module1.heading.line1')}<br />{t('landing.narrative.module1.heading.line2')}</h2>
               <p className="lp-nr-body">
-                See how a biological neuron receives signals, combines inputs, reaches a threshold, and fires. Artificial neurons use a similar idea later in the course.
+                {t('landing.narrative.module1.body')}
               </p>
               <div className="lp-nr-bigstats">
                 <div className="lp-bigstat">
                   <span className="lp-bigstat-value">86B</span>
-                  <span className="lp-bigstat-label">neurons in your brain</span>
+                  <span className="lp-bigstat-label">{t('landing.narrative.module1.stat.neurons')}</span>
                 </div>
                 <div className="lp-bigstat">
                   <span className="lp-bigstat-value">100T</span>
-                  <span className="lp-bigstat-label">synaptic connections</span>
+                  <span className="lp-bigstat-label">{t('landing.narrative.module1.stat.synapses')}</span>
                 </div>
               </div>
             </div>
             <div className="lp-nr-visual">
               <div className="lp-anatomy-card">
-                <p className="lp-anatomy-heading">How a neuron processes signals</p>
+                <p className="lp-anatomy-heading">{t('landing.narrative.module1.anatomy.heading')}</p>
                 <div className="lp-anatomy-steps">
-                  {ANATOMY_STEPS.map((step) => (
+                  {anatomySteps.map((step) => (
                     <div key={step.label} className={`lp-anatomy-step lp-anatomy-step--${step.color}`}>
                       <span className="lp-anatomy-label">{step.label}</span>
                     </div>
@@ -328,7 +328,7 @@ export default function LandingPage({ onStart, onNavigate }) {
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 24 }}>
                 <button className="lp-btn-secondary" onClick={() => handleNavigate('module1')}>
-                  Explore Module 1 <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+                  {t('landing.narrative.module1.cta')} <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
                 </button>
               </div>
             </div>
@@ -336,23 +336,23 @@ export default function LandingPage({ onStart, onNavigate }) {
 
           <div className="lp-nr-row lp-nr-row--reverse">
             <div className="lp-nr-text">
-              <p className="lp-nr-label lp-section-label">Module 2 - Perception and patterns</p>
-              <h2 className="lp-nr-heading">Vision isn't brightness.<br />It's pattern.</h2>
+              <p className="lp-nr-label lp-section-label">{t('landing.narrative.module2.label')}</p>
+              <h2 className="lp-nr-heading">{t('landing.narrative.module2.heading.line1')}<br />{t('landing.narrative.module2.heading.line2')}</h2>
               <p className="lp-nr-body">
-                See how artificial neurons use weights, layers, and filters to recognize edges, shapes, and patterns in images.
+                {t('landing.narrative.module2.body')}
               </p>
               <button className="lp-btn-secondary" onClick={() => handleNavigate('module2')}>
-                Explore Module 2 <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+                {t('landing.narrative.module2.cta')} <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
               </button>
             </div>
             <div className="lp-nr-visual" ref={patternRef}>
               <div className="lp-dot-visual">
                 <p className="lp-dot-status">
-                  {dotResolved ? 'Pattern detected' : 'Analyzing signal...'}
+                  {dotResolved ? t('landing.narrative.module2.status.detected') : t('landing.narrative.module2.status.analyzing')}
                 </p>
                 <DotGrid resolved={dotResolved} />
                 <p className="lp-dot-caption">
-                  {dotResolved ? 'Edge pattern response' : 'Raw pixel activity'}
+                  {dotResolved ? t('landing.narrative.module2.caption.detected') : t('landing.narrative.module2.caption.analyzing')}
                 </p>
               </div>
             </div>
@@ -360,30 +360,30 @@ export default function LandingPage({ onStart, onNavigate }) {
 
           <div className="lp-nr-row">
             <div className="lp-nr-text">
-              <p className="lp-nr-label lp-section-label">Module 3 - Learning Through Feedback</p>
-              <h2 className="lp-nr-heading">Learning happens<br />through feedback.</h2>
+              <p className="lp-nr-label lp-section-label">{t('landing.narrative.module3.label')}</p>
+              <h2 className="lp-nr-heading">{t('landing.narrative.module3.heading.line1')}<br />{t('landing.narrative.module3.heading.line2')}</h2>
               <p className="lp-nr-body">
-                See how brains and AI systems use feedback, errors, and changing connections to improve over time.
+                {t('landing.narrative.module3.body1')}
               </p>
               <p className="lp-nr-body">
-                After signals and patterns, the final module shows how learning happens. Students see how feedback helps brains adjust connections and helps AI update weights through backpropagation.
+                {t('landing.narrative.module3.body2')}
               </p>
               <button className="lp-btn-secondary" onClick={() => handleNavigate('module3')}>
-                Explore Module 3 <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+                {t('landing.narrative.module3.cta')} <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
               </button>
             </div>
             <div className="lp-nr-visual">
               <div className="lp-anatomy-card">
-                <p className="lp-anatomy-heading">How learning improves a system</p>
+                <p className="lp-anatomy-heading">{t('landing.narrative.module3.anatomy.heading')}</p>
                 <div className="lp-anatomy-steps">
                   <div className="lp-anatomy-step lp-anatomy-step--blue">
-                    <span className="lp-anatomy-label">Signals produce an output</span>
+                    <span className="lp-anatomy-label">{t('landing.narrative.module3.anatomy.step1')}</span>
                   </div>
                   <div className="lp-anatomy-step lp-anatomy-step--amber">
-                    <span className="lp-anatomy-label">Feedback shows what was right or wrong</span>
+                    <span className="lp-anatomy-label">{t('landing.narrative.module3.anatomy.step2')}</span>
                   </div>
                   <div className="lp-anatomy-step lp-anatomy-step--green">
-                    <span className="lp-anatomy-label">Connections change so the next response improves</span>
+                    <span className="lp-anatomy-label">{t('landing.narrative.module3.anatomy.step3')}</span>
                   </div>
                 </div>
               </div>
@@ -395,17 +395,17 @@ export default function LandingPage({ onStart, onNavigate }) {
       <section className="lp-final-cta">
         <div className="lp-final-inner">
           <h2 className="lp-final-heading">
-            Start with the neuron.<br />Build toward <span className="lp-hero-accent">learning.</span>
+            {t('landing.final.heading.line1')}<br />{t('landing.final.heading.line2')}<span className="lp-hero-accent">{t('landing.final.heading.accent')}</span>
           </h2>
           <p className="lp-final-sub">
-            One hour. Three modules. The course moves from signal flow, to pattern recognition, to feedback-driven improvement.
+            {t('landing.final.sub')}
           </p>
           <div className="lp-final-actions">
             <button className="lp-btn-primary lp-btn-primary--xl" onClick={onStart}>
-              Begin Module 1 <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
+              {t('landing.final.begin')} <span className="lp-btn-arrow" aria-hidden="true">{'->'}</span>
             </button>
             <button className="shared-btn shared-btn-ghost" onClick={() => handleNavigate('adminSubmissions')}>
-              Admin data access
+              {t('landing.final.admin')}
             </button>
           </div>
         </div>

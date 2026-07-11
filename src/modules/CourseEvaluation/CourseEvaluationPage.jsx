@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { useSubmitQuizAttempt } from '../../hooks/useSubmitQuizAttempt'
 import { useSubmitEvaluation } from '../../hooks/useSubmitEvaluation'
 import './courseEvaluation.css'
+import { useT } from '../../i18n/useT'
 
 function inferStep(attempt) {
   if (attempt?.completedAt) return 'results'
@@ -34,6 +35,7 @@ function completedStepsFor(currentStep) {
 }
 
 export default function CourseEvaluationPage({ onBack, onContinue }) {
+  const t = useT()
   const dispatch = useAppDispatch()
   const attempt = useAppSelector(selectEvaluationAttempt)
   const currentStep = useAppSelector(selectEvaluationCurrentStep)
@@ -146,7 +148,7 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
         remoteSubmissionStatus: 'failed',
         remoteSubmissionError: error instanceof Error && error.message
           ? error.message
-          : 'We saved your results in this browser, but the server could not store them yet. Please try again.',
+          : t('postEval.results.savedError'),
         remoteSubmissionFiles: [],
       })
       dispatch(updateEvaluationAttempt(failedAttempt))
@@ -189,7 +191,7 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
 
   const handleFeedbackNext = () => {
     if (!areLikertQuestionsComplete(likertQuestions, attempt.likertResponses)) {
-      setFeedbackError('Please answer all six feedback questions before continuing.')
+      setFeedbackError(t('postEval.feedback.error'))
       return
     }
 
@@ -198,7 +200,7 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
 
   const handleKnowledgeSubmit = async () => {
     if (!areKnowledgeQuestionsComplete(knowledgeQuestions, attempt.quizAnswers)) {
-      setKnowledgeError('Please answer all ten knowledge-check questions before submitting.')
+      setKnowledgeError(t('postEval.knowledge.error'))
       return
     }
 
@@ -243,7 +245,7 @@ export default function CourseEvaluationPage({ onBack, onContinue }) {
       <div className="ce-shell">
         <div className="ce-topbar">
           <button type="button" className="shared-btn shared-btn-ghost" onClick={currentStep === 'feedback' ? onBack : () => dispatch(setEvaluationStep('feedback'))}>
-            {currentStep === 'feedback' ? 'Back to Module 3' : 'Back to Feedback'}
+            {currentStep === 'feedback' ? t('postEval.backToModule3') : t('postEval.backToFeedback')}
           </button>
         </div>
 

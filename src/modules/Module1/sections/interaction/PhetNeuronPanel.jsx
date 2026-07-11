@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useT } from '../../../../i18n/useT'
 import PhetNeuronEmbed, {
 } from './PhetNeuronEmbed'
 import usePhetNeuronController from '../../hooks/usePhetNeuronController'
@@ -13,6 +14,7 @@ function PhetNeuronPanel({
   showIntro = true,
   autoStimulateToken = 0,
 }) {
+  const t = useT()
   const {
     iframeRef,
     isLoaded,
@@ -89,23 +91,23 @@ function PhetNeuronPanel({
       <div className="module1-phet-panel__controls">
         <div className="module1-phet-panel__controls-main">
           <section className="module1-phet-panel__control-group module1-phet-panel__control-group--actions">
-            <h4>Neuron response</h4>
+            <h4>{t('module1.phet.controls.response')}</h4>
             <div className="module1-phet-panel__control-row module1-phet-panel__control-row--compact">
               <button type="button" className="module1-phet-panel__button module1-phet-panel__button--primary" onClick={handleStimulate} disabled={!runtimeState.canStimulate}>
-                Stimulate Neuron
+                {t('module1.phet.controls.stimulate')}
               </button>
               <button type="button" className="module1-phet-panel__button module1-phet-panel__button--secondary" onClick={handleReset} disabled={!runtimeState.canReset}>
-                Reset all
+                {t('module1.phet.controls.reset')}
               </button>
             </div>
           </section>
 
           <section className="module1-phet-panel__control-group module1-phet-panel__control-group--speed">
-            <h4>Speed</h4>
+            <h4>{t('module1.phet.controls.speed')}</h4>
             <div className="module1-phet-panel__control-row module1-phet-panel__control-row--chips">
-              <button type="button" className={runtimeState.speed === 'slow' ? 'is-active' : ''} onClick={handleSpeedSlow}>Slow</button>
-              <button type="button" className={runtimeState.speed === 'normal' ? 'is-active' : ''} onClick={handleSpeedNormal}>Normal</button>
-              <button type="button" className={runtimeState.speed === 'fast' ? 'is-active' : ''} onClick={handleSpeedFast}>Fast</button>
+              <button type="button" className={runtimeState.speed === 'slow' ? 'is-active' : ''} onClick={handleSpeedSlow}>{t('module1.phet.controls.speed.slow')}</button>
+              <button type="button" className={runtimeState.speed === 'normal' ? 'is-active' : ''} onClick={handleSpeedNormal}>{t('module1.phet.controls.speed.normal')}</button>
+              <button type="button" className={runtimeState.speed === 'fast' ? 'is-active' : ''} onClick={handleSpeedFast}>{t('module1.phet.controls.speed.fast')}</button>
             </div>
           </section>
         </div>
@@ -123,25 +125,25 @@ function PhetNeuronPanel({
         )}
 
         <details className="module1-phet-panel__details">
-          <summary className="module1-phet-panel__details-summary">View options</summary>
+          <summary className="module1-phet-panel__details-summary">{t('module1.phet.controls.viewOptions')}</summary>
           <section className="module1-phet-panel__control-group module1-phet-panel__control-group--advanced">
-            <p className="module1-phet-panel__details-copy">Use these only if you want a closer look at how the simulation is displaying the neuron.</p>
+            <p className="module1-phet-panel__details-copy">{t('module1.phet.controls.viewOptions.copy')}</p>
             <div className="module1-phet-panel__toggle-row">
               <label>
                 <input type="checkbox" checked={runtimeState.allIons} onChange={(event) => handleSetAllIons(event.target.checked)} />
-                <span>All Ions</span>
+                <span>{t('module1.phet.controls.toggle.allIons')}</span>
               </label>
               <label>
                 <input type="checkbox" checked={runtimeState.charges} onChange={(event) => handleSetCharges(event.target.checked)} />
-                <span>Charges</span>
+                <span>{t('module1.phet.controls.toggle.charges')}</span>
               </label>
               <label>
                 <input type="checkbox" checked={runtimeState.concentrations} onChange={(event) => handleSetConcentrations(event.target.checked)} />
-                <span>Concentrations</span>
+                <span>{t('module1.phet.controls.toggle.concentrations')}</span>
               </label>
               <label>
                 <input type="checkbox" checked={runtimeState.potentialChart} onChange={(event) => handleSetPotentialChart(event.target.checked)} />
-                <span>Potential Chart</span>
+                <span>{t('module1.phet.controls.toggle.potentialChart')}</span>
               </label>
             </div>
           </section>
@@ -152,8 +154,8 @@ function PhetNeuronPanel({
 
       {showAttribution && (
         <p className="module1-phet-panel__attribution">
-          {isLoaded ? 'Animation loaded. ' : ''}
-          Neuron simulation by{' '}
+          {isLoaded ? `${t('module1.phet.attribution.loaded')} ` : ''}
+          {t('module1.phet.attribution.prefix')}{' '}
           <a href="https://github.com/phetsims/neuron" target="_blank" rel="noreferrer">
             PhET Interactive Simulations
           </a>

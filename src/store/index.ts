@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { appReducer } from './app'
 import { evaluationReducer } from './courseEvaluation'
+import { languageReducer } from './language'
 import { preCourseEvaluationReducer } from './preCourseEvaluation'
 import { progressReducer } from './progress'
 import { userProgressReducer } from './userProgress'
@@ -17,6 +18,7 @@ const preloadedProgress = (() => {
 export const store = configureStore({
   reducer: {
     app: appReducer,
+    language: languageReducer,
     progress: progressReducer,
     evaluation: evaluationReducer,
     preCourseEvaluation: preCourseEvaluationReducer,

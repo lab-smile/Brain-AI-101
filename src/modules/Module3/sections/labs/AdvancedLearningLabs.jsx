@@ -1,6 +1,7 @@
 import ClusteringLab from '../../features/clustering/ClusteringLab'
 import NetworkPlaygroundCard from './NetworkPlaygroundCard'
 import ReinforcementLab from '../../features/reinforcement/ReinforcementLab'
+import { useT } from '../../../../i18n/useT'
 
 const ADVANCED_CARDS = [
   {
@@ -24,12 +25,13 @@ const ADVANCED_CARDS = [
 ]
 
 function AdvancedLearningLabs() {
+  const t = useT()
   return (
     <section className="m3-section">
       <div className="m3-section-card m3-section-card--feature m3-section-shell m3-advanced-learning-labs">
         <div className="m3-section-heading m3-advanced-learning-labs__intro">
-          <p className="m3-eyebrow">G. OPTIONAL EXTENSIONS</p>
-          <h2>Advanced Learning Labs</h2>
+          <p className="m3-eyebrow">{t('module3.advanced.eyebrow')}</p>
+          <h2>{t('module3.advanced.title')}</h2>
         </div>
 
         <div className="m3-advanced-learning-labs__stack">

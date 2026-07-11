@@ -1,4 +1,5 @@
 import { Component, lazy, Suspense, useEffect, type ErrorInfo, type ReactNode } from 'react'
+import useLanguageHash from './hooks/useLanguageHash'
 import useSmoothScroll from './hooks/useSmoothScroll'
 import Module1 from './modules/Module1'
 import Module2 from './modules/Module2'
@@ -63,6 +64,7 @@ function App() {
   const preCourseHydrated = useAppSelector(selectPreCourseHydrated)
   const dispatch = useAppDispatch()
   useSmoothScroll()
+  useLanguageHash()
 
   useEffect(() => {
     dispatch(hydratePreCourseEvaluation(loadPreCourseEvaluationAttempt()))

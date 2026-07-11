@@ -1,22 +1,24 @@
 import type { RootState } from '../store'
+import { strings } from '../i18n/strings'
+import type { Lang } from '../types/app'
 
 const REQUIRED_MODULES = [
   {
     id: 'module1',
-    label: 'Module 1',
-    detail: 'Visit all 4 required sections in Biological Neuron.',
+    labelKey: 'completion.requirement.module1.label',
+    detailKey: 'completion.requirement.module1.detail',
     totalSections: 4,
   },
   {
     id: 'module2',
-    label: 'Module 2',
-    detail: 'Visit all 5 required sections in Pattern Recognition.',
+    labelKey: 'completion.requirement.module2.label',
+    detailKey: 'completion.requirement.module2.detail',
     totalSections: 5,
   },
   {
     id: 'module3',
-    label: 'Module 3',
-    detail: 'Visit all 6 required sections in Learning to Learn.',
+    labelKey: 'completion.requirement.module3.label',
+    detailKey: 'completion.requirement.module3.detail',
     totalSections: 6,
   },
 ] as const
@@ -36,6 +38,10 @@ export interface CourseCompletionStatus {
   missingItems: CourseCompletionItem[]
 }
 
+function getString(lang: Lang, key: string) {
+  return strings[lang][key] ?? strings.en[key] ?? key
+}
+
 function normalizeVisitedSections(visitedSections: number[] | undefined) {
   if (!Array.isArray(visitedSections)) {
     return []
@@ -45,14 +51,15 @@ function normalizeVisitedSections(visitedSections: number[] | undefined) {
 }
 
 export function getCourseCompletionStatus(state: RootState): CourseCompletionStatus {
+  const lang = state.language?.lang ?? 'en'
   const items: CourseCompletionItem[] = REQUIRED_MODULES.map((moduleConfig) => {
       const moduleProgress = state.userProgress.modules[moduleConfig.id]
       const visitedSections = normalizeVisitedSections(moduleProgress?.visitedSections)
 
       return {
         id: moduleConfig.id,
-        label: moduleConfig.label,
-        detail: moduleConfig.detail,
+        label: getString(lang, moduleConfig.labelKey),
+        detail: getString(lang, moduleConfig.detailKey),
         completed:
           Boolean(moduleProgress?.completedAt) ||
           visitedSections.length >= moduleConfig.totalSections,

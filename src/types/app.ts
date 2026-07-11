@@ -8,6 +8,8 @@ export type AppView =
   | 'courseEvaluation'
   | 'completion'
 
+export type Lang = 'en' | 'zh'
+
 export interface AppState {
   currentView: AppView
 }

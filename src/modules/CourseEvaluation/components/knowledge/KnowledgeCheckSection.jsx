@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import KnowledgeQuestion from './KnowledgeQuestion'
+import { useT } from '../../../../i18n/useT'
 
 export default function KnowledgeCheckSection({
   headingRef,
@@ -11,6 +12,7 @@ export default function KnowledgeCheckSection({
   errorMessage,
   isSubmitting = false,
 }) {
+  const t = useT()
   const firstUnansweredIndex = questions.findIndex((question) => !answers[question.id])
   const [activeIndex, setActiveIndex] = useState(firstUnansweredIndex >= 0 ? firstUnansweredIndex : 0)
 
@@ -22,11 +24,11 @@ export default function KnowledgeCheckSection({
   return (
     <section className="ce-panel" aria-labelledby="knowledge-check-heading">
       <div className="ce-panel-head">
-        <h2 id="knowledge-check-heading" ref={headingRef} tabIndex={-1}>Concept Check</h2>
-        <p>Check what you remember from the modules.</p>
+        <h2 id="knowledge-check-heading" ref={headingRef} tabIndex={-1}>{t('postEval.knowledge.title')}</h2>
+        <p>{t('postEval.knowledge.helper')}</p>
       </div>
 
-      <div className="ce-question-nav" aria-label="Concept check question navigation">
+      <div className="ce-question-nav" aria-label={t('postEval.knowledge.nav')}>
         {questions.map((item, index) => {
           const isActive = index === safeActiveIndex
           const isAnswered = Boolean(answers[item.id])
@@ -57,7 +59,7 @@ export default function KnowledgeCheckSection({
 
       <div className="ce-actions">
         <button type="button" className="shared-btn shared-btn-secondary" onClick={onBack}>
-          Back
+          {t('ui.back')}
         </button>
         <div className="ce-actions-group">
           <button
@@ -66,7 +68,7 @@ export default function KnowledgeCheckSection({
               onClick={() => setActiveIndex((current) => Math.max(0, current - 1))}
               disabled={safeActiveIndex === 0}
           >
-            Previous Question
+            {t('ui.previousQuestion')}
           </button>
           {!isLastQuestion ? (
             <button
@@ -74,7 +76,7 @@ export default function KnowledgeCheckSection({
               className="shared-btn shared-btn-primary"
               onClick={() => setActiveIndex((current) => Math.min(questions.length - 1, current + 1))}
             >
-              Next Question
+              {t('ui.nextQuestion')}
             </button>
           ) : (
             <button
@@ -83,7 +85,7 @@ export default function KnowledgeCheckSection({
               onClick={onSubmit}
               disabled={!allQuestionsAnswered || isSubmitting}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Evaluation'}
+              {isSubmitting ? t('postEval.knowledge.submitting') : t('postEval.knowledge.submit')}
             </button>
           )}
         </div>

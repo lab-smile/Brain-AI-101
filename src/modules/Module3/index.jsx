@@ -13,19 +13,20 @@ import AdvancedLearningLabs from './sections/labs/AdvancedLearningLabs'
 import BackpropagationSection from './sections/backprop/BackpropagationSection'
 import BrainConnection from './sections/backprop/BrainConnection'
 import './module3.css'
+import { useT } from '../../i18n/useT'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const SECTIONS = [
-  { label: 'Learning Means Changing' },
-  { label: 'Three Learning Types' },
-  { label: 'Backpropagation' },
-  { label: 'Error Goes Down Over Time' },
-  { label: 'Neurocorrelation' },
-  { label: 'Advanced Learning Labs' },
-]
-
 function Module3({ onBack, onContinue, onNavigate }) {
+  const t = useT()
+  const SECTIONS = [
+    { label: t('module3.nav.learningMeansChanging') },
+    { label: t('module3.nav.threeTypes') },
+    { label: t('module3.nav.backprop') },
+    { label: t('module3.nav.errorDown') },
+    { label: t('module3.nav.neurocorrelation') },
+    { label: t('module3.nav.advancedLabs') },
+  ]
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 900 : false)
   const dispatch = useAppDispatch()
   const savedProgress = useAppSelector(selectModuleSectionProgress('module3'))
@@ -101,10 +102,10 @@ function Module3({ onBack, onContinue, onNavigate }) {
 
         <section className="m3-section m3-continue-section">
           <div className="m3-continue-card" onClick={onContinue} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && onContinue?.()}>
-            <p className="m3-eyebrow">Congratulations!</p>
-            <h2>Continue to Course Evaluation</h2>
-            <p className="m3-section-subtitle">Share feedback, reflect on the course, and complete the final knowledge check before the completion page.</p>
-            <span className="m3-continue-btn">Continue to Course Evaluation</span>
+            <p className="m3-eyebrow">{t('module3.congrats')}</p>
+            <h2>{t('module3.continueTitle')}</h2>
+            <p className="m3-section-subtitle">{t('module3.continueBody')}</p>
+            <span className="m3-continue-btn">{t('module3.continueTitle')}</span>
           </div>
         </section>
       </main>

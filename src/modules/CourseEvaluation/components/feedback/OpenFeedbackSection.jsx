@@ -1,3 +1,5 @@
+import { useT } from '../../../../i18n/useT'
+
 export default function OpenFeedbackSection({
   headingRef,
   questions,
@@ -6,11 +8,12 @@ export default function OpenFeedbackSection({
   onBack,
   onNext,
 }) {
+  const t = useT()
   return (
     <section className="ce-panel" aria-labelledby="open-reflection-heading">
       <div className="ce-panel-head">
-        <h2 id="open-reflection-heading" ref={headingRef} tabIndex={-1}>Open Reflection</h2>
-        <p>Write short responses. Your feedback helps improve the website and activities.</p>
+        <h2 id="open-reflection-heading" ref={headingRef} tabIndex={-1}>{t('postEval.reflection.title')}</h2>
+        <p>{t('postEval.reflection.helper')}</p>
       </div>
 
       <div className="ce-open-grid">
@@ -28,10 +31,10 @@ export default function OpenFeedbackSection({
 
       <div className="ce-actions">
         <button type="button" className="shared-btn shared-btn-secondary" onClick={onBack}>
-          Back
+          {t('ui.back')}
         </button>
         <button type="button" className="shared-btn shared-btn-primary" onClick={onNext}>
-          Next
+          {t('ui.next')}
         </button>
       </div>
     </section>

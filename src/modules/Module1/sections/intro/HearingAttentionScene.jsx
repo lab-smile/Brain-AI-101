@@ -1,15 +1,16 @@
 import { useState } from 'react'
+import { useT } from '../../../../i18n/useT'
 import { eyesSvg, payAttentionSvg } from './module1SceneAssets'
 
-const backgroundNoise = [
-  { label: 'chat...', className: 'module1-attention-noise--top' },
-  { label: 'murmur', className: 'module1-attention-noise--middle' },
-  { label: 'noise', className: 'module1-attention-noise--bottom' },
-  { label: '...', className: 'module1-attention-noise--soft' },
-]
-
 function HearingAttentionScene() {
+  const t = useT()
   const [showEyeScene, setShowEyeScene] = useState(false)
+  const backgroundNoise = [
+    { label: t('module1.intro.scene.noise.top'), className: 'module1-attention-noise--top' },
+    { label: t('module1.intro.scene.noise.middle'), className: 'module1-attention-noise--middle' },
+    { label: t('module1.intro.scene.noise.bottom'), className: 'module1-attention-noise--bottom' },
+    { label: t('module1.intro.scene.noise.soft'), className: 'module1-attention-noise--soft' },
+  ]
 
   return (
     <figure className="module1-attention-figure">
@@ -20,8 +21,8 @@ function HearingAttentionScene() {
         aria-pressed={showEyeScene}
         aria-label={
           showEyeScene
-            ? 'Show the hearing attention scene again'
-            : 'Flip the card to show the bright light eye scene'
+            ? t('module1.intro.scene.flip.showHearing')
+            : t('module1.intro.scene.flip.showEye')
         }
       >
         <span className="module1-scene-flipcard__inner">
@@ -29,7 +30,7 @@ function HearingAttentionScene() {
             <span
               className="module1-attention-scene"
               role="img"
-              aria-label="A person in a noisy room notices their name as the strongest sound reaches the listening side first."
+              aria-label={t('module1.intro.scene.hearing.aria')}
             >
               <span
                 className="module1-attention-scene__art"
@@ -66,7 +67,7 @@ function HearingAttentionScene() {
             <span
               className="module1-eye-scene"
               role="img"
-              aria-label="Bright light reaches the eye from one side."
+              aria-label={t('module1.intro.scene.eye.aria')}
             >
               <span
                 className="module1-eye-scene__art"
@@ -86,12 +87,12 @@ function HearingAttentionScene() {
 
       <figcaption className="module1-attention-caption">
         {showEyeScene
-          ? 'Bright light reaches the eye from one side.'
-          : 'In a noisy room, one meaningful sound can stand out.'}
+          ? t('module1.intro.scene.caption.eye')
+          : t('module1.intro.scene.caption.hearing')}
       </figcaption>
       <p className="module1-attention-attribution">
         <a href="https://storyset.com/people" target="_blank" rel="noreferrer">
-          Scene illustrations by Storyset
+          {t('module1.intro.scene.attribution')}
         </a>
       </p>
     </figure>

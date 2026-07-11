@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import ModuleNav from '../../components/ui/ModuleNav'
+import { useT } from '../../i18n/useT'
 import useScrollProgress from '../../hooks/useScrollProgress'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectModuleSectionProgress, setModuleSectionProgress } from '../../store/progress'
@@ -15,17 +16,17 @@ import './module1.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const SECTIONS = [
-  { label: 'Introduction' },
-  { label: 'Neuron Anatomy' },
-  { label: 'Sound Experiment' },
-  { label: 'Bridge to AI' },
-  { label: 'Activation Function' },
-]
-
 function Module1({ onBack, onContinue, onNavigate }) {
+  const t = useT()
   const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 900 : false)
   const dispatch = useAppDispatch()
+  const sections = [
+    { label: t('module1.nav.section.introduction') },
+    { label: t('module1.nav.section.anatomy') },
+    { label: t('module1.nav.section.sound') },
+    { label: t('module1.nav.section.bridge') },
+    { label: t('module1.nav.section.activation') },
+  ]
   const savedProgress = useAppSelector(selectModuleSectionProgress('module1'))
   const handleProgressChange = useCallback(({ activeIndex: nextActiveIndex, visitedIndices: nextVisitedIndices }) => {
     dispatch(setModuleSectionProgress({
@@ -34,7 +35,7 @@ function Module1({ onBack, onContinue, onNavigate }) {
       visitedIndices: nextVisitedIndices,
     }))
   }, [dispatch])
-  const { activeIndex, visitedIndices, setRef, scrollTo, refs } = useScrollProgress(SECTIONS.length, {
+  const { activeIndex, visitedIndices, setRef, scrollTo, refs } = useScrollProgress(sections.length, {
     initialActiveIndex: savedProgress.activeIndex,
     initialVisitedIndices: savedProgress.visitedIndices,
     onProgressChange: handleProgressChange,
@@ -50,9 +51,9 @@ function Module1({ onBack, onContinue, onNavigate }) {
     dispatch(updateSectionProgress({
       moduleId: 'module1',
       sectionIndex: activeIndex,
-      totalSections: SECTIONS.length,
+      totalSections: sections.length,
     }))
-  }, [activeIndex, dispatch])
+  }, [activeIndex, dispatch, sections.length])
 
   useEffect(() => {
     if (savedProgress.activeIndex <= 0) return
@@ -81,7 +82,7 @@ function Module1({ onBack, onContinue, onNavigate }) {
     <div className="module1-page">
       <ModuleNav
         current="module1"
-        sections={SECTIONS}
+        sections={sections}
         activeIndex={activeIndex}
         visitedIndices={visitedIndices}
         onSectionClick={scrollTo}

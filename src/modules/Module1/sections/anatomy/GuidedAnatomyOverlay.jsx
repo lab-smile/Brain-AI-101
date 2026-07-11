@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useT } from '../../../../i18n/useT'
 import neuronDiagram from '../../../../assets/vector-diagram-of-neuron-anatomy.svg'
 import dendritesZoom from '../../../../assets/nerons/Dendrites.png'
 import axonZoom from '../../../../assets/nerons/Axon.png'
@@ -7,50 +8,50 @@ import terminalsZoom from '../../../../assets/nerons/Terminals.png'
 import somaZoom from '../../../../assets/nerons/Soma.png'
 import './guidedAnatomy.css'
 
-const STEPS = [
-  {
-    id: 'dendrites',
-    label: 'Dendrites',
-    desc: 'These branches collect incoming signals from other neurons or sensors.',
-    x: '12%',
-    y: '35%',
-    highlightArea: { left: '0%', top: '5%', width: '28%', height: '90%' },
-    zoomImage: dendritesZoom,
-  },
-  {
-    id: 'soma',
-    label: 'Soma',
-    desc: 'The decision center - it adds all the incoming signals together.',
-    x: '32%',
-    y: '48%',
-    highlightArea: { left: '22%', top: '20%', width: '22%', height: '55%' },
-    zoomImage: somaZoom,
-  },
-  {
-    id: 'axon',
-    label: 'Axon',
-    desc: 'If the total is strong enough, the signal travels down this highway.',
-    x: '62%',
-    y: '50%',
-    highlightArea: { left: '42%', top: '35%', width: '35%', height: '35%' },
-    zoomImage: axonZoom,
-  },
-  {
-    id: 'terminals',
-    label: 'Terminals',
-    desc: 'The signal reaches the end and passes the message to the next neuron.',
-    x: '88%',
-    y: '45%',
-    highlightArea: { left: '80%', top: '20%', width: '20%', height: '70%' },
-    zoomImage: terminalsZoom,
-  },
-]
-
 export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it - let's experiment" }) {
+  const t = useT()
   const [currentStep, setCurrentStep] = useState(-1)
   const [visited, setVisited] = useState(new Set())
+  const steps = [
+    {
+      id: 'dendrites',
+      label: t('module1.guided.step.dendrites.label'),
+      desc: t('module1.guided.step.dendrites.desc'),
+      x: '12%',
+      y: '35%',
+      highlightArea: { left: '0%', top: '5%', width: '28%', height: '90%' },
+      zoomImage: dendritesZoom,
+    },
+    {
+      id: 'soma',
+      label: t('module1.guided.step.soma.label'),
+      desc: t('module1.guided.step.soma.desc'),
+      x: '32%',
+      y: '48%',
+      highlightArea: { left: '22%', top: '20%', width: '22%', height: '55%' },
+      zoomImage: somaZoom,
+    },
+    {
+      id: 'axon',
+      label: t('module1.guided.step.axon.label'),
+      desc: t('module1.guided.step.axon.desc'),
+      x: '62%',
+      y: '50%',
+      highlightArea: { left: '42%', top: '35%', width: '35%', height: '35%' },
+      zoomImage: axonZoom,
+    },
+    {
+      id: 'terminals',
+      label: t('module1.guided.step.terminals.label'),
+      desc: t('module1.guided.step.terminals.desc'),
+      x: '88%',
+      y: '45%',
+      highlightArea: { left: '80%', top: '20%', width: '20%', height: '70%' },
+      zoomImage: terminalsZoom,
+    },
+  ]
   const isStarted = currentStep >= 0
-  const allVisited = visited.size === STEPS.length
+  const allVisited = visited.size === steps.length
 
   const handleStepClick = (index) => {
     if (index !== currentStep + 1 && !visited.has(index)) return
@@ -59,7 +60,7 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
   }
 
   const handleContinue = () => {
-    if (currentStep < STEPS.length - 1) {
+    if (currentStep < steps.length - 1) {
       const next = currentStep + 1
       setCurrentStep(next)
       setVisited((prev) => new Set([...prev, next]))
@@ -70,7 +71,7 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
     onComplete?.()
   }
 
-  const activeStep = currentStep >= 0 ? STEPS[currentStep] : null
+  const currentActiveStep = currentStep >= 0 ? steps[currentStep] : null
 
   return (
     <div className="ga">
@@ -78,24 +79,24 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
         <img
           className="ga-diagram-img"
           src={neuronDiagram}
-          alt="Biological neuron anatomy"
+          alt={t('module1.guided.diagram.alt')}
           draggable={false}
         />
 
         {isStarted && <div className="ga-dim" />}
 
-        {isStarted && activeStep && (
+        {isStarted && currentActiveStep && (
           <motion.div
-            key={activeStep.id}
+            key={currentActiveStep.id}
             className="ga-highlight"
-            style={activeStep.highlightArea}
+            style={currentActiveStep.highlightArea}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           />
         )}
 
-        {STEPS.map((step, i) => {
+        {steps.map((step, i) => {
           const isActive = currentStep === i
           const isVisited = visited.has(i)
           const isNext = i === currentStep + 1 || (currentStep === -1 && i === 0)
@@ -127,12 +128,12 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
               exit={{ opacity: 0, y: -8 }}
             >
               <p className="ga-prompt-text">
-                Tap the glowing dot to start exploring the neuron's parts.
+                {t('module1.guided.prompt')}
               </p>
             </motion.div>
-          ) : activeStep ? (
+          ) : currentActiveStep ? (
             <motion.div
-              key={activeStep.id}
+              key={currentActiveStep.id}
               className="ga-info"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -141,18 +142,18 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
             >
               <div className="ga-info-header">
                 <span className="ga-info-step">
-                  {currentStep + 1} / {STEPS.length}
+                  {currentStep + 1} / {steps.length}
                 </span>
-                <h3 className="ga-info-title">{activeStep.label}</h3>
+                <h3 className="ga-info-title">{currentActiveStep.label}</h3>
               </div>
-              <p className="ga-info-desc">{activeStep.desc}</p>
+              <p className="ga-info-desc">{currentActiveStep.desc}</p>
               {allVisited ? (
                 <button className="shared-btn shared-btn-primary shared-btn-sm" onClick={handleFinish}>
                   {finishLabel}
                 </button>
               ) : (
                 <button className="shared-btn shared-btn-secondary shared-btn-sm" onClick={handleContinue}>
-                  Next part
+                  {t('module1.guided.next')}
                 </button>
               )}
             </motion.div>
@@ -160,7 +161,7 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
         </AnimatePresence>
 
         <div className="ga-dots">
-          {STEPS.map((step, i) => (
+          {steps.map((step, i) => (
             <div
               key={step.id}
               className={`ga-dot${currentStep === i ? ' ga-dot--active' : ''}${visited.has(i) ? ' ga-dot--visited' : ''}`}
@@ -171,43 +172,43 @@ export default function GuidedAnatomyOverlay({ onComplete, finishLabel = "Got it
 
       <AnimatePresence mode="wait">
         <motion.div
-          key={activeStep?.id ?? 'zoom-idle'}
-          className={`ga-zoom-card${activeStep ? '' : ' ga-zoom-card--idle'}`}
+          key={currentActiveStep?.id ?? 'zoom-idle'}
+          className={`ga-zoom-card${currentActiveStep ? '' : ' ga-zoom-card--idle'}`}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.24 }}
         >
           <div className="ga-zoom-header">
-            <span className="ga-info-step">{activeStep ? 'Close-up' : 'Click to zoom'}</span>
-            <h4 className="ga-zoom-title">{activeStep ? activeStep.label : 'Pick a neuron part'}</h4>
+            <span className="ga-info-step">{currentActiveStep ? t('module1.guided.zoom.closeUp') : t('module1.guided.zoom.clickToZoom')}</span>
+            <h4 className="ga-zoom-title">{currentActiveStep ? currentActiveStep.label : t('module1.guided.zoom.pick')}</h4>
           </div>
           <div className="ga-zoom-frame">
-            {activeStep ? (
+            {currentActiveStep ? (
               <div className="ga-zoom-stage">
                 <img
                   className="ga-zoom-image ga-zoom-image--static"
-                  src={activeStep.zoomImage}
-                  alt={`${activeStep.label} close-up of the neuron`}
+                  src={currentActiveStep.zoomImage}
+                  alt={t('module1.guided.zoom.alt', { label: currentActiveStep.label })}
                   draggable={false}
                 />
               </div>
             ) : (
               <div className="ga-zoom-empty">
-                Click a glowing hotspot to zoom into that structure.
+                {t('module1.guided.zoom.empty')}
               </div>
             )}
           </div>
           <p className="ga-zoom-caption">
-            {activeStep
-              ? `${activeStep.label} shown in a fixed close-up view.`
-              : 'The close-up panel updates as you explore each part.'}
+            {currentActiveStep
+              ? t('module1.guided.zoom.caption.active', { label: currentActiveStep.label })
+              : t('module1.guided.zoom.caption.idle')}
           </p>
-          <div className="ga-attribution" aria-label="Image attribution">
+          <div className="ga-attribution" aria-label={t('module1.guided.attribution.aria')}>
             <p className="ga-attribution-line">
-              Overview image:{' '}
+              {t('module1.guided.attribution.overview')}{' '}
               <a href="https://commons.wikimedia.org/wiki/File:Complete_neuron_cell_diagram_en.svg" target="_blank" rel="noreferrer">
-                Complete neuron cell diagram by LadyofHats via Wikimedia Commons
+                {t('module1.guided.attribution.link')}
               </a>
             </p>
           </div>
