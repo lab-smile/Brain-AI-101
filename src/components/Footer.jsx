@@ -63,37 +63,32 @@ export default function Footer() {
         </a>
 
         <span>
-          Supported by NSF NCS-FO-2318984 AI Supplement
+          Supported by{' '}
+          <a
+            href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2318984"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            NSF NCS-FO-2318984 AI Supplement
+          </a>
+          {' and the UF BME Shepard Broad Foundation Community Outreach Fund'}
           {' · '}
           © 2026 Brain × AI 101
           {' · '}
           <a
-            href="https://creativecommons.org/licenses/by/4.0/"
+            href="https://creativecommons.org/licenses/by-nc/4.0/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            CC BY 4.0
+            CC BY-NC 4.0
           </a>
-          {' (content) · '}
-          <a
-            href="https://github.com/Boombaka3/Brain-AI-101/blob/main/LICENSE"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            MIT
-          </a>
-          {' (code) · '}
-          <a
-            href="https://github.com/Boombaka3/Brain-AI-101"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Open source on GitHub
-          </a>
+          <img
+            src="https://licensebuttons.net/l/by-nc/4.0/80x15.png"
+            alt="CC BY-NC 4.0"
+            style={{ verticalAlign: 'middle', marginLeft: '4px' }}
+          />
           {' · '}
-          <a href="/about" rel="noopener noreferrer">
-            About
-          </a>
+          <a href="/about">About</a>
         </span>
       </div>
     </footer>
