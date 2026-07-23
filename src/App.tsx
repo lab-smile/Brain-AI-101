@@ -8,6 +8,7 @@ import CourseEvaluation from './modules/CourseEvaluation'
 import PreCourseEvaluationPage from './modules/CourseEvaluation/PreCourseEvaluationPage'
 import CompletionScreen from './pages/CompletionScreen'
 import AdminSubmissionsPage from './pages/AdminSubmissionsPage'
+import Footer from './components/Footer'
 import { loadPreCourseEvaluationAttempt } from './modules/CourseEvaluation/lib/courseEvaluationStorage'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { selectCurrentView, setCurrentView } from './store/app'
@@ -117,7 +118,12 @@ function App() {
     content = <CompletionScreen onGoToModule={(key) => goTo(key)} onBackToHome={() => goTo('landing')} />
   }
 
-  return <AppErrorBoundary>{content}</AppErrorBoundary>
+  return (
+    <AppErrorBoundary>
+      {content}
+      {currentView !== 'adminSubmissions' && <Footer />}
+    </AppErrorBoundary>
+  )
 }
 
 export default App
