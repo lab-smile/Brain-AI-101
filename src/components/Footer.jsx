@@ -32,10 +32,7 @@ export default function Footer() {
               Dr. Ruogu Fang
             </a>
           </span>
-        </div>
-
-        <div className="footer-built">
-          <span>
+          <span className="footer-built">
             Designed and built by{' '}
             <a
               href="https://github.com/Boombaka3"

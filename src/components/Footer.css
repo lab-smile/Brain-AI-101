@@ -44,7 +44,7 @@
 }
 
 .footer-built {
-  margin-left: auto;
+  margin-left: 0;
   font-size: 13px;
   color: var(--text-secondary, var(--shared-text-muted));
 }
@@ -78,11 +78,5 @@
 @media (max-width: 720px) {
   .site-footer {
     padding-inline: 20px;
-  }
-
-  .footer-built {
-    width: 100%;
-    margin-left: 0;
-    text-align: left;
   }
 }
