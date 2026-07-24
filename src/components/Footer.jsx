@@ -87,8 +87,6 @@ export default function Footer() {
             alt="CC BY-NC 4.0"
             style={{ verticalAlign: 'middle', marginLeft: '4px' }}
           />
-          {' · '}
-          <a href="/about">About</a>
         </span>
       </div>
     </footer>
