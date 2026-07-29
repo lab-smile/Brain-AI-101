@@ -1412,18 +1412,18 @@
 .anim-rl__badge--miss {
   background: #fee2e2;
   color: #dc2626;
-  top: 12px;
-  right: 60px;
+  top: 50%;
+  right: calc(50% + 90px);
   left: auto;
-  transform: none;
+  transform: translateY(-50%);
 }
 .anim-rl__badge--hit {
   background: #dcfce7;
   color: #16a34a;
-  top: 12px;
-  right: 14px;
-  left: auto;
-  transform: none;
+  top: 50%;
+  right: auto;
+  left: calc(50% + 90px);
+  transform: translateY(-50%);
 }
 
 /* Agent walk animation when is-playing */
