@@ -121,7 +121,7 @@ function App() {
   return (
     <AppErrorBoundary>
       {content}
-      {currentView !== 'adminSubmissions' && <Footer />}
+      {currentView === 'landing' && <Footer />}
     </AppErrorBoundary>
   )
 }
